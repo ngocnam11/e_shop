@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../widgets/custom_button.dart';
 import '../widgets/text_field_input.dart';
+import '../screens/screens.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
+
+  static const routeName = '/login';
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -24,18 +28,19 @@ class LoginScreen extends StatelessWidget {
               'Welcome to eShop',
               style: TextStyle(fontSize: 45, fontWeight: FontWeight.bold),
             ),
-            const Text(
-                'Please enter your email address below to start using app.'),
+            const Text('Please login to start using app.'),
             const SizedBox(height: 30),
             TextFieldInput(
               controller: emailController,
               hintText: 'Enter your email',
+              labelText: 'Email',
               textInputType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 20),
             TextFieldInput(
               controller: passwordController,
               hintText: 'Enter your password',
+              labelText: 'Password',
               textInputType: TextInputType.visiblePassword,
               isPass: true,
             ),
@@ -63,22 +68,42 @@ class LoginScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Not a member? '),
+                const Text('Not a member?'),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      SignupScreen.routeName,
+                      (route) => false,
+                    );
+                  },
                   child: const Text('Join now'),
                 ),
               ],
             ),
             const SizedBox(height: 50),
-            const Text('Or sign in with'),
+            Row(
+              children: const [
+                Expanded(
+                    child: Divider(
+                  height: 10,
+                )),
+                Padding(
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  child: Text('Or sign in with'),
+                ),
+                Expanded(
+                    child: Divider(
+                  height: 10,
+                )),
+              ],
+            ),
             const SizedBox(height: 30),
             Row(
               children: [
                 Expanded(
                   child: CustomButton(
                     press: () {},
-                    primaryColor: Colors.blue,
+                    primaryColor: const Color.fromARGB(255, 24, 119, 242),
                     title: 'Facebook',
                     svg: 'assets/svgs/facebook_logo.svg',
                     textColor: Colors.white,
