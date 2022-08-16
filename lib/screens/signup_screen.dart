@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../router/router.dart';
 import '../widgets/text_field_input.dart';
-import '../screens/screens.dart';
 
 class SignupScreen extends StatelessWidget {
   SignupScreen({Key? key}) : super(key: key);
-
-  static const routeName = '/signup';
 
   final TextEditingController fullnameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -75,10 +73,7 @@ class SignupScreen extends StatelessWidget {
                 const Text('Already have an account? '),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      LoginScreen.routeName,
-                      (route) => false,
-                    );
+                    Navigator.of(context).pushReplacementNamed(AppRouter.login);
                   },
                   child: const Text('Join now'),
                 ),

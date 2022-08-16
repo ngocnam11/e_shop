@@ -1,13 +1,11 @@
+import 'package:e_shop/router/router.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/custom_button.dart';
 import '../widgets/text_field_input.dart';
-import '../screens/screens.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
-
-  static const routeName = '/login';
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -51,7 +49,9 @@ class LoginScreen extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed(AppRouter.home);
+              },
               style: ElevatedButton.styleFrom(
                 primary: Colors.black,
                 padding: const EdgeInsets.symmetric(
@@ -71,10 +71,8 @@ class LoginScreen extends StatelessWidget {
                 const Text('Not a member?'),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      SignupScreen.routeName,
-                      (route) => false,
-                    );
+                    Navigator.of(context)
+                        .pushReplacementNamed(AppRouter.signup);
                   },
                   child: const Text('Join now'),
                 ),

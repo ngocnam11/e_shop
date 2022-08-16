@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'screens/screens.dart';
+import 'router/router.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -15,11 +16,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter eShop',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: SignupScreen(),
-      routes: {
-        LoginScreen.routeName: (context) => LoginScreen(),
-        SignupScreen.routeName: (context) => SignupScreen(),
-      },
+      // home: HomeScreen(),
+      initialRoute: AppRouter.login,
+      onGenerateRoute: AppRouter.onGenerateRoute,
     );
   }
 }
