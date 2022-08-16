@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'config/theme.dart';
 import 'screens/screens.dart';
 
 void main() {
@@ -14,10 +15,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter eShop',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: SignupScreen(),
+      theme: theme(),
+      home: const HomeScreen(),
     );
   }
 }

@@ -10,6 +10,7 @@ class TextFieldInput extends StatelessWidget {
     this.readOnly = false,
     this.labelText,
     this.suffixIcon,
+    this.prefixIcon,
   }) : super(key: key);
   final TextEditingController controller;
   final bool isPass;
@@ -17,6 +18,7 @@ class TextFieldInput extends StatelessWidget {
   final TextInputType textInputType;
   final bool readOnly;
   final String? labelText;
+  final Widget? prefixIcon;
   final Widget? suffixIcon;
 
   @override
@@ -31,11 +33,11 @@ class TextFieldInput extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: Divider.createBorderSide(context),
-          borderRadius: BorderRadius.circular(8)
-        ),
+            borderSide: Divider.createBorderSide(context),
+            borderRadius: BorderRadius.circular(8)),
         filled: true,
         contentPadding: const EdgeInsets.all(8),
+        prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
       ),
       obscureText: isPass,
