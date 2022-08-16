@@ -9,9 +9,10 @@ class TextFieldInput extends StatelessWidget {
     required this.textInputType,
     this.readOnly = false,
     this.labelText,
-    this.suffixIcon,
     this.prefixIcon,
+    this.suffixIcon,
   }) : super(key: key);
+
   final TextEditingController controller;
   final bool isPass;
   final String hintText;
@@ -34,7 +35,7 @@ class TextFieldInput extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
             borderSide: Divider.createBorderSide(context),
-            borderRadius: BorderRadius.circular(8)),
+            borderRadius: BorderRadius.circular(8),),
         filled: true,
         contentPadding: const EdgeInsets.all(8),
         prefixIcon: prefixIcon,
@@ -46,3 +47,4 @@ class TextFieldInput extends StatelessWidget {
     );
   }
 }
+

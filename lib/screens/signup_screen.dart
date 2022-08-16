@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../router/router.dart';
 import '../widgets/text_field_input.dart';
 
 class SignupScreen extends StatelessWidget {
   SignupScreen({Key? key}) : super(key: key);
+
   final TextEditingController fullnameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -25,23 +27,27 @@ class SignupScreen extends StatelessWidget {
               style: TextStyle(fontSize: 45, fontWeight: FontWeight.bold),
             ),
             const Text(
-                'Please put your infomation below to create a new account for using app.',),
+              'Please put your infomation below to create a new account for using app.',
+            ),
             const SizedBox(height: 30),
             TextFieldInput(
               controller: fullnameController,
               hintText: 'Enter your fullname',
+              labelText: 'Full Name',
               textInputType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 20),
             TextFieldInput(
               controller: emailController,
               hintText: 'Enter your email',
+              labelText: 'Email',
               textInputType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 20),
             TextFieldInput(
               controller: passwordController,
               hintText: 'Enter your password',
+              labelText: 'Password',
               textInputType: TextInputType.visiblePassword,
               isPass: true,
             ),
@@ -66,7 +72,9 @@ class SignupScreen extends StatelessWidget {
               children: [
                 const Text('Already have an account? '),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushReplacementNamed(AppRouter.login);
+                  },
                   child: const Text('Join now'),
                 ),
               ],
