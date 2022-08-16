@@ -37,6 +37,7 @@ class CustomButton extends StatelessWidget {
             svg,
             width: 18,
             height: 18,
+            fit: BoxFit.cover,
           ),
           const SizedBox(width: 5),
           Text(
