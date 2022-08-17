@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'config/theme.dart';
 import 'router/router.dart';
 import 'screens/order_confirmation/order_confirm_screen.dart';
 
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter eShop',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: theme(),
       home: OrderConfirmScreen(),
       // initialRoute: AppRouter.login,
       // onGenerateRoute: AppRouter.onGenerateRoute,
