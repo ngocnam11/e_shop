@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'router/router.dart';
+import 'screens/order_confirmation/order_confirm_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,9 +17,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter eShop',
       theme: ThemeData(primarySwatch: Colors.blue),
-      // home: HomeScreen(),
-      initialRoute: AppRouter.login,
-      onGenerateRoute: AppRouter.onGenerateRoute,
+      home: OrderConfirmScreen(),
+      // initialRoute: AppRouter.login,
+      // onGenerateRoute: AppRouter.onGenerateRoute,
     );
   }
 }
