@@ -1,8 +1,10 @@
+import 'package:e_shop/screens/forgot_password_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'config/theme.dart';
 import 'router/router.dart';
 import 'screens/order_confirmation/order_confirm_screen.dart';
+import 'screens/screens.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,9 +20,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter eShop',
       theme: theme(),
-      home: OrderConfirmScreen(),
-      // initialRoute: AppRouter.login,
-      // onGenerateRoute: AppRouter.onGenerateRoute,
+      initialRoute: AppRouter.login,
+      onGenerateRoute: AppRouter.onGenerateRoute,
     );
   }
 }

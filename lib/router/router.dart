@@ -1,9 +1,11 @@
+import 'package:e_shop/screens/forgot_password_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/screens.dart';
 
 abstract class AppRouter {
   static const String login = '/login';
+  static const String forgotPassword = '/forgot_password';
   static const String signup = '/signup';
   static const String home = '/';
   static const String search = '/search';
@@ -17,6 +19,8 @@ abstract class AppRouter {
     switch (settings.name) {
       case login:
         return _materialPageRoute(settings, LoginScreen());
+      case forgotPassword:
+        return _materialPageRoute(settings, ForgotPasswordScreen());
       case signup:
         return _materialPageRoute(settings, SignupScreen());
       case home:

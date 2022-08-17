@@ -16,18 +16,17 @@ class LoginScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: Column(
-          children: [
+          children: <Widget>[
             const Text(
               'eShop',
               style: TextStyle(fontSize: 45, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 30),
             const Text(
               'Welcome to eShop',
-              style: TextStyle(fontSize: 45, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
             ),
             const Text('Please login to start using app.'),
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
             TextFieldInput(
               controller: emailController,
               hintText: 'Enter your email',
@@ -42,12 +41,14 @@ class LoginScreen extends StatelessWidget {
               textInputType: TextInputType.visiblePassword,
               isPass: true,
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 10),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed(AppRouter.forgotPassword);
+              },
               child: const Text('Forgot password?'),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pushNamed(AppRouter.home);
@@ -58,16 +59,13 @@ class LoginScreen extends StatelessWidget {
                   horizontal: 90,
                   vertical: 20,
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
               ),
               child: const Text('Sign in'),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              children: <Widget>[
                 const Text('Not a member?'),
                 TextButton(
                   onPressed: () {
@@ -78,26 +76,20 @@ class LoginScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 10),
             Row(
-              children: const [
-                Expanded(
-                    child: Divider(
-                  height: 10,
-                )),
+              children: const <Widget>[
+                Expanded(child: Divider()),
                 Padding(
-                  padding: EdgeInsets.only(left: 20, right: 20),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Text('Or sign in with'),
                 ),
-                Expanded(
-                    child: Divider(
-                  height: 10,
-                )),
+                Expanded(child: Divider()),
               ],
             ),
             const SizedBox(height: 30),
             Row(
-              children: [
+              children: <Widget>[
                 Expanded(
                   child: CustomButton(
                     press: () {},
@@ -118,7 +110,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),

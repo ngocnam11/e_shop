@@ -4,6 +4,16 @@ ThemeData theme() {
   return ThemeData(
     scaffoldBackgroundColor: Colors.white,
     textTheme: textTheme(),
+    appBarTheme: const AppBarTheme(
+      elevation: 0,
+      color: Colors.transparent,
+    ),
+    useMaterial3: true,
+    colorSchemeSeed: Colors.blue[300],
+    iconTheme: const IconThemeData(color: Colors.black54),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(onPrimary: Colors.white),
+    ),
   );
 }
 

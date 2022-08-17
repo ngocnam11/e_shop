@@ -1,4 +1,3 @@
-import 'package:e_shop/screens/cart_screen.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {

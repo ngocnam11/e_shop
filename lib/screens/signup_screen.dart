@@ -16,7 +16,7 @@ class SignupScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: Column(
-          children: [
+          children: <Widget>[
             const Text(
               'eShop',
               style: TextStyle(fontSize: 45, fontWeight: FontWeight.bold),
@@ -24,7 +24,7 @@ class SignupScreen extends StatelessWidget {
             const SizedBox(height: 30),
             const Text(
               'Create a new account',
-              style: TextStyle(fontSize: 45, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
             const Text(
               'Please put your infomation below to create a new account for using app.',
@@ -60,16 +60,13 @@ class SignupScreen extends StatelessWidget {
                   horizontal: 90,
                   vertical: 20,
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
               ),
               child: const Text('Register Now'),
             ),
             const SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              children: <Widget>[
                 const Text('Already have an account? '),
                 TextButton(
                   onPressed: () {

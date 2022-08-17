@@ -23,13 +23,13 @@ class OrderConfirmScreen extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+              children: <Widget>[
                 SvgPicture.asset(
                   'assets/svgs/order/success.svg',
                   height: 150,
                   width: 150,
                 ),
-                Text(
+                const Text(
                   'Hey {username},',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
@@ -40,7 +40,7 @@ class OrderConfirmScreen extends StatelessWidget {
                 const Divider(thickness: 1),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  children: const <Widget>[
                     Text('Sub-total'),
                     Text(
                       '{price}\$',
@@ -50,7 +50,7 @@ class OrderConfirmScreen extends StatelessWidget {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  children: const <Widget>[
                     Text('VAT (%)'),
                     Text(
                       '{price}\$',
@@ -60,7 +60,7 @@ class OrderConfirmScreen extends StatelessWidget {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  children: const <Widget>[
                     Text('Shipping Charge'),
                     Text(
                       '{price}\$',
@@ -71,7 +71,7 @@ class OrderConfirmScreen extends StatelessWidget {
                 const Divider(thickness: 1),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  children: const <Widget>[
                     Text(
                       'Total',
                       style: TextStyle(fontWeight: FontWeight.bold),
@@ -88,7 +88,7 @@ class OrderConfirmScreen extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    fixedSize: Size.fromWidth(double.maxFinite),
+                    fixedSize: const Size.fromWidth(double.maxFinite),
                     padding: const EdgeInsets.symmetric(
                       horizontal: 30,
                       vertical: 20,
@@ -97,7 +97,7 @@ class OrderConfirmScreen extends StatelessWidget {
                   ),
                   child: const Text('Track Your Order'),
                 ),
-                Text('Order #123456'),
+                const Text('Order #123456'),
               ],
             ),
           ),
@@ -107,15 +107,9 @@ class OrderConfirmScreen extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         child: ElevatedButton(
           onPressed: () {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              AppRouter.home,
-              (route) => false,
-            );
+            Navigator.of(context).pushReplacementNamed(AppRouter.home);
           },
           style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
             padding: const EdgeInsets.symmetric(
               vertical: 20,
             ),

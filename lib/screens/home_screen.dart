@@ -13,7 +13,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController searchController = TextEditingController();
-  
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +20,6 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('eShop'),
       ),
-     
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: Column(
@@ -53,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       bottomNavigationBar: BottomAppBar(
         child: Text('Bottom Nav Bar'),
-      )
+      ),
     );
   }
 }
