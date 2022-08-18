@@ -21,6 +21,8 @@ abstract class AppRouter {
         return _materialPageRoute(settings, SignupScreen());
       case home:
         return _materialPageRoute(settings, HomeScreen());
+      case profile:
+        return _materialPageRoute(settings, ProfileScreen());
       default:
         return _materialPageRoute(
           settings,
