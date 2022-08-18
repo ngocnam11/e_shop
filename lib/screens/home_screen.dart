@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../router/router.dart';
 import '../widgets/custom_navbar.dart';
+import '../widgets/custom_navigationbar.dart';
 import '../widgets/product_carousel.dart';
 import '../widgets/section_title.dart';
 import '../widgets/text_field_input.dart';
-// import 'screens.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
-
+  static const routeName = '/';
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -29,8 +29,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           children: [
             TextFieldInput(
@@ -63,7 +63,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: const CustomNavBar(),
+      bottomNavigationBar: const CustomNavigationBar(
+        currentRoute: AppRouter.home,
+      ),
     );
   }
 }
