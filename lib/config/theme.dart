@@ -7,7 +7,7 @@ ThemeData theme() {
     textTheme: textTheme(),
     appBarTheme: const AppBarTheme(
       elevation: 0,
-      color: Colors.transparent,
+      backgroundColor: Colors.transparent,
     ),
     colorSchemeSeed: Colors.blue[300],
     iconTheme: const IconThemeData(color: Colors.black54),
