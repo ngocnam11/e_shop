@@ -16,12 +16,11 @@ class SignupScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: Column(
-          children: <Widget>[
-            const Text(
-              'eShop',
-              style: TextStyle(fontSize: 45, fontWeight: FontWeight.bold),
+          children: [
+            Image.asset(
+              'assets/images/logo_eshop.png',
+              width: 300,
             ),
-            const SizedBox(height: 30),
             const Text(
               'Create a new account',
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
@@ -53,7 +52,9 @@ class SignupScreen extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed(AppRouter.home);
+              },
               style: ElevatedButton.styleFrom(
                 primary: Colors.blueAccent[400],
                 padding: const EdgeInsets.symmetric(
@@ -63,7 +64,7 @@ class SignupScreen extends StatelessWidget {
               ),
               child: const Text('Register Now'),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[

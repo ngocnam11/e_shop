@@ -23,10 +23,10 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
-          children: <Widget>[
-            const Text(
-              'eShop',
-              style: TextStyle(fontSize: 45, fontWeight: FontWeight.bold),
+          children: [
+            Image.asset(
+              'assets/images/logo_eshop.png',
+              width: 300,
             ),
             const Text(
               'Welcome to eShop',
@@ -48,19 +48,24 @@ class _LoginScreenState extends State<LoginScreen> {
               textInputType: TextInputType.visiblePassword,
               isPass: true,
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
             Row(
-              children: <Widget>[
-                Checkbox(
-                  value: _rememberMe,
-                  onChanged: (checkValue) {
-                    setState(() {
-                      _rememberMe = checkValue!;
-                    });
-                  },
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Checkbox(
+                      value: _rememberMe,
+                      onChanged: (checkValue) {
+                        setState(() {
+                          _rememberMe = checkValue!;
+                        });
+                      },
+                    ),
+                    const SizedBox(width: 8),
+                    Text('Remember me'),
+                  ],
                 ),
-                SizedBox(width: 8),
-                Text('Remember me'),
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pushNamed(AppRouter.forgotPassword);
