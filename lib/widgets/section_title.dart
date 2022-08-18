@@ -11,24 +11,21 @@ class SectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title,
-            style: Theme.of(context).textTheme.headline3,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: Theme.of(context).textTheme.headline2,
+        ),
+        TextButton(
+          onPressed: press,
+          child: Text(
+            'View all',
+            style: Theme.of(context).textTheme.headline6,
           ),
-          TextButton(
-            onPressed: press,
-            child: Text(
-              'View all',
-              style: Theme.of(context).textTheme.headline6,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
