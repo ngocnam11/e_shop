@@ -48,7 +48,7 @@ class ForgotPasswordScreen extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.black,
+                  primary: Colors.blueAccent[400],
                   padding: const EdgeInsets.symmetric(
                     horizontal: 80,
                     vertical: 20,
