@@ -14,14 +14,13 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(24),
         child: Column(
           children: [
-            const Text(
-              'eShop',
-              style: TextStyle(fontSize: 45, fontWeight: FontWeight.bold),
+            Image.asset(
+              'assets/images/logo_eshop.png',
+              width: 300,
             ),
-            const SizedBox(height: 30),
             const Text(
               'Welcome to eShop',
               style: TextStyle(fontSize: 45, fontWeight: FontWeight.bold),
@@ -42,10 +41,25 @@ class LoginScreen extends StatelessWidget {
               textInputType: TextInputType.visiblePassword,
               isPass: true,
             ),
-            const SizedBox(height: 30),
-            TextButton(
-              onPressed: () {},
-              child: const Text('Forgot password?'),
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Checkbox(
+                      value: false,
+                      onChanged: (checkValue) {},
+                    ),
+                    const SizedBox(width: 8),
+                    Text('Remember me'),
+                  ],
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text('Forgot password?'),
+                ),
+              ],
             ),
             const SizedBox(height: 30),
             ElevatedButton(
@@ -53,7 +67,7 @@ class LoginScreen extends StatelessWidget {
                 Navigator.of(context).pushNamed(AppRouter.home);
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.black,
+                primary: Colors.blueAccent[400],
                 padding: const EdgeInsets.symmetric(
                   horizontal: 90,
                   vertical: 20,
@@ -64,7 +78,7 @@ class LoginScreen extends StatelessWidget {
               ),
               child: const Text('Sign in'),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
