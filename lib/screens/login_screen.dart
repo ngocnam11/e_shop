@@ -1,20 +1,27 @@
-import 'package:e_shop/router/router.dart';
 import 'package:flutter/material.dart';
 
+import '../router/router.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/text_field_input.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  bool _rememberMe = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(24),
         child: Column(
           children: <Widget>[
             const Text(
@@ -42,11 +49,25 @@ class LoginScreen extends StatelessWidget {
               isPass: true,
             ),
             const SizedBox(height: 10),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(AppRouter.forgotPassword);
-              },
-              child: const Text('Forgot password?'),
+            Row(
+              children: <Widget>[
+                Checkbox(
+                  value: _rememberMe,
+                  onChanged: (checkValue) {
+                    setState(() {
+                      _rememberMe = checkValue!;
+                    });
+                  },
+                ),
+                SizedBox(width: 8),
+                Text('Remember me'),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(AppRouter.forgotPassword);
+                  },
+                  child: const Text('Forgot password?'),
+                ),
+              ],
             ),
             const SizedBox(height: 10),
             ElevatedButton(
@@ -54,7 +75,7 @@ class LoginScreen extends StatelessWidget {
                 Navigator.of(context).pushNamed(AppRouter.home);
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.black,
+                primary: Colors.blueAccent[400],
                 padding: const EdgeInsets.symmetric(
                   horizontal: 90,
                   vertical: 20,
