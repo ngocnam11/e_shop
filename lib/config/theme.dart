@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 
 ThemeData theme() {
   return ThemeData(
-    scaffoldBackgroundColor: Colors.white,
+    useMaterial3: true,
+    scaffoldBackgroundColor: Colors.grey[100],
     textTheme: textTheme(),
     appBarTheme: const AppBarTheme(
       elevation: 0,
       color: Colors.transparent,
     ),
-    useMaterial3: true,
     colorSchemeSeed: Colors.blue[300],
     iconTheme: const IconThemeData(color: Colors.black54),
     elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(onPrimary: Colors.white),
+      style: ElevatedButton.styleFrom(
+        onPrimary: Colors.white,
+      ),
     ),
   );
 }
