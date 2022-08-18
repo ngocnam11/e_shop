@@ -1,3 +1,4 @@
+import 'package:e_shop/router/router.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/section_title.dart';
@@ -19,6 +20,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('eShop'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pushNamed(AppRouter.login),
+            child: Text('Logout'),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
