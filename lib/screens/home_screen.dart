@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/custom_navbar.dart';
+import '../widgets/product_carousel.dart';
 import '../widgets/section_title.dart';
 import '../widgets/text_field_input.dart';
 // import 'screens.dart';
@@ -13,7 +15,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController searchController = TextEditingController();
-  
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('eShop'),
       ),
-     
       body: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(24),
         child: Column(
           children: [
             TextFieldInput(
@@ -36,9 +36,12 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 10,
             ),
             Container(
-              height: 100,
-              width: 100,
-              color: Colors.blue,
+              height: 140,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(16),
+              ),
               child: const Text('Carousel slider'),
             ),
             const SizedBox(
@@ -48,12 +51,12 @@ class _HomeScreenState extends State<HomeScreen> {
               title: 'Recommended',
               press: () {},
             ),
+            const SizedBox(height: 12),
+            const ProductCarousel(),
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: Text('Bottom Nav Bar'),
-      )
+      bottomNavigationBar: const CustomNavBar(),
     );
   }
 }
