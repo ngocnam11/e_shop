@@ -1,10 +1,8 @@
-import 'package:e_shop/screens/forgot_password_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 
 import 'config/theme.dart';
 import 'router/router.dart';
-import 'screens/order_confirmation/order_confirm_screen.dart';
-import 'screens/screens.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,11 +15,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scrollBehavior: MyCustomScrollBehavior(),
       debugShowCheckedModeBanner: false,
       title: 'Flutter eShop',
       theme: theme(),
-      initialRoute: AppRouter.login,
+      initialRoute: AppRouter.home,
       onGenerateRoute: AppRouter.onGenerateRoute,
     );
   }
+}
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      };
 }
