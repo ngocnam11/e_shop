@@ -34,8 +34,9 @@ class TextFieldInput extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
         ),
         focusedBorder: OutlineInputBorder(
-            borderSide: Divider.createBorderSide(context),
-            borderRadius: BorderRadius.circular(8),),
+          borderSide: Divider.createBorderSide(context),
+          borderRadius: BorderRadius.circular(8),
+        ),
         filled: true,
         contentPadding: const EdgeInsets.all(8),
         prefixIcon: prefixIcon,
@@ -47,4 +48,3 @@ class TextFieldInput extends StatelessWidget {
     );
   }
 }
-
