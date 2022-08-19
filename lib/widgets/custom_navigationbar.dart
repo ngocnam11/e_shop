@@ -153,7 +153,10 @@ class CustomNavigationBarItem extends StatelessWidget {
                 ],
               ),
             )
-          : Icon(icon),
+          : Tooltip(
+              message: label,
+              child: Icon(icon),
+            ),
     );
   }
 }
