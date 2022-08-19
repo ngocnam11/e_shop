@@ -26,15 +26,20 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.symmetric(horizontal: 10),
-      height: 50,
-      decoration: BoxDecoration(
+      height: 60,
+      decoration: const BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey,
+            spreadRadius: 5,
+            blurRadius: 7,
+          ),
+        ],
         color: Colors.white,
-        borderRadius: BorderRadius.circular(30),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <CustomNavigationBarItem>[
           CustomNavigationBarItem(
             icon: Icons.home_outlined,
@@ -122,41 +127,42 @@ class CustomNavigationBarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (isCurrentPage) {
+      return Container(
+        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: selectedColor,
+            width: 0.5,
+          ),
+          color: selectedColor.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Icon(
+              selectedIcon,
+              color: selectedColor,
+            ),
+            const SizedBox(width: 5),
+            Text(
+              label,
+              style: TextStyle(
+                color: selectedColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
     return InkWell(
       onTap: onPressed,
-      child: isCurrentPage
-          ? Container(
-              padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: selectedColor,
-                  width: 0.5,
-                ),
-                color: selectedColor.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Icon(
-                    selectedIcon,
-                    color: selectedColor,
-                  ),
-                  const SizedBox(width: 5),
-                  Text(
-                    label,
-                    style: TextStyle(
-                      color: selectedColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            )
-          : Tooltip(
-              message: label,
-              child: Icon(icon),
-            ),
+      child: Tooltip(
+        message: label,
+        child: Icon(icon),
+      ),
     );
   }
 }
