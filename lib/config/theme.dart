@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 ThemeData theme() {
   return ThemeData(
     useMaterial3: true,
-    scaffoldBackgroundColor: Colors.grey[100],
     textTheme: textTheme(),
     appBarTheme: const AppBarTheme(
       elevation: 0,
       backgroundColor: Colors.transparent,
+      iconTheme: IconThemeData(color: Colors.black54),
+      titleTextStyle: TextStyle(color: Colors.black87),
     ),
     colorSchemeSeed: Colors.blue[300],
     iconTheme: const IconThemeData(color: Colors.black54),
