@@ -16,46 +16,40 @@ abstract class AppRouter {
 
   static Route onGenerateRoute(RouteSettings settings) {
     debugPrint('Route: ${settings.name}');
+
     switch (settings.name) {
       case home:
-        return _materialPageRoute(settings, HomeScreen());
+        return HomeScreen.route();
       case login:
-        return _materialPageRoute(settings, LoginScreen());
+        return LoginScreen.route();
       case forgotPassword:
-        return _materialPageRoute(settings, ForgotPasswordScreen());
+        return ForgotPasswordScreen.route();
       case signup:
-        return _materialPageRoute(settings, SignupScreen());
+        return SignupScreen.route();
       case search:
-        return _materialPageRoute(settings, SearchScreen());
+        return SearchScreen.route();
       case cart:
-        return _materialPageRoute(settings, CartScreen());
+        return CartScreen.route();
       case wishlist:
-        return _materialPageRoute(settings, WishlistScreen());
+        return WishlistScreen.route();
       case chat:
-        return _materialPageRoute(settings, ChatScreen());
+        return ChatScreen.route();
       case profile:
-        return _materialPageRoute(settings, ProfileScreen());
+        return ProfileScreen.route();
       case notification:
-        return _materialPageRoute(settings, NotificationScreen());
+        return NotificationScreen.route();
       default:
-        return _materialPageRoute(
-          settings,
-          Scaffold(
+        return MaterialPageRoute(
+          settings: const RouteSettings(name: '/error'),
+          builder: (_) => Scaffold(
             appBar: AppBar(
-              title: Text('Error'),
+              title: const Text('Error'),
+            ),
+            body: const Center(
+              child: Text('Something went wrong!'),
             ),
           ),
         );
     }
-  }
-
-  static MaterialPageRoute _materialPageRoute(
-    RouteSettings settings,
-    Widget widget,
-  ) {
-    return MaterialPageRoute(
-      settings: settings,
-      builder: (_) => widget,
-    );
   }
 }
