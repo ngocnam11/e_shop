@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 ThemeData theme() {
   return ThemeData(
-    useMaterial3: true,
     textTheme: textTheme(),
     appBarTheme: const AppBarTheme(
       elevation: 0,
