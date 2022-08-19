@@ -45,7 +45,7 @@ class ProfileMenu extends StatelessWidget {
                   const SizedBox(width: 20),
                   Text(
                     title,
-                    style: Theme.of(context).textTheme.headline3!,
+                    style: Theme.of(context).textTheme.headline4,
                   ),
                 ],
               ),
