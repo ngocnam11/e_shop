@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/custom_navbar.dart';
+import '../router/router.dart';
+import '../widgets/custom_navigationbar.dart';
 import '../widgets/product_carousel.dart';
 import '../widgets/section_title.dart';
 import '../widgets/text_field_input.dart';
-// import 'screens.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  static MaterialPageRoute route() {
+    return MaterialPageRoute(
+      settings: const RouteSettings(name: AppRouter.home),
+      builder: (_) => const HomeScreen(),
+    );
+  }
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -21,9 +28,15 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('eShop'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pushNamed(AppRouter.login),
+            child: const Text('Logout'),
+          ),
+        ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           children: [
             TextFieldInput(
@@ -32,9 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
               textInputType: TextInputType.text,
               prefixIcon: const Icon(Icons.search),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 16),
             Container(
               height: 140,
               width: double.infinity,
@@ -44,19 +55,19 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: const Text('Carousel slider'),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 4),
             SectionTitle(
               title: 'Recommended',
               press: () {},
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 4),
             const ProductCarousel(),
           ],
         ),
       ),
-      bottomNavigationBar: const CustomNavBar(),
+      bottomNavigationBar: const CustomNavigationBar(
+        currentRoute: AppRouter.home,
+      ),
     );
   }
 }

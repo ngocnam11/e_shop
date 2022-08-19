@@ -10,6 +10,7 @@ class CustomButton extends StatelessWidget {
     required this.press,
     required this.textColor,
   }) : super(key: key);
+
   final String svg;
   final String title;
   final Color primaryColor;
@@ -23,11 +24,8 @@ class CustomButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         primary: primaryColor,
         padding: const EdgeInsets.symmetric(
-          horizontal: 30,
-          vertical: 20,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+          horizontal: 28,
+          vertical: 10,
         ),
       ),
       child: Row(

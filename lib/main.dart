@@ -1,5 +1,5 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 
 import 'config/theme.dart';
 import 'router/router.dart';
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter eShop',
       theme: theme(),
-      initialRoute: AppRouter.login,
+      initialRoute: AppRouter.home,
       onGenerateRoute: AppRouter.onGenerateRoute,
     );
   }

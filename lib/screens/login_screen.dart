@@ -1,14 +1,28 @@
-import 'package:e_shop/router/router.dart';
 import 'package:flutter/material.dart';
 
+import '../router/router.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/text_field_input.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
+  static MaterialPageRoute route() {
+    return MaterialPageRoute(
+      settings: const RouteSettings(name: AppRouter.login),
+      builder: (_) => const LoginScreen(),
+    );
+  }
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  bool _rememberMe = false;
 
   @override
   Widget build(BuildContext context) {
@@ -19,21 +33,24 @@ class LoginScreen extends StatelessWidget {
           children: [
             Image.asset(
               'assets/images/logo_eshop.png',
-              width: 300,
+              width: 280,
             ),
             const Text(
               'Welcome to eShop',
-              style: TextStyle(fontSize: 45, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
             ),
-            const Text('Please login to start using app.'),
-            const SizedBox(height: 30),
+            Text(
+              'Please login to start using app.',
+              style: Theme.of(context).textTheme.headline6,
+            ),
+            const SizedBox(height: 20),
             TextFieldInput(
               controller: emailController,
               hintText: 'Enter your email',
               labelText: 'Email',
               textInputType: TextInputType.emailAddress,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
             TextFieldInput(
               controller: passwordController,
               hintText: 'Enter your password',
@@ -41,27 +58,36 @@ class LoginScreen extends StatelessWidget {
               textInputType: TextInputType.visiblePassword,
               isPass: true,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   children: [
                     Checkbox(
-                      value: false,
-                      onChanged: (checkValue) {},
+                      value: _rememberMe,
+                      onChanged: (checkValue) {
+                        setState(() {
+                          _rememberMe = checkValue!;
+                        });
+                      },
                     ),
-                    const SizedBox(width: 8),
-                    Text('Remember me'),
+                    // const SizedBox(width: 4),
+                    Text(
+                      'Remember me',
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
                   ],
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(AppRouter.forgotPassword);
+                  },
                   child: const Text('Forgot password?'),
                 ),
               ],
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pushNamed(AppRouter.home);
@@ -70,19 +96,19 @@ class LoginScreen extends StatelessWidget {
                 primary: Colors.blueAccent[400],
                 padding: const EdgeInsets.symmetric(
                   horizontal: 90,
-                  vertical: 20,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  vertical: 10,
                 ),
               ),
               child: const Text('Sign in'),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 5),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('Not a member?'),
+              children: <Widget>[
+                Text(
+                  'Not a member?',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
                 TextButton(
                   onPressed: () {
                     Navigator.of(context)
@@ -92,26 +118,23 @@ class LoginScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 5),
             Row(
-              children: const [
-                Expanded(
-                    child: Divider(
-                  height: 10,
-                )),
+              children: <Widget>[
+                const Expanded(child: Divider()),
                 Padding(
-                  padding: EdgeInsets.only(left: 20, right: 20),
-                  child: Text('Or sign in with'),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(
+                    'Or sign in with',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
                 ),
-                Expanded(
-                    child: Divider(
-                  height: 10,
-                )),
+                const Expanded(child: Divider()),
               ],
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 10),
             Row(
-              children: [
+              children: <Widget>[
                 Expanded(
                   child: CustomButton(
                     press: () {},
@@ -132,7 +155,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
