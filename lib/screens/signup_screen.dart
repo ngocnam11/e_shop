@@ -6,6 +6,13 @@ import '../widgets/text_field_input.dart';
 class SignupScreen extends StatelessWidget {
   SignupScreen({Key? key}) : super(key: key);
 
+  static MaterialPageRoute route() {
+    return MaterialPageRoute(
+      settings: const RouteSettings(name: AppRouter.signup),
+      builder: (_) => SignupScreen(),
+    );
+  }
+
   final TextEditingController fullnameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -14,19 +21,20 @@ class SignupScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(24),
         child: Column(
           children: [
             Image.asset(
               'assets/images/logo_eshop.png',
-              width: 300,
+              width: 280,
             ),
             const Text(
               'Create a new account',
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
-            const Text(
+            Text(
               'Please put your infomation below to create a new account for using app.',
+              style: Theme.of(context).textTheme.headline6,
             ),
             const SizedBox(height: 30),
             TextFieldInput(
@@ -35,14 +43,14 @@ class SignupScreen extends StatelessWidget {
               labelText: 'Full Name',
               textInputType: TextInputType.emailAddress,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
             TextFieldInput(
               controller: emailController,
               hintText: 'Enter your email',
               labelText: 'Email',
               textInputType: TextInputType.emailAddress,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
             TextFieldInput(
               controller: passwordController,
               hintText: 'Enter your password',
@@ -59,7 +67,7 @@ class SignupScreen extends StatelessWidget {
                 primary: Colors.blueAccent[400],
                 padding: const EdgeInsets.symmetric(
                   horizontal: 90,
-                  vertical: 20,
+                  vertical: 10,
                 ),
               ),
               child: const Text('Register Now'),
@@ -68,7 +76,10 @@ class SignupScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                const Text('Already have an account? '),
+                Text(
+                  'Already have an account?',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pushReplacementNamed(AppRouter.login);

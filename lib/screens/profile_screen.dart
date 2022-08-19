@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 
 import '../router/router.dart';
-import '../widgets/custom_navbar.dart';
 import '../widgets/custom_navigationbar.dart';
 import '../widgets/profile_menu.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
-  //routename = '/profile';
+
+  static MaterialPageRoute route() {
+    return MaterialPageRoute(
+      settings: const RouteSettings(name: AppRouter.profile),
+      builder: (_) => const ProfileScreen(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.black54),
         actions: [
           IconButton(
             onPressed: () {},
@@ -41,7 +43,7 @@ class ProfileScreen extends StatelessWidget {
           //     if (snapshot.hasData) {
           // return
           Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -66,9 +68,7 @@ class ProfileScreen extends StatelessWidget {
                           ),
                           child: const Text(''),
                         ),
-                        const SizedBox(
-                          width: 12,
-                        ),
+                        const SizedBox(width: 12),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -82,12 +82,12 @@ class ProfileScreen extends StatelessWidget {
                               style: Theme.of(context).textTheme.headline6,
                             ),
                           ],
-                        )
+                        ),
                       ],
                     ),
                   ),
                 ),
-                const SizedBox(height: 64),
+                const SizedBox(height: 40),
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 24),
                   decoration: BoxDecoration(
@@ -98,7 +98,7 @@ class ProfileScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ProfileMenu(
-                        icon: Icons.account_circle_outlined,
+                        icon: Icons.person_outline_rounded,
                         title: 'My Account',
                         press: () {
                           // Navigator.of(context).push(

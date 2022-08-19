@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 
+import '../router/router.dart';
 import '../widgets/text_field_input.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   ForgotPasswordScreen({Key? key}) : super(key: key);
+
+  static MaterialPageRoute route() {
+    return MaterialPageRoute(
+      settings: const RouteSettings(name: AppRouter.forgotPassword),
+      builder: (_) => ForgotPasswordScreen(),
+    );
+  }
 
   final TextEditingController emailController = TextEditingController();
 
@@ -27,7 +35,7 @@ class ForgotPasswordScreen extends StatelessWidget {
             const Text(
               'Reset password',
               style: TextStyle(
-                fontSize: 42,
+                fontSize: 40,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -50,8 +58,8 @@ class ForgotPasswordScreen extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   primary: Colors.blueAccent[400],
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 80,
-                    vertical: 20,
+                    horizontal: 60,
+                    vertical: 10,
                   ),
                 ),
                 onPressed: () {},

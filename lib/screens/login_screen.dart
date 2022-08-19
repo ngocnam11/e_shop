@@ -7,6 +7,13 @@ import '../widgets/text_field_input.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
+  static MaterialPageRoute route() {
+    return MaterialPageRoute(
+      settings: const RouteSettings(name: AppRouter.login),
+      builder: (_) => const LoginScreen(),
+    );
+  }
+
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -26,13 +33,16 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             Image.asset(
               'assets/images/logo_eshop.png',
-              width: 300,
+              width: 280,
             ),
             const Text(
               'Welcome to eShop',
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
             ),
-            const Text('Please login to start using app.'),
+            Text(
+              'Please login to start using app.',
+              style: Theme.of(context).textTheme.headline6,
+            ),
             const SizedBox(height: 20),
             TextFieldInput(
               controller: emailController,
@@ -40,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
               labelText: 'Email',
               textInputType: TextInputType.emailAddress,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
             TextFieldInput(
               controller: passwordController,
               hintText: 'Enter your password',
@@ -48,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
               textInputType: TextInputType.visiblePassword,
               isPass: true,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -62,8 +72,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         });
                       },
                     ),
-                    const SizedBox(width: 8),
-                    Text('Remember me'),
+                    // const SizedBox(width: 4),
+                    Text(
+                      'Remember me',
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
                   ],
                 ),
                 TextButton(
@@ -83,16 +96,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 primary: Colors.blueAccent[400],
                 padding: const EdgeInsets.symmetric(
                   horizontal: 90,
-                  vertical: 20,
+                  vertical: 10,
                 ),
               ),
               child: const Text('Sign in'),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 5),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                const Text('Not a member?'),
+                Text(
+                  'Not a member?',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
                 TextButton(
                   onPressed: () {
                     Navigator.of(context)
@@ -102,18 +118,21 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 5),
             Row(
-              children: const <Widget>[
-                Expanded(child: Divider()),
+              children: <Widget>[
+                const Expanded(child: Divider()),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Text('Or sign in with'),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(
+                    'Or sign in with',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
                 ),
-                Expanded(child: Divider()),
+                const Expanded(child: Divider()),
               ],
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 10),
             Row(
               children: <Widget>[
                 Expanded(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../router/router.dart';
-import '../widgets/custom_navbar.dart';
 import '../widgets/custom_navigationbar.dart';
 import '../widgets/product_carousel.dart';
 import '../widgets/section_title.dart';
@@ -9,7 +8,14 @@ import '../widgets/text_field_input.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
-  static const routeName = '/';
+
+  static MaterialPageRoute route() {
+    return MaterialPageRoute(
+      settings: const RouteSettings(name: AppRouter.home),
+      builder: (_) => const HomeScreen(),
+    );
+  }
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -25,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pushNamed(AppRouter.login),
-            child: Text('Logout'),
+            child: const Text('Logout'),
           ),
         ],
       ),
@@ -39,9 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
               textInputType: TextInputType.text,
               prefixIcon: const Icon(Icons.search),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 16),
             Container(
               height: 140,
               width: double.infinity,
@@ -51,14 +55,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: const Text('Carousel slider'),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 4),
             SectionTitle(
               title: 'Recommended',
               press: () {},
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 4),
             const ProductCarousel(),
           ],
         ),
