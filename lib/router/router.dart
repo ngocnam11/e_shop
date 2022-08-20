@@ -9,6 +9,8 @@ abstract class AppRouter {
   static const String signup = '/signup';
   static const String search = '/search';
   static const String cart = '/cart';
+  static const String checkout = '/checkout';
+  static const String newaddress = '/new_address';
   static const String wishlist = '/wishlist';
   static const String chat = '/chat';
   static const String profile = '/profile';
@@ -30,6 +32,10 @@ abstract class AppRouter {
         return SearchScreen.route();
       case cart:
         return CartScreen.route();
+      case checkout:
+        return CheckoutScreen.route();
+      case newaddress:
+        return NewAddressScreen.route();
       case wishlist:
         return WishlistScreen.route();
       case chat:
