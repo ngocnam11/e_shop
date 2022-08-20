@@ -46,10 +46,8 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
             selectedIcon: Icons.home_rounded,
             label: 'Home',
             onPressed: () {
-              setState(() {
-                _currentRoute = AppRouter.home;
-                Navigator.of(context).pushReplacementNamed(_currentRoute);
-              });
+              _currentRoute = AppRouter.home;
+              Navigator.of(context).pushReplacementNamed(_currentRoute);
             },
             isCurrentPage: _currentRoute == AppRouter.home,
           ),
@@ -58,10 +56,8 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
             selectedIcon: Icons.shopping_bag_rounded,
             label: 'Cart',
             onPressed: () {
-              setState(() {
-                _currentRoute = AppRouter.cart;
-                Navigator.of(context).pushReplacementNamed(_currentRoute);
-              });
+              _currentRoute = AppRouter.cart;
+              Navigator.of(context).pushReplacementNamed(_currentRoute);
             },
             isCurrentPage: _currentRoute == AppRouter.cart,
           ),
@@ -70,10 +66,8 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
             selectedIcon: Icons.favorite_rounded,
             label: 'Wishlist',
             onPressed: () {
-              setState(() {
-                _currentRoute = AppRouter.wishlist;
-                Navigator.of(context).pushReplacementNamed(_currentRoute);
-              });
+              _currentRoute = AppRouter.wishlist;
+              Navigator.of(context).pushReplacementNamed(_currentRoute);
             },
             isCurrentPage: _currentRoute == AppRouter.wishlist,
           ),
@@ -82,10 +76,8 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
             selectedIcon: Icons.chat_bubble_rounded,
             label: 'Chat',
             onPressed: () {
-              setState(() {
-                _currentRoute = AppRouter.chat;
-                Navigator.of(context).pushReplacementNamed(_currentRoute);
-              });
+              _currentRoute = AppRouter.chat;
+              Navigator.of(context).pushReplacementNamed(_currentRoute);
             },
             isCurrentPage: _currentRoute == AppRouter.chat,
           ),
@@ -94,10 +86,8 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
             selectedIcon: Icons.person_rounded,
             label: 'Profile',
             onPressed: () {
-              setState(() {
-                _currentRoute = AppRouter.profile;
-                Navigator.of(context).pushReplacementNamed(_currentRoute);
-              });
+              _currentRoute = AppRouter.profile;
+              Navigator.of(context).pushReplacementNamed(_currentRoute);
             },
             isCurrentPage: _currentRoute == AppRouter.profile,
           ),
