@@ -37,9 +37,7 @@ class WishlistScreen extends StatelessWidget {
             ),
           );
         },
-        separatorBuilder: (context, index) => const SizedBox(
-          height: 12,
-        ),
+        separatorBuilder: (context, index) => const SizedBox(height: 12),
       ),
       bottomNavigationBar: const CustomNavigationBar(
         currentRoute: AppRouter.wishlist,

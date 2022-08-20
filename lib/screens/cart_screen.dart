@@ -48,15 +48,13 @@ class CartScreen extends StatelessWidget {
             ),
           );
         },
-        separatorBuilder: (context, index) => const SizedBox(
-          height: 12,
-        ),
+        separatorBuilder: (context, index) => const SizedBox(height: 12),
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(
           left: 24,
           right: 24,
-          bottom: 32,
+          bottom: 28,
           top: 12,
         ),
         child: SizedBox(
@@ -79,11 +77,11 @@ class CartScreen extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pushReplacementNamed(AppRouter.home);
+                  Navigator.of(context).pushNamed(AppRouter.checkout);
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
-                    vertical: 20,
+                    vertical: 16,
                   ),
                   primary: Colors.blueAccent.shade100,
                   fixedSize: const Size.fromWidth(500),
