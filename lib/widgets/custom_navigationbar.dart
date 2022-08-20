@@ -57,7 +57,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
             label: 'Cart',
             onPressed: () {
               _currentRoute = AppRouter.cart;
-              Navigator.of(context).pushReplacementNamed(_currentRoute);
+              Navigator.of(context).pushNamed(_currentRoute);
             },
             isCurrentPage: _currentRoute == AppRouter.cart,
           ),
@@ -67,7 +67,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
             label: 'Wishlist',
             onPressed: () {
               _currentRoute = AppRouter.wishlist;
-              Navigator.of(context).pushReplacementNamed(_currentRoute);
+              Navigator.of(context).pushNamed(_currentRoute);
             },
             isCurrentPage: _currentRoute == AppRouter.wishlist,
           ),
