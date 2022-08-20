@@ -8,3 +8,5 @@ export 'wishlist_screen.dart';
 export 'chat_screen.dart';
 export 'profile_screen.dart';
 export 'notification_screen.dart';
+export 'category_screen.dart';
+export 'product_screen.dart';
