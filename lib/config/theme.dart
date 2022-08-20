@@ -14,6 +14,9 @@ ThemeData theme() {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         onPrimary: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        )
       ),
     ),
   );

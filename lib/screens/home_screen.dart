@@ -36,19 +36,22 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           children: [
-            TextFieldInput(
-              controller: searchController,
-              hintText: 'Search Products',
-              textInputType: TextInputType.text,
-              prefixIcon: const Icon(Icons.search),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: TextFieldInput(
+                controller: searchController,
+                hintText: 'Search Products',
+                textInputType: TextInputType.text,
+                prefixIcon: const Icon(Icons.search),
+              ),
             ),
             const SizedBox(height: 16),
             Container(
               height: 140,
               width: double.infinity,
+              margin: const EdgeInsets.symmetric(horizontal: 24),
               decoration: BoxDecoration(
                 color: Colors.blue,
                 borderRadius: BorderRadius.circular(16),
@@ -56,12 +59,18 @@ class _HomeScreenState extends State<HomeScreen> {
               child: const Text('Carousel slider'),
             ),
             const SizedBox(height: 4),
-            SectionTitle(
-              title: 'Recommended',
-              press: () {},
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: SectionTitle(
+                title: 'Recommended',
+                press: () {},
+              ),
             ),
             const SizedBox(height: 4),
-            const ProductCarousel(),
+            const Padding(
+              padding: EdgeInsets.only(left: 24),
+              child: ProductCarousel(),
+            ),
           ],
         ),
       ),

@@ -40,31 +40,49 @@ class OrderConfirmScreen extends StatelessWidget {
                 const Divider(thickness: 1),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const <Widget>[
-                    Text('Sub-total'),
+                  children: <Widget>[
+                    Text(
+                      'Sub-total',
+                      style: Theme.of(context).textTheme.headline4!.copyWith(
+                            color: Colors.black54,
+                            fontWeight: FontWeight.normal,
+                          ),
+                    ),
                     Text(
                       '{price}\$',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: Theme.of(context).textTheme.headline4,
                     ),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const <Widget>[
-                    Text('VAT (%)'),
+                  children: <Widget>[
+                    Text(
+                      'VAT (%)',
+                      style: Theme.of(context).textTheme.headline4!.copyWith(
+                            color: Colors.black54,
+                            fontWeight: FontWeight.normal,
+                          ),
+                    ),
                     Text(
                       '{price}\$',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: Theme.of(context).textTheme.headline4,
                     ),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const <Widget>[
-                    Text('Shipping Charge'),
+                  children: <Widget>[
+                    Text(
+                      'Shipping Charge',
+                      style: Theme.of(context).textTheme.headline4!.copyWith(
+                            color: Colors.black54,
+                            fontWeight: FontWeight.normal,
+                          ),
+                    ),
                     Text(
                       '{price}\$',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: Theme.of(context).textTheme.headline4,
                     ),
                   ],
                 ),
