@@ -10,16 +10,15 @@ class ProductCarousel extends StatelessWidget {
     return SizedBox(
       height: 230,
       child: ListView.separated(
+        padding: const EdgeInsets.only(left: 24),
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemCount: 5,
         itemBuilder: (context, index) {
-          return ProductCard();
+          return const ProductCard();
         },
         separatorBuilder: (context, index) => const SizedBox(width: 24),
       ),
     );
   }
 }
-
-
