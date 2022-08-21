@@ -11,126 +11,121 @@ class OrderConfirmScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(15),
-            ),
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height / 1.6,
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                SvgPicture.asset(
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          height: MediaQuery.of(context).size.height * 0.6,
+          padding: const EdgeInsets.all(20),
+          margin: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: SvgPicture.asset(
                   'assets/svgs/order/success.svg',
-                  height: 150,
-                  width: 150,
+                  height: 80,
+                  width: 80,
                 ),
-                const Text(
-                  'Hey {username},',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const Text(
-                  'Thanks for your purchase',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const Divider(thickness: 1),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      'Sub-total',
-                      style: Theme.of(context).textTheme.headline4!.copyWith(
-                            color: Colors.black54,
-                            fontWeight: FontWeight.normal,
-                          ),
-                    ),
-                    Text(
-                      '{price}\$',
-                      style: Theme.of(context).textTheme.headline4,
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      'VAT (%)',
-                      style: Theme.of(context).textTheme.headline4!.copyWith(
-                            color: Colors.black54,
-                            fontWeight: FontWeight.normal,
-                          ),
-                    ),
-                    Text(
-                      '{price}\$',
-                      style: Theme.of(context).textTheme.headline4,
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      'Shipping Charge',
-                      style: Theme.of(context).textTheme.headline4!.copyWith(
-                            color: Colors.black54,
-                            fontWeight: FontWeight.normal,
-                          ),
-                    ),
-                    Text(
-                      '{price}\$',
-                      style: Theme.of(context).textTheme.headline4,
-                    ),
-                  ],
-                ),
-                const Divider(thickness: 1),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const <Widget>[
-                    Text(
-                      'Total',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      '{price}\$',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    fixedSize: const Size.fromWidth(double.maxFinite),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 30,
-                      vertical: 20,
-                    ),
-                    primary: Colors.indigo,
+              ),
+              Text(
+                'Hey {username},',
+                style: Theme.of(context).textTheme.headline5,
+              ),
+              Text(
+                'Thanks for your purchase',
+                style: Theme.of(context).textTheme.headline5,
+              ),
+              const Divider(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    'Sub-total',
+                    style: Theme.of(context).textTheme.headline5!.copyWith(
+                          color: Colors.black54,
+                          fontWeight: FontWeight.normal,
+                        ),
                   ),
-                  child: const Text('Track Your Order'),
+                  Text(
+                    '{price}\$',
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    'VAT (%)',
+                    style: Theme.of(context).textTheme.headline5!.copyWith(
+                          color: Colors.black54,
+                          fontWeight: FontWeight.normal,
+                        ),
+                  ),
+                  Text(
+                    '{price}\$',
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    'Shipping Charge',
+                    style: Theme.of(context).textTheme.headline5!.copyWith(
+                          color: Colors.black54,
+                          fontWeight: FontWeight.normal,
+                        ),
+                  ),
+                  Text(
+                    '{price}\$',
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                ],
+              ),
+              const Divider(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    'Total',
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                  Text(
+                    '{price}\$',
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                ],
+              ),
+              ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  fixedSize: const Size.fromWidth(double.maxFinite),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  primary: Colors.indigo,
                 ),
-                const Text('Order #123456'),
-              ],
-            ),
+                child: const Text('Track Your Order'),
+              ),
+              const Text('Order #123456'),
+            ],
           ),
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         child: ElevatedButton(
           onPressed: () {
             Navigator.of(context).pushReplacementNamed(AppRouter.home);
           },
           style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(
-              vertical: 20,
-            ),
+            padding: const EdgeInsets.symmetric(vertical: 16),
             primary: Colors.blueAccent.shade100,
           ),
           child: const Text('Continue Shopping'),
