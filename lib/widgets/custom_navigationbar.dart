@@ -47,7 +47,10 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
             label: 'Home',
             onPressed: () {
               _currentRoute = AppRouter.home;
-              Navigator.of(context).pushReplacementNamed(_currentRoute);
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                _currentRoute,
+                (route) => false,
+              );
             },
             isCurrentPage: _currentRoute == AppRouter.home,
           ),
@@ -77,7 +80,10 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
             label: 'Chat',
             onPressed: () {
               _currentRoute = AppRouter.chat;
-              Navigator.of(context).pushReplacementNamed(_currentRoute);
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                _currentRoute,
+                (route) => false,
+              );
             },
             isCurrentPage: _currentRoute == AppRouter.chat,
           ),
@@ -87,7 +93,10 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
             label: 'Profile',
             onPressed: () {
               _currentRoute = AppRouter.profile;
-              Navigator.of(context).pushReplacementNamed(_currentRoute);
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                _currentRoute,
+                (route) => false,
+              );
             },
             isCurrentPage: _currentRoute == AppRouter.profile,
           ),
