@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../router/router.dart';
 
-class CheckoutScreen extends StatelessWidget {
+class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({Key? key}) : super(key: key);
 
   static MaterialPageRoute route() {
@@ -12,7 +12,21 @@ class CheckoutScreen extends StatelessWidget {
     );
   }
 
-  final int countItem = 5;
+  @override
+  State<CheckoutScreen> createState() => _CheckoutScreenState();
+}
+
+class _CheckoutScreenState extends State<CheckoutScreen> {
+  final List<String> address = [
+    '1784 Juniper Drive',
+    '2993 Liberty Avenue',
+    '297 Nguyễn Thái Học',
+    '250 Jalan Purta',
+    '117 Bevan St E',
+    '1274-39 Kokinu',
+    'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+  ];
+  String _addressValue = '';
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +43,9 @@ class CheckoutScreen extends StatelessWidget {
       body: ListView.separated(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         itemBuilder: (context, index) {
-          if (index != countItem) {
+          if (index != address.length) {
             return Container(
               height: 70,
-              width: double.maxFinite,
               padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
                 color: Colors.grey[200],
@@ -53,26 +66,29 @@ class CheckoutScreen extends StatelessWidget {
                           style: Theme.of(context).textTheme.headline5,
                         ),
                         Text(
-                          'A very loooo oooo oooooo oooooo oooo ong Address',
+                          address[index],
                           style: Theme.of(context).textTheme.bodyText1,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          // softWrap: false,
                         ),
                       ],
                     ),
                   ),
                   Column(
-                    children: [
+                    children: <Widget>[
                       Expanded(
-                        flex: 1,
-                        child: Checkbox(
-                          value: true,
-                          onChanged: (value) {},
+                        child: Radio<String>(
+                          value: address[index],
+                          groupValue: _addressValue,
+                          onChanged: (value) {
+                            setState(() {
+                              _addressValue = value!;
+                              debugPrint('Address: $_addressValue');
+                            });
+                          },
                         ),
                       ),
                       Expanded(
-                        flex: 1,
                         child: TextButton(
                           onPressed: () {},
                           child: Text(
@@ -87,6 +103,7 @@ class CheckoutScreen extends StatelessWidget {
               ),
             );
           }
+
           return OutlinedButton(
             style: OutlinedButton.styleFrom(
               shape: RoundedRectangleBorder(
@@ -100,7 +117,7 @@ class CheckoutScreen extends StatelessWidget {
           );
         },
         separatorBuilder: (context, index) => const SizedBox(height: 12),
-        itemCount: (countItem + 1),
+        itemCount: address.length + 1,
       ),
       bottomNavigationBar: Container(
         height: 160,
