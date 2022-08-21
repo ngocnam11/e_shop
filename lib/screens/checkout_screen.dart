@@ -88,139 +88,118 @@ class CheckoutScreen extends StatelessWidget {
             );
           }
           return OutlinedButton(
+            style: OutlinedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
             onPressed: () {
               Navigator.of(context).pushNamed(AppRouter.newaddress);
             },
-            child: Text('+ Add New Address'),
+            child: const Text('+ Add New Address'),
           );
         },
         separatorBuilder: (context, index) => const SizedBox(height: 12),
         itemCount: (countItem + 1),
       ),
-      // Padding(
-      //   padding: const EdgeInsets.symmetric(horizontal: 24),
-      //   child: Container(
-      //     width: double.infinity,
-      //     height: 80,
-      //     color: Colors.grey.shade200,
-      //     child: Row(
-      //       children: [
-      //         Icon(Icons.location_on_outlined),
-      //         SizedBox(width: 8),
-      //         Column(
-      //           crossAxisAlignment: CrossAxisAlignment.start,
-      //           children: [
-      //             Text(
-      //               'City',
-      //               style: Theme.of(context).textTheme.headline5,
-      //             ),
-      //             Text(
-      //               'this is an address',
-      //               style: Theme.of(context).textTheme.headline6,
-      //             ),
-      //           ],
-      //         ),
-      //         Column(
-      //           mainAxisAlignment: MainAxisAlignment.start,
-      //           mainAxisSize: MainAxisSize.min,
-      //           children: [
-      //             Checkbox(
-      //               value: false,
-      //               onChanged: (value) {},
-      //             ),
-      //
-      //           ],
-      //         )
-      //       ],
-      //     ),
-      //   ),
-      // ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(20),
-        child: SizedBox(
-          height: 150,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        'Sub-total',
-                        style: Theme.of(context).textTheme.headline5!.copyWith(
-                              color: Colors.black54,
-                              fontWeight: FontWeight.normal,
-                            ),
-                      ),
-                      Text(
-                        '{price}\$',
-                        style: Theme.of(context).textTheme.headline5,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        'VAT (%)',
-                        style: Theme.of(context).textTheme.headline5!.copyWith(
-                              color: Colors.black54,
-                              fontWeight: FontWeight.normal,
-                            ),
-                      ),
-                      Text(
-                        '{price}\$',
-                        style: Theme.of(context).textTheme.headline5,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        'Shipping Charge',
-                        style: Theme.of(context).textTheme.headline5!.copyWith(
-                              color: Colors.black54,
-                              fontWeight: FontWeight.normal,
-                            ),
-                      ),
-                      Text(
-                        '{price}\$',
-                        style: Theme.of(context).textTheme.headline5,
-                      ),
-                    ],
-                  ),
-                  const Divider(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        'Total',
-                        style: Theme.of(context).textTheme.headline5,
-                      ),
-                      Text(
-                        '{price}\$',
-                        style: Theme.of(context).textTheme.headline5,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 16,
-                  ),
-                  primary: Colors.blueAccent.shade100,
-                  fixedSize: const Size.fromWidth(500),
+      bottomNavigationBar: Container(
+        height: 160,
+        padding: const EdgeInsets.only(
+          left: 20,
+          right: 20,
+          bottom: 20,
+          top: 10,
+        ),
+        decoration: const BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey,
+              blurRadius: 7,
+            ),
+          ],
+          color: Colors.white,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      'Sub-total',
+                      style: Theme.of(context).textTheme.headline5!.copyWith(
+                            color: Colors.black54,
+                            fontWeight: FontWeight.normal,
+                          ),
+                    ),
+                    Text(
+                      '{price}\$',
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
+                  ],
                 ),
-                child: const Text('Continue'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      'VAT (%)',
+                      style: Theme.of(context).textTheme.headline5!.copyWith(
+                            color: Colors.black54,
+                            fontWeight: FontWeight.normal,
+                          ),
+                    ),
+                    Text(
+                      '{price}\$',
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      'Shipping Charge',
+                      style: Theme.of(context).textTheme.headline5!.copyWith(
+                            color: Colors.black54,
+                            fontWeight: FontWeight.normal,
+                          ),
+                    ),
+                    Text(
+                      '{price}\$',
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      'Total',
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
+                    Text(
+                      '{price}\$',
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 12,
+                ),
+                primary: Colors.blueAccent.shade100,
+                fixedSize: const Size.fromWidth(500),
               ),
-            ],
-          ),
+              child: const Text('Continue'),
+            ),
+          ],
         ),
       ),
     );
