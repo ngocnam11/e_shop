@@ -53,7 +53,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                children: <Widget>[
                   const Icon(Icons.location_on_outlined),
                   const SizedBox(width: 10),
                   Expanded(
@@ -120,7 +120,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         itemCount: address.length + 1,
       ),
       bottomNavigationBar: Container(
-        height: 160,
+        height: 170,
         padding: const EdgeInsets.only(
           left: 20,
           right: 20,
@@ -138,9 +138,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
+          children: <Widget>[
             Column(
-              children: [
+              children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
