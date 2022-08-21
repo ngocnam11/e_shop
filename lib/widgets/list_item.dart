@@ -4,8 +4,13 @@ class ListItem extends StatelessWidget {
   const ListItem({
     Key? key,
     required this.child,
+    required this.product,
+    required this.index,
   }) : super(key: key);
+
   final Widget child;
+  final Map<String, dynamic> product;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +32,7 @@ class ListItem extends StatelessWidget {
                 color: Colors.lightBlue,
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: Text('image'),
+              child: Center(child: Text('image')),
             ),
             const SizedBox(width: 10),
             Expanded(
@@ -40,7 +45,7 @@ class ListItem extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          'Product name yyyyyy yyyy',
+                          product.keys.elementAt(index),
                           style: Theme.of(context).textTheme.headline5,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -53,7 +58,7 @@ class ListItem extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    'Size: L',
+                    product.values.elementAt(index),
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                   Row(
