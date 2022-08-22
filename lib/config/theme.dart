@@ -2,14 +2,30 @@ import 'package:flutter/material.dart';
 
 ThemeData theme() {
   return ThemeData(
+    colorSchemeSeed: Colors.blue[300],
     textTheme: textTheme(),
     appBarTheme: const AppBarTheme(
       elevation: 0,
       backgroundColor: Colors.transparent,
       iconTheme: IconThemeData(color: Colors.black54),
-      titleTextStyle: TextStyle(color: Colors.black87),
+      centerTitle: true,
+      titleTextStyle: TextStyle(
+        color: Colors.black87,
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+      ),
     ),
-    colorSchemeSeed: Colors.blue[300],
+    checkboxTheme: CheckboxThemeData(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(6),
+      ),
+    ),
+    tooltipTheme: TooltipThemeData(
+      decoration: BoxDecoration(
+        color: Colors.black54,
+        borderRadius: BorderRadius.circular(8),
+      ),
+    ),
     iconTheme: const IconThemeData(color: Colors.black54),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(

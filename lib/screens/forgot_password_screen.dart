@@ -19,13 +19,7 @@ class ForgotPasswordScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: Theme.of(context).iconTheme,
-        automaticallyImplyLeading: false,
-        title: TextButton.icon(
-          icon: const Icon(Icons.arrow_back),
-          label: const Text('Back'),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        title: Text('Back'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),

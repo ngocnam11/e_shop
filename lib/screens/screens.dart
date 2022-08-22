@@ -4,6 +4,8 @@ export 'forgot_password_screen.dart';
 export 'signup_screen.dart';
 export 'search_screen.dart';
 export 'cart_screen.dart';
+export 'checkout_screen.dart';
+export 'new_address_screen.dart';
 export 'wishlist_screen.dart';
 export 'chat_screen.dart';
 export 'profile_screen.dart';
