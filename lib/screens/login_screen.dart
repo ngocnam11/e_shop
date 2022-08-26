@@ -36,6 +36,8 @@ class _LoginScreenState extends State<LoginScreen> {
       password: passwordController.text,
     );
 
+    if (!mounted) return;
+
     if (res == 'success') {
       Navigator.of(context).pushNamedAndRemoveUntil(
         AppRouter.home,

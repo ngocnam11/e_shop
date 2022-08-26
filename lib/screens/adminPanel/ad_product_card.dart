@@ -16,6 +16,9 @@ class AdProductCard extends StatefulWidget {
 class _AdProductCardState extends State<AdProductCard> {
   void deleteProduct() async {
     String res = await FireStoreServices().deleteProduct(id: widget.snap['id']);
+
+    if (!mounted) return;
+
     if (res != 'success') {
       showSnackBar(context, res);
     } else {
@@ -104,7 +107,9 @@ class _AdProductCardState extends State<AdProductCard> {
                             onPressed: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => AdEditProductScreen(id: widget.snap['id'],),
+                                  builder: (context) => AdEditProductScreen(
+                                    id: widget.snap['id'],
+                                  ),
                                 ),
                               );
                             },
@@ -123,13 +128,19 @@ class _AdProductCardState extends State<AdProductCard> {
                                     TextButton(
                                       onPressed: () =>
                                           Navigator.pop(context, 'Cancel'),
-                                      child: const Text('Cancel', style: TextStyle(color: Colors.black),),
+                                      child: const Text(
+                                        'Cancel',
+                                        style: TextStyle(color: Colors.black),
+                                      ),
                                     ),
                                     TextButton(
                                       onPressed: () {
                                         deleteProduct();
                                       },
-                                      child: const Text('OK', style: TextStyle(color: Colors.black),),
+                                      child: const Text(
+                                        'OK',
+                                        style: TextStyle(color: Colors.black),
+                                      ),
                                     ),
                                   ],
                                 ),

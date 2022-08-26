@@ -56,6 +56,8 @@ class _AdEditProductScreenState extends State<AdEditProductScreen> {
       size: [],
     );
 
+    if (!mounted) return;
+
     if (rep != 'success') {
       showSnackBar(context, rep);
     } else {

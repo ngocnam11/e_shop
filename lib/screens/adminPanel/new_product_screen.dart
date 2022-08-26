@@ -53,6 +53,9 @@ class _NewProductScreenState extends State<NewProductScreen> {
       colors: [],
       size: [],
     );
+
+    if (!mounted) return;
+
     if (res != 'success') {
       showSnackBar(context, res);
     } else {
