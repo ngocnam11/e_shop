@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../config/utils.dart';
 import '../router/router.dart';
+import '../services/auth_services.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/text_field_input.dart';
 
@@ -23,14 +25,38 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController passwordController = TextEditingController();
 
   bool _rememberMe = false;
+  bool _isLoading = false;
+
+  void loginUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthServices().loginUser(
+      email: emailController.text,
+      password: passwordController.text,
+    );
+
+    if (res == 'success') {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        AppRouter.home,
+        (route) => false,
+      );
+    } else {
+      showSnackBar(context, res);
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(24),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           children: [
+            const SizedBox(height: 24),
             Image.asset(
               'assets/images/logo_eshop.png',
               width: 280,
@@ -72,7 +98,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         });
                       },
                     ),
-                    // const SizedBox(width: 4),
                     Text(
                       'Remember me',
                       style: Theme.of(context).textTheme.headline6,
@@ -89,9 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const SizedBox(height: 10),
             ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(AppRouter.home);
-              },
+              onPressed: loginUser,
               style: ElevatedButton.styleFrom(
                 primary: Colors.blueAccent[400],
                 padding: const EdgeInsets.symmetric(
@@ -99,7 +122,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   vertical: 10,
                 ),
               ),
-              child: const Text('Sign in'),
+              child: _isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    )
+                  : const Text('Sign in'),
             ),
             const SizedBox(height: 5),
             Row(

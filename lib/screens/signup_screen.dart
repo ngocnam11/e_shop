@@ -1,9 +1,15 @@
-import 'package:flutter/material.dart';
+import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../config/utils.dart';
 import '../router/router.dart';
+import '../services/auth_services.dart';
 import '../widgets/text_field_input.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
   SignupScreen({Key? key}) : super(key: key);
 
   static MaterialPageRoute route() {
@@ -13,17 +19,63 @@ class SignupScreen extends StatelessWidget {
     );
   }
 
-  final TextEditingController fullnameController = TextEditingController();
+  @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  Uint8List? _image;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    getDefaultImage();
+    super.initState();
+  }
+
+  void signUpUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthServices().signUpUser(
+      email: emailController.text,
+      password: passwordController.text,
+      username: usernameController.text,
+      file: _image!,
+    );
+
+    setState(() {
+      _isLoading = false;
+    });
+    if (res != 'success') {
+      showSnackBar(context, res);
+    } else {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        AppRouter.home,
+        (route) => false,
+      );
+    }
+  }
+
+  void getDefaultImage() async {
+    ByteData byteData =
+        await rootBundle.load('assets/images/default_avatar.png');
+
+    _image = byteData.buffer.asUint8List();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(24),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           children: [
+            const SizedBox(height: 24),
             Image.asset(
               'assets/images/logo_eshop.png',
               width: 280,
@@ -38,10 +90,10 @@ class SignupScreen extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             TextFieldInput(
-              controller: fullnameController,
-              hintText: 'Enter your fullname',
+              controller: usernameController,
+              hintText: 'Enter your username',
               labelText: 'Full Name',
-              textInputType: TextInputType.emailAddress,
+              textInputType: TextInputType.text,
             ),
             const SizedBox(height: 16),
             TextFieldInput(
@@ -60,9 +112,7 @@ class SignupScreen extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(AppRouter.home);
-              },
+              onPressed: signUpUser,
               style: ElevatedButton.styleFrom(
                 primary: Colors.blueAccent[400],
                 padding: const EdgeInsets.symmetric(
@@ -70,7 +120,13 @@ class SignupScreen extends StatelessWidget {
                   vertical: 10,
                 ),
               ),
-              child: const Text('Register Now'),
+              child: _isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    )
+                  : const Text('Register Now'),
             ),
             const SizedBox(height: 20),
             Row(

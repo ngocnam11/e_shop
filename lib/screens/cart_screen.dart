@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'empty_product.dart';
+import '../widgets/empty_product.dart';
 import '../router/router.dart';
 import '../widgets/list_item.dart';
 

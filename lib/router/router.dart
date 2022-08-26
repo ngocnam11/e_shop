@@ -15,6 +15,7 @@ abstract class AppRouter {
   static const String chat = '/chat';
   static const String profile = '/profile';
   static const String notification = '/notification';
+  static const String product = '/product';
 
   static Route onGenerateRoute(RouteSettings settings) {
     debugPrint('Route: ${settings.name}');
@@ -44,6 +45,8 @@ abstract class AppRouter {
         return ProfileScreen.route();
       case notification:
         return NotificationScreen.route();
+      case product:
+        return ProductScreen.route();
       default:
         return MaterialPageRoute(
           settings: const RouteSettings(name: '/error'),

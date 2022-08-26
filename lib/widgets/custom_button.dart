@@ -8,7 +8,8 @@ class CustomButton extends StatelessWidget {
     required this.title,
     required this.primaryColor,
     required this.press,
-    required this.textColor,
+    required this.textColor, 
+    this.svgColor,
   }) : super(key: key);
 
   final String svg;
@@ -16,6 +17,7 @@ class CustomButton extends StatelessWidget {
   final Color primaryColor;
   final VoidCallback press;
   final Color textColor;
+  final Color? svgColor;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +38,7 @@ class CustomButton extends StatelessWidget {
             width: 18,
             height: 18,
             fit: BoxFit.cover,
+            color: svgColor,
           ),
           const SizedBox(width: 5),
           Text(
