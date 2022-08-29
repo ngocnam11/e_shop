@@ -11,6 +11,9 @@ class TextFieldInput extends StatelessWidget {
     this.labelText,
     this.prefixIcon,
     this.suffixIcon,
+    this.validator,
+    this.onSaved,
+    this.onFieldSubmitted, this.errorText,
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -21,6 +24,10 @@ class TextFieldInput extends StatelessWidget {
   final String? labelText;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
+  final FormFieldValidator? validator;
+  final FormFieldSetter? onSaved;
+  final void Function(String)? onFieldSubmitted;
+  final String? errorText;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +48,11 @@ class TextFieldInput extends StatelessWidget {
         contentPadding: const EdgeInsets.all(8),
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
+        errorText: errorText,
       ),
+      validator: validator,
+      onSaved: onSaved,
+      onFieldSubmitted: onFieldSubmitted,
       obscureText: isPass,
       keyboardType: textInputType,
       readOnly: readOnly,
