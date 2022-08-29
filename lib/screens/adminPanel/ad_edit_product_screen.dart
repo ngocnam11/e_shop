@@ -22,18 +22,10 @@ class _AdEditProductScreenState extends State<AdEditProductScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _quantityController = TextEditingController();
 
   Uint8List? _image;
-
-  Map<String, num> slide = {
-    'Price': 0,
-    'Quantity': 0,
-  };
-
-  Map<String, bool> check = {
-    'Recommend': false,
-    'Popular': false,
-  };
 
   void selectImage(BuildContext context) async {
     Uint8List image = await pickImage(ImageSource.gallery);
@@ -49,8 +41,8 @@ class _AdEditProductScreenState extends State<AdEditProductScreen> {
       name: _nameController.text,
       category: _categoryController.text,
       file: _image!,
-      price: slide['Price']!.toDouble(),
-      quantity: slide['Quantity']!.toInt(),
+      price: double.parse(_priceController.text),
+      quantity: int.parse(_categoryController.text),
       description: _descriptionController.text,
       colors: [],
       size: [],
@@ -78,7 +70,6 @@ class _AdEditProductScreenState extends State<AdEditProductScreen> {
           'Edit Product',
           style: TextStyle(fontSize: 18),
         ),
-        backgroundColor: Colors.black,
       ),
       body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         future: FirebaseFirestore.instance
@@ -95,10 +86,9 @@ class _AdEditProductScreenState extends State<AdEditProductScreen> {
             _nameController.text = snapshot.data!['name'];
             _categoryController.text = snapshot.data!['category'];
             _descriptionController.text = snapshot.data!['description'];
-            slide['Price'] = snapshot.data!['price'];
-            slide['Quantity'] = snapshot.data!['quantity'];
-            check['Recommend'] = snapshot.data!['isRecommended'];
-            check['Popular'] = snapshot.data!['isPopular'];
+            _priceController.text = snapshot.data!['price'].floor().toString();
+            _quantityController.text =
+                snapshot.data!['quantity'].floor().toString();
             return ListView(
               shrinkWrap: true,
               children: [
@@ -157,13 +147,17 @@ class _AdEditProductScreenState extends State<AdEditProductScreen> {
                         textInputType: TextInputType.text,
                       ),
                       const SizedBox(height: 10),
-                      _buildSlider('Price', slide['Price']!),
+                      TextFieldInput(
+                        controller: _priceController,
+                        hintText: 'Price',
+                        textInputType: TextInputType.number,
+                      ),
                       const SizedBox(height: 10),
-                      _buildSlider('Quantity', slide['Quantity']!),
-                      const SizedBox(height: 10),
-                      _buildCheckbox('Recommend', check['Recommend']),
-                      const SizedBox(height: 10),
-                      _buildCheckbox('Popular', check['Popular']),
+                      TextFieldInput(
+                        controller: _quantityController,
+                        hintText: 'Quantity',
+                        textInputType: TextInputType.number,
+                      ),
                       const SizedBox(height: 10),
                       Center(
                         child: ElevatedButton(
@@ -193,58 +187,6 @@ class _AdEditProductScreenState extends State<AdEditProductScreen> {
           }
         },
       ),
-    );
-  }
-
-  Widget _buildCheckbox(String title, bool? isChecked) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        SizedBox(
-          width: 125,
-          child: Text(
-            title,
-            style: Theme.of(context).textTheme.headline5,
-          ),
-        ),
-        Checkbox(
-          value: isChecked,
-          checkColor: Colors.black,
-          activeColor: Colors.black12,
-          onChanged: (value) => setState(() {
-            check[title] = value!;
-          }),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSlider(String title, num val) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        SizedBox(
-          width: 75,
-          child: Text(
-            title,
-            style: Theme.of(context).textTheme.headline5,
-          ),
-        ),
-        Expanded(
-          child: Slider(
-            value: val.toDouble(),
-            min: 0,
-            max: 100,
-            divisions: 10,
-            label: slide[title]!.round().toString(),
-            activeColor: Colors.black,
-            inactiveColor: Colors.black12,
-            onChanged: (value) => setState(() {
-              slide[title] = value;
-            }),
-          ),
-        ),
-      ],
     );
   }
 }

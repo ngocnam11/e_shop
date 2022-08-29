@@ -7,7 +7,9 @@ class User extends Equatable {
   final String username;
   final String phoneNum;
   final String photoUrl;
-  final List<Map<String, String>>? listAddress;
+  final String? address;
+  final String? city;
+  final String? country;
   final bool isAdmin;
 
   const User({
@@ -16,7 +18,9 @@ class User extends Equatable {
     required this.username,
     this.phoneNum = '',
     required this.photoUrl,
-    this.listAddress,
+    this.address = '',
+    this.city = '',
+    this.country= '',
     this.isAdmin = false,
   });
 
@@ -29,22 +33,32 @@ class User extends Equatable {
       email: snapshot["email"],
       phoneNum: snapshot["phoneNum"],
       photoUrl: snapshot["photoUrl"],
-      listAddress: snapshot["listAddress"],
+      address: snap["address"],
+      city: snap["city"],
+      country: snap["country"],
       isAdmin: snapshot["isAdmin"],
     );
   }
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() {
+    Map shippingAddress = {};
+    shippingAddress['address'] = address;
+    shippingAddress['city'] = city;
+    shippingAddress['country'] = country;
+
+    return {
       'uid': uid,
       'username': username,
       'email': email,
       'phoneNum': phoneNum,
       'photoUrl': photoUrl,
-      'listAddress': listAddress,
+      'shippingAddress': shippingAddress,
       'isAdmin': isAdmin,
-  };
+    };
+      
+  }
 
   @override
   List<Object?> get props =>
-      [uid, email, username, phoneNum, photoUrl, listAddress, isAdmin];
+      [uid, email, username, phoneNum, photoUrl, address, city, country, isAdmin];
 }

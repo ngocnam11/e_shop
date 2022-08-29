@@ -14,7 +14,6 @@ class AdHomeScreen extends StatelessWidget {
           'Home Screen',
           style: TextStyle(fontSize: 18),
         ),
-        backgroundColor: Colors.black,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

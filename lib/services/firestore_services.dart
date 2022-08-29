@@ -4,10 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/message.dart';
 import '../models/product.dart';
-import '../models/user.dart' as model; 
+import '../models/user.dart' as model;
 import 'auth_services.dart';
 import 'storage_service.dart';
-
 
 class FireStoreServices {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -90,13 +89,55 @@ class FireStoreServices {
   //   return response;
   // }
 
+  Future<String> addShippingAddress({
+    required String uid,
+    required String address,
+    required String city,
+    required String country,
+  }) async {
+    String addSA = 'Some error occurred';
+    try {
+      _firestore.collection('users').doc(uid).set(
+        {
+          'shippingAddress.address': address,
+          'shippingAddress.city': city,
+          'shippingAddress.country': country,
+        },
+        SetOptions(merge: true),
+      );
+    } catch (e) {
+      addSA = e.toString();
+    }
+
+    return addSA;
+  }
+
+  Future<String> updateShippingAddress({
+    required String uid,
+    required String address,
+    required String city,
+    required String country,
+  }) async {
+    String updateSA = 'Some error occurred';
+    try {
+      _firestore.collection('users').doc(uid).update({
+        'shippingAddress.address': address,
+        'shippingAddress.city': city,
+        'shippingAddress.country': country,
+      });
+    } catch (e) {
+      updateSA = e.toString();
+    }
+
+    return updateSA;
+  }
+
   Future<String> updateProfile({
     required String uid,
     required String email,
     required String username,
     required Uint8List file,
     required String phoneNum,
-    required List<Map<String, String>> listAddress,
     required bool isAdmin,
   }) async {
     String resUpdate = 'Some error occurred';
@@ -110,7 +151,6 @@ class FireStoreServices {
         username: username,
         photoUrl: photoUrl,
         phoneNum: phoneNum,
-        listAddress: listAddress,
         isAdmin: isAdmin,
       );
 
@@ -178,15 +218,16 @@ class FireStoreServices {
   }
 
   Stream<List<model.User>> get getDiscussionUser {
-    return _firestore.collection('users')
+    return _firestore
+        .collection('users')
         .where('uid', isNotEqualTo: AuthServices().user.uid)
         .snapshots()
-        .map((event) =>
-            event.docs.map((e) => model.User.fromSnap(e)).toList());
+        .map((event) => event.docs.map((e) => model.User.fromSnap(e)).toList());
   }
 
   Stream<List<Message>> getMessage(String reciverUID, [bool myMessage = true]) {
-    return _firestore.collection('messages')
+    return _firestore
+        .collection('messages')
         .where('senderUID',
             isEqualTo: myMessage ? AuthServices().user.uid : reciverUID)
         .where('reciverUID',
@@ -200,7 +241,7 @@ class FireStoreServices {
     try {
       await _firestore.collection('messages').doc().set(msg.toJson());
       return true;
-    }catch(e) {
+    } catch (e) {
       return false;
     }
   }

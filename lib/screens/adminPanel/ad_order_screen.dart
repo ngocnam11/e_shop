@@ -15,7 +15,6 @@ class AdOrderScreen extends StatelessWidget {
           'Orders',
           style: TextStyle(fontSize: 18),
         ),
-        backgroundColor: Colors.black,
       ),
       body: Column(
         children: [
