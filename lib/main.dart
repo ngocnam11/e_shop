@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
@@ -16,8 +15,9 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  if (Platform.isAndroid) {
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  if (defaultTargetPlatform == TargetPlatform.android ||
+      defaultTargetPlatform == TargetPlatform.iOS) {
+    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
 
   runApp(const MyApp());
