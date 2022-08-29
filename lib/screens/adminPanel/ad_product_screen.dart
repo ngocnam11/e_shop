@@ -22,7 +22,6 @@ class _AdProductScreenState extends State<AdProductScreen> {
           'Products',
           style: TextStyle(fontSize: 18),
         ),
-        backgroundColor: Colors.black,
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
@@ -42,7 +41,7 @@ class _AdProductScreenState extends State<AdProductScreen> {
               height: 100,
               child: Card(
                 margin: EdgeInsets.zero,
-                color: Colors.black,
+                color: Colors.blue,
                 child: InkWell(
                   onTap: () {
                     Navigator.of(context).push(
