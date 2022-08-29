@@ -13,7 +13,8 @@ class TextFieldInput extends StatelessWidget {
     this.suffixIcon,
     this.validator,
     this.onSaved,
-    this.onFieldSubmitted, this.errorText,
+    this.onFieldSubmitted,
+    this.errorText,
   }) : super(key: key);
 
   final TextEditingController controller;
