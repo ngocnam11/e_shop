@@ -33,7 +33,7 @@ dependencies:
   carousel_slider: ^4.1.1
   image_picker: ^0.8.5+3
   intl: ^0.17.0
-  equatable: ^2.0.3
+  equatable: ^2.0.5
   flutter_bloc: ^8.1.1
   firebase_auth: ^3.6.3
   firebase_core: ^1.20.1
