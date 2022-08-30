@@ -31,12 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('eShop'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pushNamed(AppRouter.login),
-            child: const Text('Logout'),
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Column(
