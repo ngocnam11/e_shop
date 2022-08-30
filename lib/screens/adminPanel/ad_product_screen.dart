@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../../services/auth_services.dart';
 import 'ad_product_card.dart';
 import 'new_product_screen.dart';
 
@@ -112,7 +112,7 @@ class _AdProductScreenState extends State<AdProductScreen> {
                         .collection('products')
                         .where(
                           'uid',
-                          isEqualTo: FirebaseAuth.instance.currentUser!.uid,
+                          isEqualTo: AuthServices().user.uid,
                         )
                         .get(),
                     builder: (context, snapshot) {
