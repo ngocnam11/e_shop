@@ -7,18 +7,44 @@ class StorageService {
   final FirebaseStorage _storage = FirebaseStorage.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<String> uploadImageToStorage(String childName, Uint8List file, bool isProduct, String productId) async {
-    Reference ref = _storage.ref().child(childName).child(_auth.currentUser!.uid);
+  Future<String> uploadImageToStorage(
+    String childName,
+    Uint8List file,
+    bool isProduct,
+    String productId,
+  ) async {
+    Reference ref =
+        _storage.ref().child(childName).child(_auth.currentUser!.uid);
 
-    if(isProduct) {
+    if (isProduct) {
       String id = productId;
       ref = ref.child(id);
     }
-  
+
     UploadTask uploadTask = ref.putData(file);
 
     TaskSnapshot snap = await uploadTask;
     String downloadUrl = await snap.ref.getDownloadURL();
     return downloadUrl;
+  }
+
+  Future<void> deleteImageFromStorage(
+    String childName,
+    bool isProduct,
+    String productId,
+  ) async {
+    Reference ref =
+        _storage.ref().child(childName).child(_auth.currentUser!.uid);
+
+    if (isProduct) {
+      String id = productId;
+      ref = ref.child(id);
+    }
+
+    try {
+      await ref.delete();
+    } catch (e) {
+      print(e);
+    }
   }
 }
