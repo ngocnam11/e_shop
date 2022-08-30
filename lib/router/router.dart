@@ -46,7 +46,7 @@ abstract class AppRouter {
       case notification:
         return NotificationScreen.route();
       case product:
-        return ProductScreen.route();
+        return ProductScreen.route(product: settings.arguments);
       default:
         return MaterialPageRoute(
           settings: const RouteSettings(name: '/error'),

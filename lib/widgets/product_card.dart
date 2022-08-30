@@ -1,31 +1,42 @@
 import 'package:flutter/material.dart';
 
-import '../router/router.dart';
+import '../screens/screens.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
     Key? key,
+    required this.product,
   }) : super(key: key);
+
+  final dynamic product;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed(AppRouter.product);
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => ProductScreen(
+              product: product,
+            ),
+          ),
+        );
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Stack(
             children: [
-              Container(
-                height: 160,
-                width: 150,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: Colors.grey,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image(
+                  height: 160,
+                  width: 150,
+                  image: NetworkImage(
+                    product['imageUrl'],
+                  ),
+                  fit: BoxFit.cover,
                 ),
-                child: Text(''),
               ),
               Positioned(
                 top: 8,
@@ -51,15 +62,15 @@ class ProductCard extends StatelessWidget {
             ],
           ),
           Text(
-            'Product name',
+            product['name'],
             style: Theme.of(context).textTheme.headline4,
           ),
           Text(
-            'Description',
+            product['description'],
             style: Theme.of(context).textTheme.headline6,
           ),
           Text(
-            '\$Price',
+            '\$${product['price']}',
             style: Theme.of(context).textTheme.headline5,
           ),
         ],
