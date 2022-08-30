@@ -5,7 +5,7 @@ class TextFieldInput extends StatelessWidget {
     Key? key,
     required this.controller,
     this.isPass = false,
-    required this.hintText,
+    this.hintText,
     required this.textInputType,
     this.readOnly = false,
     this.labelText,
@@ -15,11 +15,12 @@ class TextFieldInput extends StatelessWidget {
     this.onSaved,
     this.onFieldSubmitted,
     this.errorText,
+    this.focusNode,
   }) : super(key: key);
 
   final TextEditingController controller;
   final bool isPass;
-  final String hintText;
+  final String? hintText;
   final TextInputType textInputType;
   final bool readOnly;
   final String? labelText;
@@ -29,6 +30,7 @@ class TextFieldInput extends StatelessWidget {
   final FormFieldSetter? onSaved;
   final void Function(String)? onFieldSubmitted;
   final String? errorText;
+  final FocusNode? focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +52,7 @@ class TextFieldInput extends StatelessWidget {
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
         errorText: errorText,
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
       ),
       validator: validator,
       onSaved: onSaved,
@@ -57,6 +60,7 @@ class TextFieldInput extends StatelessWidget {
       obscureText: isPass,
       keyboardType: textInputType,
       readOnly: readOnly,
+      focusNode: focusNode,
     );
   }
 }
