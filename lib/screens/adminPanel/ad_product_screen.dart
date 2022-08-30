@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'ad_product_card.dart';
@@ -106,8 +107,13 @@ class _AdProductScreenState extends State<AdProductScreen> {
                     },
                   )
                 : FutureBuilder(
-                    future:
-                        FirebaseFirestore.instance.collection('products').get(),
+                    future: FirebaseFirestore.instance
+                        .collection('products')
+                        .where(
+                          'uid',
+                          isEqualTo: FirebaseAuth.instance.currentUser!.uid,
+                        )
+                        .get(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(
@@ -120,7 +126,7 @@ class _AdProductScreenState extends State<AdProductScreen> {
                             itemCount: (snapshot.data! as dynamic).docs.length,
                             itemBuilder: (context, index) {
                               return SizedBox(
-                                height: 210,
+                                height: 170,
                                 child: AdProductCard(
                                   snap: (snapshot.data! as dynamic)
                                       .docs[index]

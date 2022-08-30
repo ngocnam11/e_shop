@@ -4,14 +4,18 @@ import '../router/router.dart';
 import '../widgets/custom_button.dart';
 
 class ProductScreen extends StatelessWidget {
-  const ProductScreen({Key? key}) : super(key: key);
+  const ProductScreen({Key? key, required this.product}) : super(key: key);
 
-  static MaterialPageRoute route() {
+  static MaterialPageRoute route({required product}) {
     return MaterialPageRoute(
       settings: const RouteSettings(name: AppRouter.product),
-      builder: (_) => const ProductScreen(),
+      builder: (_) => ProductScreen(
+        product: product,
+      ),
     );
   }
+
+  final dynamic product;
 
   @override
   Widget build(BuildContext context) {
@@ -62,17 +66,19 @@ class ProductScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              height: MediaQuery.of(context).size.height / 2,
-              width: MediaQuery.of(context).size.width,
-              decoration: const BoxDecoration(
-                color: Colors.amber,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(16),
-                  bottomRight: Radius.circular(16),
-                ),
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(16),
+                bottomRight: Radius.circular(16),
               ),
-              child: const Text('product carousel'),
+              child: Image(
+                height: MediaQuery.of(context).size.height / 2,
+                width: MediaQuery.of(context).size.width,
+                image: NetworkImage(
+                  product['imageUrl'],
+                ),
+                fit: BoxFit.cover,
+              ),
             ),
             Container(
               padding: const EdgeInsets.all(24),
@@ -80,7 +86,7 @@ class ProductScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Product name',
+                    product['name'],
                     style: theme.headline3,
                   ),
                   const SizedBox(height: 12),
@@ -101,7 +107,7 @@ class ProductScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    '\$100',
+                    '\$${product['price']}',
                     style: theme.headline3,
                   ),
                   const SizedBox(height: 12),
@@ -120,14 +126,16 @@ class ProductScreen extends StatelessWidget {
                           Row(
                             children: [
                               const SizedBox(width: 8),
-                              Container(
-                                height: 70,
-                                width: 70,
-                                decoration: BoxDecoration(
-                                  color: Colors.amber,
-                                  borderRadius: BorderRadius.circular(16),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(16),
+                                child: Image(
+                                  height: 70,
+                                  width: 70,
+                                  image: NetworkImage(
+                                    product['imageUrl'],
+                                  ),
+                                  fit: BoxFit.cover,
                                 ),
-                                child: const Text('Image'),
                               ),
                               const SizedBox(width: 8),
                               Column(
@@ -161,7 +169,7 @@ class ProductScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'loooooooooooooooooooooooooooooooooooooooooooong description ',
+                    product['description'],
                     style: theme.headline6,
                   ),
                 ],
