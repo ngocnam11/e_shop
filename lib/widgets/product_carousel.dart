@@ -1,21 +1,28 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'product_card.dart';
 
 class ProductCarousel extends StatelessWidget {
-  const ProductCarousel({Key? key}) : super(key: key);
+  const ProductCarousel({
+    Key? key,
+    required this.products,
+  }) : super(key: key);
+  final List<QueryDocumentSnapshot> products;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 230,
       child: ListView.separated(
-        padding: const EdgeInsets.only(left: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 24),
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        itemCount: 5,
+        itemCount: products.length,
         itemBuilder: (context, index) {
-          return const ProductCard();
+          return ProductCard(
+            product: products[index],
+          );
         },
         separatorBuilder: (context, index) => const SizedBox(width: 24),
       ),
