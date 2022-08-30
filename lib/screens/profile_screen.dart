@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../router/router.dart';
@@ -17,7 +16,7 @@ class ProfileScreen extends StatelessWidget {
     return MaterialPageRoute(
       settings: const RouteSettings(name: AppRouter.profile),
       builder: (_) => ProfileScreen(
-        uid: FirebaseAuth.instance.currentUser!.uid,
+        uid: AuthServices().user.uid,
       ),
     );
   }
@@ -111,7 +110,7 @@ class ProfileScreen extends StatelessWidget {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) => MyAccountScreen(
-                                      uid: FirebaseAuth.instance.currentUser!.uid,
+                                      uid: uid,
                                       isAdmin: snapshot.data!['isAdmin'],
                                     ),
                                   ),
@@ -147,7 +146,7 @@ class ProfileScreen extends StatelessWidget {
                                     actions: [
                                       TextButton(
                                         onPressed: () =>
-                                            Navigator.pop(context, 'Cancel'),
+                                            Navigator.of(context).pop(),
                                         child: const Text(
                                           'No',
                                           style: TextStyle(color: Colors.black),
