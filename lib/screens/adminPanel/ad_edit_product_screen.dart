@@ -47,7 +47,9 @@ class _AdEditProductScreenState extends State<AdEditProductScreen> {
       colors: [],
       size: [],
     );
+
     if (!mounted) return;
+
     if (rep != 'success') {
       showSnackBar(context, rep);
     } else {
@@ -85,7 +87,8 @@ class _AdEditProductScreenState extends State<AdEditProductScreen> {
             _categoryController.text = snapshot.data!['category'];
             _descriptionController.text = snapshot.data!['description'];
             _priceController.text = snapshot.data!['price'].floor().toString();
-            _quantityController.text = snapshot.data!['quantity'].floor().toString();
+            _quantityController.text =
+                snapshot.data!['quantity'].floor().toString();
             return ListView(
               shrinkWrap: true,
               children: [

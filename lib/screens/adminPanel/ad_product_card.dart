@@ -16,6 +16,9 @@ class AdProductCard extends StatefulWidget {
 class _AdProductCardState extends State<AdProductCard> {
   void deleteProduct() async {
     String res = await FireStoreServices().deleteProduct(id: widget.snap['id']);
+
+    if (!mounted) return;
+
     if (res != 'success') {
       showSnackBar(context, res);
     } else {
@@ -98,13 +101,15 @@ class _AdProductCardState extends State<AdProductCard> {
                           )
                         ],
                       ),
-                      Row(
+                      Column(
                         children: [
                           IconButton(
                             onPressed: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => AdEditProductScreen(id: widget.snap['id'],),
+                                  builder: (context) => AdEditProductScreen(
+                                    id: widget.snap['id'],
+                                  ),
                                 ),
                               );
                             },
@@ -116,20 +121,31 @@ class _AdProductCardState extends State<AdProductCard> {
                               showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(
-                                  title: const Text('Delete Product'),
-                                  content: const Text(
-                                      'Do you want to delete this product?'),
+                                  title: const Text(
+                                    'You are about to delete a product',
+                                  ),
+                                  titleTextStyle: theme.headline5,
+                                  content: Text(
+                                    'This will delete your product \nAre you sure?',
+                                    style: theme.headline6!.copyWith(
+                                      color: Colors.black54,
+                                    ),
+                                  ),
                                   actions: [
                                     TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context, 'Cancel'),
-                                      child: const Text('Cancel', style: TextStyle(color: Colors.black),),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text(
+                                        'Cancel',
+                                        style: TextStyle(color: Colors.black87),
+                                      ),
                                     ),
-                                    TextButton(
+                                    ElevatedButton(
                                       onPressed: () {
                                         deleteProduct();
                                       },
-                                      child: const Text('OK', style: TextStyle(color: Colors.black),),
+                                      child: const Text('Delete'),
                                     ),
                                   ],
                                 ),
@@ -138,10 +154,10 @@ class _AdProductCardState extends State<AdProductCard> {
                             icon: const Icon(Icons.delete),
                           ),
                         ],
-                      )
+                      ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ],

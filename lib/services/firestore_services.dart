@@ -10,6 +10,7 @@ import 'storage_service.dart';
 
 class FireStoreServices {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final StorageService _storage = StorageService();
 
   Future<String> addProduct({
     required String uid,
@@ -25,8 +26,8 @@ class FireStoreServices {
   }) async {
     String res = 'Some error occurred';
     try {
-      String photoUrl = await StorageService()
-          .uploadImageToStorage('products', file, true, id.toString());
+      String photoUrl = await _storage.uploadImageToStorage(
+          'products', file, true, id.toString());
       Product product = Product(
         id: id,
         uid: uid,
@@ -142,8 +143,8 @@ class FireStoreServices {
   }) async {
     String resUpdate = 'Some error occurred';
     try {
-      String photoUrl = await StorageService()
-          .uploadImageToStorage('profilePics', file, false, '');
+      String photoUrl =
+          await _storage.uploadImageToStorage('profilePics', file, false, '');
 
       model.User user = model.User(
         uid: uid,
@@ -177,8 +178,8 @@ class FireStoreServices {
   }) async {
     String rep = 'Some error occurred';
     try {
-      String imageUrl = await StorageService()
-          .uploadImageToStorage('profilePics', file, true, '');
+      String imageUrl =
+          await _storage.uploadImageToStorage('profilePics', file, true, '');
       Product product = Product(
         id: id,
         uid: uid,
@@ -203,12 +204,11 @@ class FireStoreServices {
     return rep;
   }
 
-  Future<String> deleteProduct({
-    required int id,
-  }) async {
+  Future<String> deleteProduct({required int id}) async {
     String res = 'Some error occurred';
     try {
-      _firestore.collection('products').doc(id.toString()).delete();
+      await _storage.deleteImageFromStorage('products', true, id.toString());
+      await _firestore.collection('products').doc(id.toString()).delete();
       res = 'success';
     } catch (e) {
       res = e.toString();

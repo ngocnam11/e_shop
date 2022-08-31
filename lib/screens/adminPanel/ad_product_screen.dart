@@ -1,6 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../../services/auth_services.dart';
 import 'ad_product_card.dart';
 import 'new_product_screen.dart';
 
@@ -27,7 +28,7 @@ class _AdProductScreenState extends State<AdProductScreen> {
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: Column(
-          children: [
+          children: <Widget>[
             // SearchBar(
             //   controller: searchController,
             //   hintText: 'Search a product',
@@ -37,37 +38,37 @@ class _AdProductScreenState extends State<AdProductScreen> {
             //     });
             //   },
             // ),
-            const SizedBox(height: 10),
-            SizedBox(
-              height: 100,
-              child: Card(
-                margin: EdgeInsets.zero,
+            Ink(
+              height: 80,
+              decoration: BoxDecoration(
                 color: Colors.blue,
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const NewProductScreen(),
-                      ),
-                    );
-                  },
-                  child: Row(
-                    children: [
-                      const SizedBox(width: 10),
-                      const Icon(
-                        Icons.add_circle,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(width: 10),
-                      Text(
-                        'Add a New Product',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline4!
-                            .copyWith(color: Colors.white),
-                      )
-                    ],
-                  ),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(16),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const NewProductScreen(),
+                    ),
+                  );
+                },
+                child: Row(
+                  children: <Widget>[
+                    const SizedBox(width: 10),
+                    const Icon(
+                      Icons.add_circle,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      'Add a New Product',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline4!
+                          .copyWith(color: Colors.white),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -111,7 +112,7 @@ class _AdProductScreenState extends State<AdProductScreen> {
                         .collection('products')
                         .where(
                           'uid',
-                          isEqualTo: FirebaseAuth.instance.currentUser!.uid,
+                          isEqualTo: AuthServices().user.uid,
                         )
                         .get(),
                     builder: (context, snapshot) {

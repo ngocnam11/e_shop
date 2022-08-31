@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../config/utils.dart';
 import '../router/router.dart';
@@ -10,12 +9,12 @@ import '../services/auth_services.dart';
 import '../widgets/text_field_input.dart';
 
 class SignupScreen extends StatefulWidget {
-  SignupScreen({Key? key}) : super(key: key);
+  const SignupScreen({Key? key}) : super(key: key);
 
   static MaterialPageRoute route() {
     return MaterialPageRoute(
       settings: const RouteSettings(name: AppRouter.signup),
-      builder: (_) => SignupScreen(),
+      builder: (_) => const SignupScreen(),
     );
   }
 
@@ -51,6 +50,9 @@ class _SignupScreenState extends State<SignupScreen> {
     setState(() {
       _isLoading = false;
     });
+
+    if (!mounted) return;
+
     if (res != 'success') {
       showSnackBar(context, res);
     } else {

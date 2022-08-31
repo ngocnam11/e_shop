@@ -5,7 +5,7 @@ class MyChipList<T> extends StatelessWidget {
     Key? key,
     required this.values,
     required this.chipBuilder,
-  }) :super (key: key);
+  }) : super(key: key);
 
   final List<T> values;
   final Chip Function(T) chipBuilder;
