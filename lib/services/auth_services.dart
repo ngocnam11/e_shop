@@ -1,15 +1,16 @@
 import 'dart:typed_data';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/user.dart' as model;
-
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
+import '../models/user.dart' as model;
 import 'storage_service.dart';
 
 class AuthServices {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   User get user => _auth.currentUser!;
 
@@ -21,7 +22,7 @@ class AuthServices {
 
     return model.User.fromSnap(documentSnapshot);
   }
-  
+
   Future<String> signUpUser({
     required String email,
     required String password,
@@ -34,8 +35,8 @@ class AuthServices {
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
 
-        String photoUrl =
-            await StorageService().uploadImageToStorage('profilePics', file, false, '');
+        String photoUrl = await StorageService()
+            .uploadImageToStorage('profilePics', file, false, '');
 
         model.User user = model.User(
           uid: cred.user!.uid,
@@ -74,7 +75,44 @@ class AuthServices {
     return res;
   }
 
+  Future<String> logInWithGoogle() async {
+    String res = 'Some error occurred';
+
+    try {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      model.User user = model.User(
+        uid: userCredential.user!.uid,
+        email: userCredential.user!.email!,
+        username: userCredential.user!.displayName ?? '',
+        phoneNum: userCredential.user!.phoneNumber ?? '',
+        photoUrl: userCredential.user!.photoURL ?? '',
+      );
+
+      _firestore
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .set(user.toJson());
+
+      res = 'success';
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
+  }
+
   Future<void> logout() async {
+    await _googleSignIn.signOut();
     await _auth.signOut();
   }
 }
