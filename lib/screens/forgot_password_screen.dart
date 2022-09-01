@@ -1,19 +1,48 @@
 import 'package:flutter/material.dart';
 
+import '../config/utils.dart';
 import '../router/router.dart';
+import '../services/auth_services.dart';
 import '../widgets/text_field_input.dart';
 
-class ForgotPasswordScreen extends StatelessWidget {
-  ForgotPasswordScreen({Key? key}) : super(key: key);
+class ForgotPasswordScreen extends StatefulWidget {
+  const ForgotPasswordScreen({Key? key}) : super(key: key);
 
   static MaterialPageRoute route() {
     return MaterialPageRoute(
       settings: const RouteSettings(name: AppRouter.forgotPassword),
-      builder: (_) => ForgotPasswordScreen(),
+      builder: (_) => const ForgotPasswordScreen(),
     );
   }
 
+  @override
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+}
+
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final TextEditingController emailController = TextEditingController();
+
+  bool _isLoading = false;
+
+  void sendPasswordReset() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthServices().sendForgotPasswordEmail(
+      toEmail: emailController.text,
+    );
+
+    if (!mounted) return;
+
+    if (res == 'success') {
+      showSnackBar(context, 'Please check your email for password reset link');
+    } else {
+      showSnackBar(context, res);
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +83,14 @@ class ForgotPasswordScreen extends StatelessWidget {
                     vertical: 10,
                   ),
                 ),
-                onPressed: () {},
-                child: const Text('Send password reset email'),
+                onPressed: sendPasswordReset,
+                child: _isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                        ),
+                      )
+                    : const Text('Send me password reset link'),
               ),
             ),
           ],

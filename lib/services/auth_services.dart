@@ -115,6 +115,17 @@ class AuthServices {
     return res;
   }
 
+  Future<String> sendForgotPasswordEmail({required String toEmail}) async {
+    String res = 'Some error occurred';
+    try {
+      await _auth.sendPasswordResetEmail(email: toEmail);
+      res = 'success';
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
+  }
+
   Future<void> logout() async {
     try {
       await _googleSignIn.signOut();
