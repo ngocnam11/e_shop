@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../blocs/cart/cart_bloc.dart';
+import '../config/utils.dart';
 import '../router/router.dart';
 import '../widgets/custom_button.dart';
 
@@ -94,11 +97,11 @@ class ProductScreen extends StatelessWidget {
                   const SizedBox(height: 12),
                   Row(
                     children: [
-                      const Icon(Icons.star),
-                      const Icon(Icons.star),
-                      const Icon(Icons.star),
-                      const Icon(Icons.star),
-                      const Icon(Icons.star),
+                      const Icon(Icons.star, color: Colors.yellow),
+                      const Icon(Icons.star, color: Colors.yellow),
+                      const Icon(Icons.star, color: Colors.yellow),
+                      const Icon(Icons.star, color: Colors.yellow),
+                      const Icon(Icons.star, color: Colors.yellow),
                       Text(
                         '10',
                         style: theme.headline4,
@@ -192,13 +195,29 @@ class ProductScreen extends StatelessWidget {
             ),
             const SizedBox(width: 32),
             Expanded(
-              child: CustomButton(
-                svg: 'assets/svgs/shopping_bag.svg',
-                press: () {},
-                textColor: Colors.white,
-                primaryColor: Colors.deepOrange[400]!,
-                svgColor: Colors.white,
-                title: 'Add to Cart',
+              child: BlocBuilder<CartBloc, CartState>(
+                builder: (context, state) {
+                  if (state is CartLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (state is CartLoaded) {
+                    return CustomButton(
+                      svg: 'assets/svgs/shopping_bag.svg',
+                      press: () {
+                        context.read<CartBloc>().add(AddProduct(product));
+                        showSnackBar(context, 'Added to your Cart');
+                      },
+                      textColor: Colors.white,
+                      primaryColor: Colors.deepOrange[400]!,
+                      svgColor: Colors.white,
+                      title: 'Add to Cart',
+                    );
+                  } else {
+                    return const Text('Something went wrong');
+                  }
+                },
               ),
             ),
             const SizedBox(width: 24),
