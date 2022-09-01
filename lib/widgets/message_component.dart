@@ -17,11 +17,11 @@ class MessageComponent extends StatelessWidget {
         Stack(
           children: [
             Container(
-              padding: const EdgeInsets.all(5),
+              padding: const EdgeInsets.fromLTRB(12, 12, 12, 24),
               constraints: BoxConstraints(
                 minHeight: 40,
                 minWidth: 30,
-                maxWidth: width / 1.1,
+                maxWidth: width * 0.7,
               ),
               decoration: BoxDecoration(
                 color:
@@ -39,9 +39,10 @@ class MessageComponent extends StatelessWidget {
               ),
               child: Text(
                 message!.content!,
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6!
+                    .copyWith(color: Colors.white),
               ),
             ),
             Positioned(

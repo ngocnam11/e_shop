@@ -19,6 +19,7 @@ class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextEditingController searchController = TextEditingController();
+    List<String> category = ['All','Men','Women','Kids','Young Adults','Phone','Laptop', 'Book'];
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -48,14 +49,14 @@ class SearchScreen extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        'category',
+                        category[index],
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
                     ),
                   );
                 },
                 separatorBuilder: (context, index) => const SizedBox(width: 8),
-                itemCount: 6,
+                itemCount: category.length,
               ),
             ),
             const SizedBox(height: 16),

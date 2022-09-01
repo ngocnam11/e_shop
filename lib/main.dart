@@ -4,10 +4,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'blocs/cart/cart_bloc.dart';
+import 'blocs/wishlist/wishlist_bloc.dart';
 import 'config/theme.dart';
 import 'firebase_options.dart';
 import 'router/router.dart';
+import 'simple_bloc_observer.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +25,7 @@ Future<void> main() async {
     await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
 
+  Bloc.observer = SimpleBlocObserver();
   runApp(const MyApp());
 }
 
@@ -29,15 +34,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      scrollBehavior: MyCustomScrollBehavior(),
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter eShop',
-      theme: theme(),
-      initialRoute: FirebaseAuth.instance.currentUser == null
-          ? AppRouter.login
-          : AppRouter.home,
-      onGenerateRoute: AppRouter.onGenerateRoute,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => WishlistBloc()..add(LoadWishlist())),
+        BlocProvider(create: (_) => CartBloc()..add(LoadCart())),
+      ],
+      child: MaterialApp(
+        scrollBehavior: MyCustomScrollBehavior(),
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter eShop',
+        theme: theme(),
+        initialRoute: FirebaseAuth.instance.currentUser == null
+            ? AppRouter.login
+            : AppRouter.home,
+        onGenerateRoute: AppRouter.onGenerateRoute,
+      ),
     );
   }
 }

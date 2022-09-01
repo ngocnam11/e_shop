@@ -29,6 +29,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('eShop'),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.notifications_none_rounded),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(

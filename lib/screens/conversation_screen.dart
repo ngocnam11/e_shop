@@ -2,22 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../models/message.dart';
-import '../models/user.dart';
 import '../services/auth_services.dart';
 import '../services/firestore_services.dart';
 import '../widgets/message_component.dart';
+import '../widgets/text_field_input.dart';
 
 class ConversationScreen extends StatelessWidget {
   const ConversationScreen({Key? key, this.user}) : super(key: key);
-  final User? user;
-  
+  final dynamic user;
 
   @override
   Widget build(BuildContext context) {
     final TextEditingController msgController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
-        title: Text(user!.username),
+        title: Text(user['username']),
         centerTitle: true,
       ),
       body: Padding(
@@ -26,11 +25,12 @@ class ConversationScreen extends StatelessWidget {
           children: [
             Expanded(
               child: StreamBuilder<List<Message>>(
-                stream: FireStoreServices().getMessage(user!.uid),
+                stream: FireStoreServices().getMessage(user['uid']),
                 builder: (context, snapshot1) {
                   if (snapshot1.hasData) {
                     return StreamBuilder<List<Message>>(
-                      stream: FireStoreServices().getMessage(user!.uid, false),
+                      stream:
+                          FireStoreServices().getMessage(user['uid'], false),
                       builder: (context, snapshot2) {
                         if (snapshot2.hasData) {
                           var messages = [
@@ -46,6 +46,8 @@ class ConversationScreen extends StatelessWidget {
                                 )
                               : ListView.builder(
                                   reverse: true,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12),
                                   itemCount: messages.length,
                                   itemBuilder: ((context, index) {
                                     final msg = messages[index];
@@ -73,13 +75,10 @@ class ConversationScreen extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: TextFormField(
+                  child: TextFieldInput(
                     controller: msgController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
+                    hintText: 'Aa',
+                    textInputType: TextInputType.text,
                   ),
                 ),
                 IconButton(
@@ -87,7 +86,7 @@ class ConversationScreen extends StatelessWidget {
                     var msg = Message(
                       content: msgController.text,
                       createAt: Timestamp.now(),
-                      reciverUID: user!.uid,
+                      reciverUID: user['uid'],
                       senderUID: AuthServices().user.uid,
                     );
                     msgController.clear();

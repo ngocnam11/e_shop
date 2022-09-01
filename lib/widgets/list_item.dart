@@ -9,7 +9,7 @@ class ListItem extends StatelessWidget {
   }) : super(key: key);
 
   final Widget child;
-  final Map<String, dynamic> product;
+  final dynamic product;
   final int index;
 
   @override
@@ -18,21 +18,23 @@ class ListItem extends StatelessWidget {
       height: 126,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.grey,
+        color: Colors.grey[100],
         borderRadius: BorderRadius.circular(16),
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
-            Container(
-              height: 100,
-              width: 100,
-              decoration: BoxDecoration(
-                color: Colors.lightBlue,
-                borderRadius: BorderRadius.circular(16),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Image(
+                height: 100,
+                width: 100,
+                image: NetworkImage(
+                  product['imageUrl'],
+                ),
+                fit: BoxFit.cover,
               ),
-              child: Center(child: Text('image')),
             ),
             const SizedBox(width: 10),
             Expanded(
@@ -45,7 +47,7 @@ class ListItem extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          product.keys.elementAt(index),
+                          product['name'],
                           style: Theme.of(context).textTheme.headline5,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -58,14 +60,14 @@ class ListItem extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    product.values.elementAt(index),
+                    'Size: L',
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '\$Price',
+                        '\$${product['price']}',
                         style: Theme.of(context).textTheme.headline5,
                       ),
                       child,

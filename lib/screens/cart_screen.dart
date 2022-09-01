@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../blocs/cart/cart_bloc.dart';
 import '../widgets/empty_product.dart';
 import '../router/router.dart';
 import '../widgets/list_item.dart';
 
 class CartScreen extends StatelessWidget {
-  CartScreen({Key? key}) : super(key: key);
+  const CartScreen({
+    Key? key,
+  }) : super(key: key);
 
   static MaterialPageRoute route() {
     return MaterialPageRoute(
       settings: const RouteSettings(name: AppRouter.cart),
-      builder: (_) => CartScreen(),
+      builder: (_) => const CartScreen(),
     );
   }
-
-  final Map<String, dynamic> product = {};
 
   @override
   Widget build(BuildContext context) {
@@ -28,27 +30,44 @@ class CartScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: product.keys.isEmpty
-          ? const EmptyProduct()
-          : ListView.separated(
+      body: BlocBuilder<CartBloc, CartState>(
+        builder: (context, state) {
+          if (state is CartLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (state is CartLoaded) {
+            final products = state.cart.productQuantity(state.cart.products);
+            if (products.keys.isEmpty) {
+              return const EmptyProduct();
+            }
+            return ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 24),
-              itemCount: product.keys.length,
+              itemCount: products.length,
               itemBuilder: (context, index) {
                 return ListItem(
-                  product: product,
+                  product: products.keys.elementAt(index),
                   index: index,
                   child: Row(
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          context.read<CartBloc>().add(
+                              RemoveProduct(products.keys.elementAt(index)));
+                        },
                         icon: const Icon(Icons.remove_circle_outline),
                       ),
                       Text(
-                        '1',
+                        products.values.elementAt(index).toString(),
                         style: Theme.of(context).textTheme.headline6,
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          context
+                              .read<CartBloc>()
+                              .add(AddProduct(products.keys.elementAt(index)));
+                        },
                         icon: const Icon(Icons.add_circle_outline),
                       ),
                     ],
@@ -56,67 +75,85 @@ class CartScreen extends StatelessWidget {
                 );
               },
               separatorBuilder: (context, index) => const SizedBox(height: 12),
-            ),
-      bottomNavigationBar: product.keys.isEmpty
-          ? Padding(
-              padding: const EdgeInsets.all(20),
-              child: ElevatedButton(
-                onLongPress: () {
-                  Navigator.of(context).pushNamed(AppRouter.checkout);
-                },
-                onPressed: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    AppRouter.home,
-                    (route) => false,
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  primary: Colors.blueAccent.shade100,
+            );
+          } else {
+            return const Text('Something went wrong');
+          }
+        },
+      ),
+      bottomNavigationBar: BlocBuilder<CartBloc, CartState>(
+        builder: (context, state) {
+          if (state is CartLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (state is CartLoaded) {
+            final product =
+                state.cart.productQuantity(state.cart.products).keys;
+            if (product.isEmpty) {
+              return Padding(
+                padding: const EdgeInsets.all(20),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      AppRouter.home,
+                      (route) => false,
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    primary: Colors.blueAccent.shade100,
+                  ),
+                  child: const Text('Continue Shopping'),
                 ),
-                child: const Text('Continue Shopping'),
-              ),
-            )
-          : Padding(
-              padding: const EdgeInsets.only(
-                left: 24,
-                right: 24,
-                bottom: 28,
-                top: 12,
-              ),
-              child: SizedBox(
-                height: 80,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          'Total',
-                          style: Theme.of(context).textTheme.headline4,
-                        ),
-                        Text(
-                          '{price}\$',
-                          style: Theme.of(context).textTheme.headline4,
-                        ),
-                      ],
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamed(AppRouter.checkout);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        primary: Colors.blueAccent.shade100,
-                        fixedSize: const Size.fromWidth(500),
+              );
+            } else {
+              return Padding(
+                padding: const EdgeInsets.only(
+                  left: 24,
+                  right: 24,
+                  bottom: 28,
+                  top: 12,
+                ),
+                child: SizedBox(
+                  height: 80,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            'Total',
+                            style: Theme.of(context).textTheme.headline4,
+                          ),
+                          Text(
+                            '0\$',
+                            style: Theme.of(context).textTheme.headline4,
+                          ),
+                        ],
                       ),
-                      child: const Text('Go to checkout'),
-                    ),
-                  ],
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(AppRouter.checkout);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          primary: Colors.blueAccent.shade100,
+                          fixedSize: const Size.fromWidth(500),
+                        ),
+                        child: const Text('Go to checkout'),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ),
+              );
+            }
+          }
+          return const Text('Something went wrong');
+        },
+      ),
     );
   }
 }

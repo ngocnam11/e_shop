@@ -217,13 +217,13 @@ class FireStoreServices {
     return res;
   }
 
-  Stream<List<model.User>> get getDiscussionUser {
-    return _firestore
-        .collection('users')
-        .where('uid', isNotEqualTo: AuthServices().user.uid)
-        .snapshots()
-        .map((event) => event.docs.map((e) => model.User.fromSnap(e)).toList());
-  }
+  // Stream<List<model.User>> get getDiscussionUser {
+  //   return _firestore
+  //       .collection('users')
+  //       .where('uid', isNotEqualTo: AuthServices().user.uid)
+  //       .snapshots()
+  //       .map((event) => event.docs.map((e) => model.User.fromSnap(e)).toList());
+  // }
 
   Stream<List<Message>> getMessage(String reciverUID, [bool myMessage = true]) {
     return _firestore

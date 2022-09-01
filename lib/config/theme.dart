@@ -11,7 +11,7 @@ ThemeData theme() {
       centerTitle: true,
       titleTextStyle: TextStyle(
         color: Colors.black87,
-        fontSize: 16,
+        fontSize: 20,
         fontWeight: FontWeight.bold,
       ),
     ),

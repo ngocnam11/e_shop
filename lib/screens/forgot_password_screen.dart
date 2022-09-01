@@ -49,7 +49,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
