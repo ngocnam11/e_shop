@@ -1,27 +1,24 @@
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../models/user.dart' as model;
+import 'social_signin_options.dart';
 import 'storage_service.dart';
 
 class AuthServices {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    clientId: GoogleClientIdOptions.currentPlatform,
+    scopes: ['https://www.googleapis.com/auth/contacts.readonly'],
+  );
 
   User get user => _auth.currentUser!;
-
-  Future<model.User> getUserDetails() async {
-    User currentUser = _auth.currentUser!;
-
-    DocumentSnapshot documentSnapshot =
-        await _firestore.collection('users').doc(currentUser.uid).get();
-
-    return model.User.fromSnap(documentSnapshot);
-  }
 
   Future<String> signUpUser({
     required String email,
@@ -60,7 +57,6 @@ class AuthServices {
     required String password,
   }) async {
     String res = 'Some error occurred';
-
     try {
       if (email.isNotEmpty || password.isNotEmpty) {
         await _auth.signInWithEmailAndPassword(
@@ -77,19 +73,27 @@ class AuthServices {
 
   Future<String> logInWithGoogle() async {
     String res = 'Some error occurred';
-
     try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      final GoogleSignInAuthentication? googleAuth =
-          await googleUser?.authentication;
+      UserCredential userCredential;
 
-      final OAuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
-      );
+      if (defaultTargetPlatform == TargetPlatform.android ||
+          defaultTargetPlatform == TargetPlatform.iOS) {
+        final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+        final GoogleSignInAuthentication? googleAuth =
+            await googleUser?.authentication;
 
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
+        final OAuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth?.accessToken,
+          idToken: googleAuth?.idToken,
+        );
+
+        userCredential =
+            await FirebaseAuth.instance.signInWithCredential(credential);
+      } else {
+        userCredential =
+            await FirebaseAuth.instance.signInWithPopup(GoogleAuthProvider());
+        // userCredential = await FirebaseAuth.instance.signInWithRedirect(GoogleAuthProvider());
+      }
 
       model.User user = model.User(
         uid: userCredential.user!.uid,
@@ -112,7 +116,11 @@ class AuthServices {
   }
 
   Future<void> logout() async {
-    await _googleSignIn.signOut();
-    await _auth.signOut();
+    try {
+      await _googleSignIn.signOut();
+      await _auth.signOut();
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 }
