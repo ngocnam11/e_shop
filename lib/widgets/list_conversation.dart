@@ -14,7 +14,7 @@ class ListConversation extends StatelessWidget {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection('users')
-          .where('uid', isNotEqualTo: AuthServices().user.uid)
+          .where('uid', isNotEqualTo: AuthServices().currentUser.uid)
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -64,7 +64,8 @@ class ListConversation extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  snapshot.data!.docs.toList()[index]['username'],
+                                  snapshot.data!.docs.toList()[index]
+                                      ['username'],
                                   style: Theme.of(context).textTheme.headline4,
                                 ),
                                 Text(

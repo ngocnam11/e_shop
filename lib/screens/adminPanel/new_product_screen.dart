@@ -44,7 +44,7 @@ class _NewProductScreenState extends State<NewProductScreen> {
 
   void addNewProduct() async {
     String res = await FireStoreServices().addProduct(
-      uid: AuthServices().user.uid,
+      uid: AuthServices().currentUser.uid,
       id: int.parse(idController.text),
       name: nameController.text,
       category: categoryController.text,

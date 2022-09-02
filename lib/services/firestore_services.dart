@@ -229,9 +229,9 @@ class FireStoreServices {
     return _firestore
         .collection('messages')
         .where('senderUID',
-            isEqualTo: myMessage ? AuthServices().user.uid : reciverUID)
+            isEqualTo: myMessage ? AuthServices().currentUser.uid : reciverUID)
         .where('reciverUID',
-            isEqualTo: myMessage ? reciverUID : AuthServices().user.uid)
+            isEqualTo: myMessage ? reciverUID : AuthServices().currentUser.uid)
         .snapshots()
         .map((event) =>
             event.docs.map((e) => Message.fromJson(e.data(), e.id)).toList());

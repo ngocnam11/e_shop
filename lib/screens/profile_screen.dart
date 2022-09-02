@@ -16,7 +16,7 @@ class ProfileScreen extends StatelessWidget {
     return MaterialPageRoute(
       settings: const RouteSettings(name: AppRouter.profile),
       builder: (_) => ProfileScreen(
-        uid: AuthServices().user.uid,
+        uid: AuthServices().currentUser.uid,
       ),
     );
   }
