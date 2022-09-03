@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../router/router.dart';
+import '../../widgets/order_summary.dart';
 
 class OrderConfirmScreen extends StatelessWidget {
   const OrderConfirmScreen({Key? key}) : super(key: key);
@@ -31,7 +32,7 @@ class OrderConfirmScreen extends StatelessWidget {
                 ),
               ),
               Text(
-                'Hey {username},',
+                'Hey Ngoc Nam,',
                 style: Theme.of(context).textTheme.headline5,
               ),
               Text(
@@ -39,68 +40,7 @@ class OrderConfirmScreen extends StatelessWidget {
                 style: Theme.of(context).textTheme.headline5,
               ),
               const Divider(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    'Sub-total',
-                    style: Theme.of(context).textTheme.headline5!.copyWith(
-                          color: Colors.black54,
-                          fontWeight: FontWeight.normal,
-                        ),
-                  ),
-                  Text(
-                    '{price}\$',
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    'VAT (%)',
-                    style: Theme.of(context).textTheme.headline5!.copyWith(
-                          color: Colors.black54,
-                          fontWeight: FontWeight.normal,
-                        ),
-                  ),
-                  Text(
-                    '{price}\$',
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    'Shipping Charge',
-                    style: Theme.of(context).textTheme.headline5!.copyWith(
-                          color: Colors.black54,
-                          fontWeight: FontWeight.normal,
-                        ),
-                  ),
-                  Text(
-                    '{price}\$',
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                ],
-              ),
-              const Divider(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    'Total',
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                  Text(
-                    '{price}\$',
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                ],
-              ),
+              const OrderSummary(),
               ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
