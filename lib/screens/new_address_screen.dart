@@ -1,23 +1,51 @@
+import 'package:e_shop/services/auth_services.dart';
+import 'package:e_shop/services/firestore_services.dart';
 import 'package:flutter/material.dart';
 
+import '../config/utils.dart';
 import '../router/router.dart';
 import '../widgets/text_field_input.dart';
+import 'screens.dart';
 
-class NewAddressScreen extends StatelessWidget {
-  NewAddressScreen({Key? key}) : super(key: key);
+class NewAddressScreen extends StatefulWidget {
+  const NewAddressScreen({Key? key}) : super(key: key);
 
   static MaterialPageRoute route() {
     return MaterialPageRoute(
       settings: const RouteSettings(name: AppRouter.newaddress),
-      builder: (_) => NewAddressScreen(),
+      builder: (_) => const NewAddressScreen(),
     );
   }
 
-  final TextEditingController fullnameController = TextEditingController();
+  @override
+  State<NewAddressScreen> createState() => _NewAddressScreenState();
+}
+
+class _NewAddressScreenState extends State<NewAddressScreen> {
   final TextEditingController addressController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
   final TextEditingController countryController = TextEditingController();
-  final TextEditingController phoneNumberController = TextEditingController();
+
+  void addShippingAddress() async {
+    String res = await FireStoreServices().updateShippingAddress(
+      uid: AuthServices().user.uid,
+      address: addressController.text,
+      city: cityController.text,
+      country: countryController.text,
+    );
+
+    if (!mounted) return;
+
+    if (res != 'success') {
+      showSnackBar(context, res);
+    } else {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const CheckoutScreen(),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,16 +64,6 @@ class NewAddressScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Receiver Name',
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-            TextFieldInput(
-              controller: fullnameController,
-              hintText: 'Enter receiver name',
-              textInputType: TextInputType.name,
-            ),
-            const SizedBox(height: 16),
             Text(
               'Address',
               style: Theme.of(context).textTheme.bodyText1,
@@ -76,15 +94,6 @@ class NewAddressScreen extends StatelessWidget {
               textInputType: TextInputType.text,
             ),
             const SizedBox(height: 16),
-            Text(
-              'Phone Number',
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-            TextFieldInput(
-              controller: phoneNumberController,
-              hintText: 'Enter phone number',
-              textInputType: TextInputType.phone,
-            ),
             Row(
               children: [
                 Checkbox(
@@ -103,7 +112,7 @@ class NewAddressScreen extends StatelessWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(20),
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: addShippingAddress,
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(
               vertical: 16,

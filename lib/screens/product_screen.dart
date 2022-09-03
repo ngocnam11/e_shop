@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../blocs/cart/cart_bloc.dart';
 import '../config/utils.dart';
+import '../models/user.dart';
 import '../router/router.dart';
+import '../services/firestore_services.dart';
 import '../widgets/custom_button.dart';
 
 class ProductScreen extends StatelessWidget {
@@ -93,7 +95,24 @@ class ProductScreen extends StatelessWidget {
                     style: theme.headline3,
                   ),
                   const SizedBox(height: 12),
-                  Text('Shop', style: theme.headline4),
+                  FutureBuilder<User>(
+                    future:
+                        FireStoreServices().getUserByUid(uid: product['uid']),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      if (snapshot.hasError) {
+                        return const Text('Something went wrong');
+                      }
+                      return Text(
+                        snapshot.data!.username,
+                        style: theme.headline4,
+                      );
+                    },
+                  ),
                   const SizedBox(height: 12),
                   Row(
                     children: [
@@ -115,12 +134,14 @@ class ProductScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      // Navigator.of(context).push(MaterialPageRoute(builder: (context) => SelectOptionsScreen(),));
+                    },
                     child: Container(
                       height: 80,
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: Colors.grey,
+                        color: Colors.grey[100],
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Row(
@@ -145,11 +166,11 @@ class ProductScreen extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    'options (color, size)',
+                                    'Color, Size',
                                     style: theme.headline3,
                                   ),
                                   Text(
-                                    'options selected',
+                                    '${product['colors'][0]}, ${product['size'][0]}',
                                     style: theme.headline4,
                                   ),
                                 ],

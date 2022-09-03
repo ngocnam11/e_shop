@@ -12,6 +12,12 @@ class FireStoreServices {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final StorageService _storage = StorageService();
 
+  Future<model.User> getUserByUid({required String uid}) async {
+    final snap = await _firestore.collection('users').doc(uid).get();
+    model.User user = model.User.fromSnap(snap.data()!);
+    return user;
+  }
+
   Future<String> addProduct({
     required String uid,
     required int id,

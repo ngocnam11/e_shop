@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class User extends Equatable {
@@ -20,23 +19,21 @@ class User extends Equatable {
     required this.photoUrl,
     this.address = '',
     this.city = '',
-    this.country= '',
+    this.country = '',
     this.isAdmin = false,
   });
 
-  static User fromSnap(DocumentSnapshot snap) {
-    var snapshot = snap.data() as Map<String, dynamic>;
-
+  factory User.fromSnap(Map<String, dynamic> snap) {
     return User(
-      username: snapshot["username"],
-      uid: snapshot["uid"],
-      email: snapshot["email"],
-      phoneNum: snapshot["phoneNum"],
-      photoUrl: snapshot["photoUrl"],
+      username: snap["username"],
+      uid: snap["uid"],
+      email: snap["email"],
+      phoneNum: snap["phoneNum"],
+      photoUrl: snap["photoUrl"],
       address: snap["address"],
       city: snap["city"],
       country: snap["country"],
-      isAdmin: snapshot["isAdmin"],
+      isAdmin: snap["isAdmin"],
     );
   }
 
@@ -55,10 +52,18 @@ class User extends Equatable {
       'shippingAddress': shippingAddress,
       'isAdmin': isAdmin,
     };
-      
   }
 
   @override
-  List<Object?> get props =>
-      [uid, email, username, phoneNum, photoUrl, address, city, country, isAdmin];
+  List<Object?> get props => [
+        uid,
+        email,
+        username,
+        phoneNum,
+        photoUrl,
+        address,
+        city,
+        country,
+        isAdmin,
+      ];
 }
