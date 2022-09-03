@@ -18,7 +18,7 @@ class AuthServices {
     scopes: ['https://www.googleapis.com/auth/contacts.readonly'],
   );
 
-  User get user => _auth.currentUser!;
+  User get currentUser => _auth.currentUser!;
 
   Future<String> signUpUser({
     required String email,
@@ -87,12 +87,9 @@ class AuthServices {
           idToken: googleAuth?.idToken,
         );
 
-        userCredential =
-            await FirebaseAuth.instance.signInWithCredential(credential);
+        userCredential = await _auth.signInWithCredential(credential);
       } else {
-        userCredential =
-            await FirebaseAuth.instance.signInWithPopup(GoogleAuthProvider());
-        // userCredential = await FirebaseAuth.instance.signInWithRedirect(GoogleAuthProvider());
+        userCredential = await _auth.signInWithPopup(GoogleAuthProvider());
       }
 
       model.User user = model.User(
@@ -127,8 +124,12 @@ class AuthServices {
   }
 
   Future<void> logout() async {
+    final providerId =
+        await _auth.fetchSignInMethodsForEmail(currentUser.email!);
     try {
-      await _googleSignIn.signOut();
+      if (providerId[0] == 'google.com') {
+        await _googleSignIn.signOut();
+      }
       await _auth.signOut();
     } catch (e) {
       debugPrint(e.toString());
