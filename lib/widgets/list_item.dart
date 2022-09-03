@@ -5,12 +5,10 @@ class ListItem extends StatelessWidget {
     Key? key,
     required this.child,
     required this.product,
-    required this.index,
   }) : super(key: key);
 
   final Widget child;
   final dynamic product;
-  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -53,10 +51,10 @@ class ListItem extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      Checkbox(
-                        value: false,
-                        onChanged: (value) {},
-                      ),
+                      // Checkbox(
+                      //   value: false,
+                      //   onChanged: (value) {},
+                      // ),
                     ],
                   ),
                   Text(

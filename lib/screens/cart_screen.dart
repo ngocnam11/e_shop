@@ -48,7 +48,6 @@ class CartScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 return ListItem(
                   product: products.keys.elementAt(index),
-                  index: index,
                   child: Row(
                     children: [
                       IconButton(
@@ -89,9 +88,9 @@ class CartScreen extends StatelessWidget {
             );
           }
           if (state is CartLoaded) {
-            final product =
+            final products =
                 state.cart.productQuantity(state.cart.products).keys;
-            if (product.isEmpty) {
+            if (products.isEmpty) {
               return Padding(
                 padding: const EdgeInsets.all(20),
                 child: ElevatedButton(
@@ -129,7 +128,7 @@ class CartScreen extends StatelessWidget {
                             style: Theme.of(context).textTheme.headline4,
                           ),
                           Text(
-                            '0\$',
+                            '\$${state.cart.totalString}',
                             style: Theme.of(context).textTheme.headline4,
                           ),
                         ],
