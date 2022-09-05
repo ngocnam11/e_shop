@@ -1,8 +1,10 @@
+import 'package:e_shop/screens/conversation_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../blocs/cart/cart_bloc.dart';
 import '../config/utils.dart';
+import '../models/product.dart';
 import '../models/user.dart';
 import '../router/router.dart';
 import '../services/firestore_services.dart';
@@ -20,7 +22,7 @@ class ProductScreen extends StatelessWidget {
     );
   }
 
-  final dynamic product;
+  final Product product;
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +82,7 @@ class ProductScreen extends StatelessWidget {
                 height: MediaQuery.of(context).size.height / 2,
                 width: MediaQuery.of(context).size.width,
                 image: NetworkImage(
-                  product['imageUrl'],
+                  product.imageUrl,
                 ),
                 fit: BoxFit.cover,
               ),
@@ -91,13 +93,12 @@ class ProductScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    product['name'],
+                    product.name,
                     style: theme.headline3,
                   ),
                   const SizedBox(height: 12),
                   FutureBuilder<User>(
-                    future:
-                        FireStoreServices().getUserByUid(uid: product['uid']),
+                    future: FireStoreServices().getUserByUid(uid: product.uid),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(
@@ -129,7 +130,7 @@ class ProductScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    '\$${product['price']}',
+                    '\$${product.price}',
                     style: theme.headline3,
                   ),
                   const SizedBox(height: 12),
@@ -156,7 +157,7 @@ class ProductScreen extends StatelessWidget {
                                   height: 70,
                                   width: 70,
                                   image: NetworkImage(
-                                    product['imageUrl'],
+                                    product.imageUrl,
                                   ),
                                   fit: BoxFit.cover,
                                 ),
@@ -170,7 +171,7 @@ class ProductScreen extends StatelessWidget {
                                     style: theme.headline3,
                                   ),
                                   Text(
-                                    '${product['colors'][0]}, ${product['size'][0]}',
+                                    '${product.colors}, ${product.size}',
                                     style: theme.headline4,
                                   ),
                                 ],
@@ -193,7 +194,7 @@ class ProductScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    product['description'],
+                    product.description,
                     style: theme.headline6,
                   ),
                 ],
@@ -207,12 +208,31 @@ class ProductScreen extends StatelessWidget {
         child: Row(
           children: [
             const SizedBox(width: 24),
-            OutlinedButton.icon(
-              onPressed: () {
-                Navigator.of(context).pushNamed(AppRouter.chat);
+            FutureBuilder<User>(
+              future: FireStoreServices().getUserByUid(uid: product.uid),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (snapshot.hasError) {
+                  return const Text('Something went wrong');
+                }
+                return OutlinedButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => ConversationScreen(
+                          user: snapshot.data!,
+                        ),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.chat_bubble_outline),
+                  label: const Text('Chat'),
+                );
               },
-              icon: const Icon(Icons.chat_bubble_outline),
-              label: const Text('Chat'),
             ),
             const SizedBox(width: 32),
             Expanded(

@@ -1,8 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/widgets/carousel.dart';
 import 'package:flutter/material.dart';
 
+import '../models/category.dart';
 import '../router/router.dart';
+import '../services/firestore_services.dart';
 import '../widgets/list_categoties.dart';
 import '../widgets/text_field_input.dart';
 
@@ -19,7 +20,16 @@ class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextEditingController searchController = TextEditingController();
-    List<String> category = ['All','Men','Women','Kids','Young Adults','Phone','Laptop', 'Book'];
+    List<String> category = [
+      'All',
+      'Men',
+      'Women',
+      'Kids',
+      'Young Adults',
+      'Phone',
+      'Laptop',
+      'Book'
+    ];
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -62,11 +72,9 @@ class SearchScreen extends StatelessWidget {
             const SizedBox(height: 16),
             const Carousel(),
             const SizedBox(height: 16),
-            StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('categories')
-                  .snapshots(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            StreamBuilder<List<Category>>(
+              stream: FireStoreServices().getCategories(),
+              builder: (context, AsyncSnapshot<List<Category>> snapshot) {
                 if (snapshot.hasError) {
                   return const Text('Something went wrong');
                 }
@@ -76,7 +84,7 @@ class SearchScreen extends StatelessWidget {
                   );
                 }
                 return ListCategories(
-                  categories: snapshot.data!.docs.toList(),
+                  categories: snapshot.data!.toList(),
                 );
               },
             ),
