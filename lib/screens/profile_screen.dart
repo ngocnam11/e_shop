@@ -101,13 +101,9 @@ class ProfileScreen extends StatelessWidget {
                           icon: Icons.person_outline_rounded,
                           title: 'My Account',
                           press: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => MyAccountScreen(
-                                  uid: uid,
-                                  isAdmin: snapshot.data!['isAdmin'],
-                                ),
-                              ),
+                            Navigator.of(context).pushNamed(
+                              AppRouter.account,
+                              arguments: snapshot.data!['isAdmin'],
                             );
                           },
                         ),
@@ -117,11 +113,8 @@ class ProfileScreen extends StatelessWidget {
                                 icon: Icons.admin_panel_settings_outlined,
                                 title: 'Go to Admin Panel',
                                 press: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: ((context) =>
-                                          const AdHomeScreen()),
-                                    ),
+                                  Navigator.of(context).pushNamed(
+                                    AppRouter.admin,
                                   );
                                 },
                               )

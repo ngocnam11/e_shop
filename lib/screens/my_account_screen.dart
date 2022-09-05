@@ -5,14 +5,27 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../config/utils.dart';
+import '../router/router.dart';
+import '../services/auth_services.dart';
 import '../services/firestore_services.dart';
 import '../widgets/text_field_input.dart';
 
 class MyAccountScreen extends StatefulWidget {
-  const MyAccountScreen({Key? key, required this.uid, required this.isAdmin})
-      : super(key: key);
-  final String uid;
+  const MyAccountScreen({
+    Key? key,
+    required this.isAdmin,
+  }) : super(key: key);
+
   final bool isAdmin;
+
+  static MaterialPageRoute route({required bool isAdmin}) {
+    return MaterialPageRoute(
+      settings: const RouteSettings(name: AppRouter.account),
+      builder: (_) => MyAccountScreen(
+        isAdmin: isAdmin,
+      ),
+    );
+  }
 
   @override
   State<MyAccountScreen> createState() => _MyAccountScreenState();
@@ -42,7 +55,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
 
     FirebaseFirestore.instance
         .collection('users')
-        .doc(widget.uid)
+        .doc(AuthServices().currentUser.uid)
         .snapshots()
         .listen((snapshot) {
       _usernameController.text = snapshot.data()!['username'];
@@ -68,13 +81,15 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
 
   void updateProfile() async {
     String resUpdate = await FireStoreServices().updateProfile(
-      uid: widget.uid,
+      uid: AuthServices().currentUser.uid,
       email: _emailController.text,
       username: _usernameController.text,
       file: _image!,
       phoneNum: _phoneNumController.text,
       isAdmin: widget.isAdmin,
     );
+
+    if (!mounted) return;
 
     if (resUpdate != 'success') {
       showSnackBar(context, resUpdate);
@@ -93,7 +108,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
         child: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
           future: FirebaseFirestore.instance
               .collection('users')
-              .doc(widget.uid)
+              .doc(AuthServices().currentUser.uid)
               .get(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
