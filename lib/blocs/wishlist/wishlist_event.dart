@@ -14,19 +14,19 @@ class LoadWishlist extends WishlistEvent {
 }
 
 class AddProductToWishlist extends WishlistEvent {
-  final product;
+  final Product product;
 
   const AddProductToWishlist(this.product);
 
   @override
-  List<Object> get props => [product];
+  List<Product> get props => [product];
 }
 
 class RemoveProductFromWishlist extends WishlistEvent {
-  final product;
+  final Product product;
 
   const RemoveProductFromWishlist(this.product);
   
   @override
-  List<Object> get props => [product];
+  List<Product> get props => [product];
 }

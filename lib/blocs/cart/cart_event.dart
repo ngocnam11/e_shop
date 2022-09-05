@@ -13,19 +13,19 @@ class LoadCart extends CartEvent {
 }
 
 class AddProduct extends CartEvent {
-  final QueryDocumentSnapshot product;
+  final Product product;
 
   const AddProduct(this.product);
 
   @override
-  List<QueryDocumentSnapshot> get props => [product];
+  List<Product> get props => [product];
 }
 
 class RemoveProduct extends CartEvent {
-  final QueryDocumentSnapshot product;
+  final Product product;
 
   const RemoveProduct(this.product);
 
   @override
-  List<QueryDocumentSnapshot> get props => [product];
+  List<Product> get props => [product];
 }
