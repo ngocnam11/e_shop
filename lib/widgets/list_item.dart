@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../models/product.dart';
+
 class ListItem extends StatelessWidget {
   const ListItem({
     Key? key,
@@ -8,7 +10,7 @@ class ListItem extends StatelessWidget {
   }) : super(key: key);
 
   final Widget child;
-  final dynamic product;
+  final Product product;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class ListItem extends StatelessWidget {
                 height: 100,
                 width: 100,
                 image: NetworkImage(
-                  product['imageUrl'],
+                  product.imageUrl,
                 ),
                 fit: BoxFit.cover,
               ),
@@ -45,7 +47,7 @@ class ListItem extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          product['name'],
+                          product.name,
                           style: Theme.of(context).textTheme.headline5,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -65,7 +67,7 @@ class ListItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '\$${product['price']}',
+                        '\$${product.price}',
                         style: Theme.of(context).textTheme.headline5,
                       ),
                       child,

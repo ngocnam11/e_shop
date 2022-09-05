@@ -1,8 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../models/user.dart';
 import '../screens/screens.dart';
-import '../services/auth_services.dart';
+import '../services/firestore_services.dart';
 
 class ListConversation extends StatelessWidget {
   const ListConversation({
@@ -11,11 +11,8 @@ class ListConversation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('users')
-          .where('uid', isNotEqualTo: AuthServices().user.uid)
-          .snapshots(),
+    return StreamBuilder<List<User>>(
+      stream: FireStoreServices().getDiscussionUser,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -25,20 +22,20 @@ class ListConversation extends StatelessWidget {
         if (snapshot.hasError) {
           return const Text('Something went wrong');
         }
-        return snapshot.data!.docs.toList().isEmpty
+        return snapshot.data!.toList().isEmpty
             ? const Center(
                 child: Text('No discussion'),
               )
             : ListView.separated(
                 padding: const EdgeInsets.only(bottom: 12),
-                itemCount: snapshot.data!.docs.toList().length,
+                itemCount: snapshot.data!.toList().length,
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => ConversationScreen(
-                            user: snapshot.data!.docs.toList()[index],
+                            user: snapshot.data!.toList()[index],
                           ),
                         ),
                       );
@@ -53,7 +50,7 @@ class ListConversation extends StatelessWidget {
                             radius: 32,
                             backgroundColor: Colors.amber,
                             backgroundImage: NetworkImage(
-                              snapshot.data!.docs.toList()[index]['photoUrl'],
+                              snapshot.data!.toList()[index].photoUrl,
                             ),
                           ),
                           SizedBox(
@@ -64,7 +61,7 @@ class ListConversation extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  snapshot.data!.docs.toList()[index]['username'],
+                                  snapshot.data!.toList()[index].username,
                                   style: Theme.of(context).textTheme.headline4,
                                 ),
                                 Text(

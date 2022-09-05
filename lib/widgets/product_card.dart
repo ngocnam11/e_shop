@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../blocs/wishlist/wishlist_bloc.dart';
 import '../config/utils.dart';
+import '../models/product.dart';
 import '../screens/screens.dart';
 
 class ProductCard extends StatelessWidget {
@@ -11,7 +12,7 @@ class ProductCard extends StatelessWidget {
     required this.product,
   }) : super(key: key);
 
-  final dynamic product;
+  final Product product;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class ProductCard extends StatelessWidget {
                   height: 160,
                   width: 150,
                   image: NetworkImage(
-                    product['imageUrl'],
+                    product.imageUrl,
                   ),
                   fit: BoxFit.cover,
                 ),
@@ -83,15 +84,15 @@ class ProductCard extends StatelessWidget {
             ],
           ),
           Text(
-            product['name'],
+            product.name,
             style: Theme.of(context).textTheme.headline4,
           ),
           Text(
-            product['description'],
+            product.description,
             style: Theme.of(context).textTheme.headline6,
           ),
           Text(
-            '\$${product['price']}',
+            '\$${product.price}',
             style: Theme.of(context).textTheme.headline5,
           ),
         ],

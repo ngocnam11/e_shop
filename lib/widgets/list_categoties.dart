@@ -42,13 +42,15 @@ class ListCategories extends StatelessWidget {
                       child: Image(
                         height: 70,
                         width: 70,
-                        image: NetworkImage(categories[index]['imageUrl']),
+                        
+                        image: NetworkImage(categories[index].imageUrl),
                         fit: BoxFit.cover,
                       ),
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      categories[index]['name'],
+                      
+                      categories[index].name,
                       style: Theme.of(context).textTheme.headline3,
                     ),
                   ],
