@@ -126,14 +126,16 @@ class ProfileScreen extends StatelessWidget {
                               context: context,
                               builder: (context) => AlertDialog(
                                 title: const Text('Log out'),
+                                titleTextStyle:
+                                    Theme.of(context).textTheme.headline3,
                                 content: const Text('Do you want to log out?'),
                                 actions: [
                                   TextButton(
                                     onPressed: () =>
                                         Navigator.of(context).pop(),
                                     child: const Text(
-                                      'No',
-                                      style: TextStyle(color: Colors.black),
+                                      'Cancel',
+                                      style: TextStyle(color: Colors.black87),
                                     ),
                                   ),
                                   TextButton(
@@ -144,7 +146,7 @@ class ProfileScreen extends StatelessWidget {
                                     },
                                     child: const Text(
                                       'Yes',
-                                      style: TextStyle(color: Colors.black),
+                                      style: TextStyle(color: Colors.black87),
                                     ),
                                   ),
                                 ],

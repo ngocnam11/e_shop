@@ -124,33 +124,40 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                     Stack(
                       clipBehavior: Clip.none,
                       children: [
-                        _image != null
-                            ? CircleAvatar(
-                                radius: 64,
-                                backgroundImage: MemoryImage(_image!),
-                              )
-                            : CircleAvatar(
-                                radius: 64,
-                                backgroundImage: NetworkImage(
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: _image != null
+                              ? Image.memory(
+                                  _image!,
+                                  height: 100,
+                                  width: 100,
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.network(
                                   snapshot.data!['photoUrl'],
+                                  height: 100,
+                                  width: 100,
+                                  fit: BoxFit.cover,
                                 ),
-                              ),
+                        ),
                         Positioned(
                           bottom: -10,
                           left: 80,
                           child: Container(
-                            height: 45,
-                            width: 45,
+                            height: 30,
+                            width: 30,
                             decoration: BoxDecoration(
                               color: Colors.black87,
-                              borderRadius: BorderRadius.circular(30),
+                              shape: BoxShape.circle,
                               border: Border.all(color: Colors.white),
                             ),
-                            child: IconButton(
-                              onPressed: selectImage,
-                              icon: const Icon(
-                                Icons.edit,
-                                color: Colors.white,
+                            child: FittedBox(
+                              child: IconButton(
+                                onPressed: selectImage,
+                                icon: const Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ),
