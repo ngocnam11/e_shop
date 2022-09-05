@@ -28,7 +28,7 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
 
   void addShippingAddress() async {
     String res = await FireStoreServices().updateShippingAddress(
-      uid: AuthServices().user.uid,
+      uid: AuthServices().currentUser.uid,
       address: addressController.text,
       city: cityController.text,
       country: countryController.text,

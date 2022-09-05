@@ -112,7 +112,7 @@ class _AdProductScreenState extends State<AdProductScreen> {
                         .collection('products')
                         .where(
                           'uid',
-                          isEqualTo: AuthServices().user.uid,
+                          isEqualTo: AuthServices().currentUser.uid,
                         )
                         .get(),
                     builder: (context, snapshot) {

@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 
+import '../../router/router.dart';
 import 'ad_order_screen.dart';
 import 'ad_product_screen.dart';
 
 class AdHomeScreen extends StatelessWidget {
   const AdHomeScreen({Key? key}) : super(key: key);
+
+  static MaterialPageRoute route() {
+    return MaterialPageRoute(
+      settings: const RouteSettings(name: AppRouter.admin),
+      builder: (_) => const AdHomeScreen(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

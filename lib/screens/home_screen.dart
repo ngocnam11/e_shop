@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.notifications_none),
+            icon: const Icon(Icons.notifications_none_rounded),
           ),
         ],
       ),

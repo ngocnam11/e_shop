@@ -5,8 +5,6 @@ import '../router/router.dart';
 import '../services/auth_services.dart';
 import '../widgets/custom_navigationbar.dart';
 import '../widgets/profile_menu.dart';
-import 'adminPanel/ad_home_screen.dart';
-import 'screens.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key, required this.uid}) : super(key: key);
@@ -16,7 +14,7 @@ class ProfileScreen extends StatelessWidget {
     return MaterialPageRoute(
       settings: const RouteSettings(name: AppRouter.profile),
       builder: (_) => ProfileScreen(
-        uid: AuthServices().user.uid,
+        uid: AuthServices().currentUser.uid,
       ),
     );
   }
@@ -101,13 +99,9 @@ class ProfileScreen extends StatelessWidget {
                           icon: Icons.person_outline_rounded,
                           title: 'My Account',
                           press: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => MyAccountScreen(
-                                  uid: uid,
-                                  isAdmin: snapshot.data!['isAdmin'],
-                                ),
-                              ),
+                            Navigator.of(context).pushNamed(
+                              AppRouter.account,
+                              arguments: snapshot.data!['isAdmin'],
                             );
                           },
                         ),
@@ -117,11 +111,8 @@ class ProfileScreen extends StatelessWidget {
                                 icon: Icons.admin_panel_settings_outlined,
                                 title: 'Go to Admin Panel',
                                 press: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: ((context) =>
-                                          const AdHomeScreen()),
-                                    ),
+                                  Navigator.of(context).pushNamed(
+                                    AppRouter.admin,
                                   );
                                 },
                               )
@@ -135,14 +126,16 @@ class ProfileScreen extends StatelessWidget {
                               context: context,
                               builder: (context) => AlertDialog(
                                 title: const Text('Log out'),
+                                titleTextStyle:
+                                    Theme.of(context).textTheme.headline3,
                                 content: const Text('Do you want to log out?'),
                                 actions: [
                                   TextButton(
                                     onPressed: () =>
                                         Navigator.of(context).pop(),
                                     child: const Text(
-                                      'No',
-                                      style: TextStyle(color: Colors.black),
+                                      'Cancel',
+                                      style: TextStyle(color: Colors.black87),
                                     ),
                                   ),
                                   TextButton(
@@ -153,7 +146,7 @@ class ProfileScreen extends StatelessWidget {
                                     },
                                     child: const Text(
                                       'Yes',
-                                      style: TextStyle(color: Colors.black),
+                                      style: TextStyle(color: Colors.black87),
                                     ),
                                   ),
                                 ],

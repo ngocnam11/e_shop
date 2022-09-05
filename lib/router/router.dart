@@ -16,6 +16,8 @@ abstract class AppRouter {
   static const String profile = '/profile';
   static const String notification = '/notification';
   static const String product = '/product';
+  static const String account = '/account';
+  static const String admin = '/admin';
 
   static Route onGenerateRoute(RouteSettings settings) {
     debugPrint('Route: ${settings.name}');
@@ -47,6 +49,10 @@ abstract class AppRouter {
         return NotificationScreen.route();
       case product:
         return ProductScreen.route(product: settings.arguments);
+      case account:
+        return MyAccountScreen.route(isAdmin: settings.arguments as bool);
+      case admin:
+        return AdHomeScreen.route();
       default:
         return MaterialPageRoute(
           settings: const RouteSettings(name: '/error'),

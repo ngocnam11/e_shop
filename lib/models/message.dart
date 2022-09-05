@@ -8,10 +8,16 @@ class Message {
   String? senderUID;
   String? reciverUID;
   Timestamp? createAt;
-  
-  Message({this.uid, this.content, this.senderUID, this.reciverUID, this.createAt});
 
-  Message.fromJson(Map<String , dynamic> json, String id) {
+  Message({
+    this.uid,
+    this.content,
+    this.senderUID,
+    this.reciverUID,
+    this.createAt,
+  });
+
+  Message.fromJson(Map<String, dynamic> json, String id) {
     uid = id;
     content = json['content'];
     senderUID = json['senderUID'];
@@ -28,5 +34,5 @@ class Message {
     };
   }
 
-  bool get isMe => AuthServices().user.uid == senderUID;
+  bool get isMe => AuthServices().currentUser.uid == senderUID;
 }

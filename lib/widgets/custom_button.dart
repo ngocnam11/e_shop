@@ -8,14 +8,14 @@ class CustomButton extends StatelessWidget {
     required this.title,
     required this.primaryColor,
     required this.press,
-    required this.textColor, 
+    required this.textColor,
     this.svgColor,
   }) : super(key: key);
 
   final String svg;
   final String title;
   final Color primaryColor;
-  final VoidCallback press;
+  final VoidCallback? press;
   final Color textColor;
   final Color? svgColor;
 

@@ -51,6 +51,27 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
+  void googleLogin() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthServices().logInWithGoogle();
+
+    if (!mounted) return;
+
+    if (res == 'success') {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        AppRouter.home,
+        (route) => false,
+      );
+    } else {
+      showSnackBar(context, res);
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -178,7 +199,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(width: 30),
                 Expanded(
                   child: CustomButton(
-                    press: () {},
+                    press: googleLogin,
                     primaryColor: Colors.white,
                     title: 'Google',
                     svg: 'assets/svgs/login/google_logo.svg',

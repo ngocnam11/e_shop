@@ -30,8 +30,7 @@ class ConversationScreen extends StatelessWidget {
                 builder: (context, snapshot1) {
                   if (snapshot1.hasData) {
                     return StreamBuilder<List<Message>>(
-                      stream:
-                          FireStoreServices().getMessage(user.uid, false),
+                      stream: FireStoreServices().getMessage(user.uid, false),
                       builder: (context, snapshot2) {
                         if (snapshot2.hasData) {
                           var messages = [
@@ -88,7 +87,7 @@ class ConversationScreen extends StatelessWidget {
                       content: msgController.text,
                       createAt: Timestamp.now(),
                       reciverUID: user.uid,
-                      senderUID: AuthServices().user.uid,
+                      senderUID: AuthServices().currentUser.uid,
                     );
                     msgController.clear();
                     await FireStoreServices().sendMessage(msg);

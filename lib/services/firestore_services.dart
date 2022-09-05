@@ -253,18 +253,19 @@ class FireStoreServices {
   Stream<List<model.User>> get getDiscussionUser {
     return _firestore
         .collection('users')
-        .where('uid', isNotEqualTo: AuthServices().user.uid)
+        .where('uid', isNotEqualTo: AuthServices().currentUser.uid)
         .snapshots()
-        .map((event) => event.docs.map((e) => model.User.fromSnap(e.data())).toList());
+        .map((event) =>
+            event.docs.map((e) => model.User.fromSnap(e.data())).toList());
   }
 
   Stream<List<Message>> getMessage(String reciverUID, [bool myMessage = true]) {
     return _firestore
         .collection('messages')
         .where('senderUID',
-            isEqualTo: myMessage ? AuthServices().user.uid : reciverUID)
+            isEqualTo: myMessage ? AuthServices().currentUser.uid : reciverUID)
         .where('reciverUID',
-            isEqualTo: myMessage ? reciverUID : AuthServices().user.uid)
+            isEqualTo: myMessage ? reciverUID : AuthServices().currentUser.uid)
         .snapshots()
         .map((event) =>
             event.docs.map((e) => Message.fromJson(e.data(), e.id)).toList());

@@ -31,7 +31,6 @@ class ProductScreen extends StatelessWidget {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         scrolledUnderElevation: 1,
-        // backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         centerTitle: false,
         title: Container(
@@ -134,17 +133,17 @@ class ProductScreen extends StatelessWidget {
                     style: theme.headline3,
                   ),
                   const SizedBox(height: 12),
-                  InkWell(
-                    onTap: () {
-                      // Navigator.of(context).push(MaterialPageRoute(builder: (context) => SelectOptionsScreen(),));
-                    },
-                    child: Container(
-                      height: 80,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[100],
-                        borderRadius: BorderRadius.circular(16),
-                      ),
+                  Ink(
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(16),
+                      onTap: () {
+                        // Navigator.of(context).push(MaterialPageRoute(builder: (context) => SelectOptionsScreen(),));
+                      },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
