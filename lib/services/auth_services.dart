@@ -33,6 +33,7 @@ class AuthServices {
           username: username,
           email: email,
           photoUrl: photoUrl,
+          addresses: const [],
         );
 
         _firestore.collection('users').doc(cred.user!.uid).set(user.toJson());
