@@ -253,9 +253,10 @@ class FireStoreServices {
   Stream<List<model.User>> get getDiscussionUser {
     return _firestore
         .collection('users')
-        .where('uid', isNotEqualTo: AuthServices().user.uid)
+        .where('uid', isNotEqualTo: AuthServices().currentUser.uid)
         .snapshots()
-        .map((event) => event.docs.map((e) => model.User.fromSnap(e.data())).toList());
+        .map((event) =>
+            event.docs.map((e) => model.User.fromSnap(e.data())).toList());
   }
 
   Stream<List<Message>> getMessage(String reciverUID, [bool myMessage = true]) {

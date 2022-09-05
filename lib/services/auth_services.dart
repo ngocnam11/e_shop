@@ -99,6 +99,7 @@ class AuthServices {
         username: userCredential.user!.displayName ?? '',
         phoneNum: userCredential.user!.phoneNumber ?? '',
         photoUrl: userCredential.user!.photoURL ?? '',
+        addresses: const [],
       );
 
       _firestore

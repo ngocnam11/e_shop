@@ -5,8 +5,6 @@ import '../router/router.dart';
 import '../services/auth_services.dart';
 import '../widgets/custom_navigationbar.dart';
 import '../widgets/profile_menu.dart';
-import 'adminPanel/ad_home_screen.dart';
-import 'screens.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key, required this.uid}) : super(key: key);
