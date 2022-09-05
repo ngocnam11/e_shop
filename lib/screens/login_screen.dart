@@ -187,10 +187,10 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(height: 10),
             Row(
               children: <Widget>[
-                const Expanded(
+                Expanded(
                   child: CustomButton(
-                    press: null,
-                    primaryColor: Color.fromARGB(255, 24, 119, 242),
+                    press: () {},
+                    primaryColor: const Color.fromARGB(255, 24, 119, 242),
                     title: 'Facebook',
                     svg: 'assets/svgs/login/facebook_logo.svg',
                     textColor: Colors.white,
