@@ -46,7 +46,6 @@ class WishlistScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 return ListItem(
                   product: state.wishlist.products[index],
-                  index: index,
                   child: BlocBuilder<CartBloc, CartState>(
                     builder: (context, state) {
                       if (state is CartLoading) {
@@ -60,7 +59,7 @@ class WishlistScreen extends StatelessWidget {
                             primary: Colors.blue[300],
                           ),
                           onPressed: () {
-                            // context.read<CartBloc>().add(AddProduct(state.wishlist.products[index]));
+                            context.read<CartBloc>().add(AddProduct(state.cart.products[index]));
                             showSnackBar(context, 'Added to your Cart');
                           },
                           child: const Text('Add to Cart'),

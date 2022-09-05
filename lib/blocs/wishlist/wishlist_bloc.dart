@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../models/product.dart';
 import '../../models/wishlist.dart';
 
 part 'wishlist_event.dart';

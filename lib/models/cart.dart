@@ -1,12 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
+import 'product.dart';
+
 class Cart extends Equatable {
-  final List<QueryDocumentSnapshot> products;
-  const Cart({this.products = const <QueryDocumentSnapshot>[]});
+  final List<Product> products;
+  const Cart({this.products = const <Product>[]});
 
   double get subtotal =>
-      products.fold(0, (total, current) => total + current['price']);
+      products.fold(0, (total, current) => total + current.price);
 
   String get subtotalString => subtotal.toStringAsFixed(2);
 
@@ -52,5 +53,5 @@ class Cart extends Equatable {
   }
 
   @override
-  List<List<dynamic>> get props => [products];
+  List<List<Product>> get props => [products];
 }

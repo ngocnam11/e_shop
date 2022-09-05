@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
+import '../models/product.dart';
+
 class ListItem extends StatelessWidget {
   const ListItem({
     Key? key,
     required this.child,
     required this.product,
-    required this.index,
   }) : super(key: key);
 
   final Widget child;
-  final dynamic product;
-  final int index;
+  final Product product;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class ListItem extends StatelessWidget {
                 height: 100,
                 width: 100,
                 image: NetworkImage(
-                  product['imageUrl'],
+                  product.imageUrl,
                 ),
                 fit: BoxFit.cover,
               ),
@@ -47,16 +47,16 @@ class ListItem extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          product['name'],
+                          product.name,
                           style: Theme.of(context).textTheme.headline5,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      Checkbox(
-                        value: false,
-                        onChanged: (value) {},
-                      ),
+                      // Checkbox(
+                      //   value: false,
+                      //   onChanged: (value) {},
+                      // ),
                     ],
                   ),
                   Text(
@@ -67,7 +67,7 @@ class ListItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '\$${product['price']}',
+                        '\$${product.price}',
                         style: Theme.of(context).textTheme.headline5,
                       ),
                       child,

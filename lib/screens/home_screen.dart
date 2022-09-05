@@ -1,7 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../models/product.dart';
 import '../router/router.dart';
+import '../services/firestore_services.dart';
 import '../widgets/carousel.dart';
 import '../widgets/custom_navigationbar.dart';
 import '../widgets/product_carousel.dart';
@@ -75,10 +76,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const SizedBox(height: 4),
-            StreamBuilder<QuerySnapshot>(
-              stream:
-                  FirebaseFirestore.instance.collection('products').snapshots(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            StreamBuilder<List<Product>>(
+              stream: FireStoreServices().getProducts(),
+              builder: (context, AsyncSnapshot<List<Product>> snapshot) {
                 if (snapshot.hasError) {
                   return const Text('Something went wrong');
                 }
@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 }
                 return ProductCarousel(
-                  products: snapshot.data!.docs.toList(),
+                  products: snapshot.data!.toList(),
                 );
               },
             ),

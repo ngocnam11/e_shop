@@ -24,8 +24,7 @@ class MessageComponent extends StatelessWidget {
                 maxWidth: width * 0.7,
               ),
               decoration: BoxDecoration(
-                color:
-                    message!.isMe ? Colors.blue : Colors.black.withOpacity(.7),
+                color: message!.isMe ? Colors.blue : Colors.grey[300],
                 borderRadius: BorderRadius.only(
                   topLeft: const Radius.circular(10),
                   topRight: const Radius.circular(10),
@@ -39,10 +38,12 @@ class MessageComponent extends StatelessWidget {
               ),
               child: Text(
                 message!.content!,
-                style: Theme.of(context)
-                    .textTheme
-                    .headline6!
-                    .copyWith(color: Colors.white),
+                style: message!.isMe
+                    ? Theme.of(context)
+                        .textTheme
+                        .headline6!
+                        .copyWith(color: Colors.white)
+                    : Theme.of(context).textTheme.headline6!,
               ),
             ),
             Positioned(
@@ -55,10 +56,12 @@ class MessageComponent extends StatelessWidget {
                 ),
                 child: Text(
                   '${date.hour}h${date.minute}',
-                  style: const TextStyle(
-                    fontSize: 10,
-                    color: Colors.white,
-                  ),
+                  style: message!.isMe
+                      ? const TextStyle(
+                          fontSize: 10,
+                          color: Colors.white,
+                        )
+                      : const TextStyle(fontSize: 10),
                 ),
               ),
             ),

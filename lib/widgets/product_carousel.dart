@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../models/product.dart';
 import 'product_card.dart';
 
 class ProductCarousel extends StatelessWidget {
@@ -8,7 +8,7 @@ class ProductCarousel extends StatelessWidget {
     Key? key,
     required this.products,
   }) : super(key: key);
-  final List<QueryDocumentSnapshot> products;
+  final List<Product> products;
 
   @override
   Widget build(BuildContext context) {

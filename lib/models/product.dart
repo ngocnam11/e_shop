@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class Product extends Equatable {
@@ -41,19 +40,18 @@ class Product extends Equatable {
     };
   }
 
-  static Product fromJson(DocumentSnapshot snap) {
-    var snapshot = snap.data() as Map<String, dynamic>;
+  factory Product.fromJson(Map<String, dynamic> snap) {
     return Product(
-      id: snapshot['id'],
-      uid: snapshot['uid'],
-      name: snapshot['name'],
-      category: snapshot['category'],
-      imageUrl: snapshot['imageUrl'],
-      price: snapshot['price'],
-      quantity: snapshot['quantity'],
-      description: snapshot['description'],
-      colors: snapshot['colors'],
-      size: snapshot['size'],
+      id: snap['id'],
+      uid: snap['uid'],
+      name: snap['name'],
+      category: snap['category'],
+      imageUrl: snap['imageUrl'],
+      price: snap['price'],
+      quantity: snap['quantity'],
+      description: snap['description'],
+      colors: List<String>.from(snap['colors'].map((x) => x)),
+      size: List<String>.from(snap['size'].map((x) => x)),
     );
   }
 

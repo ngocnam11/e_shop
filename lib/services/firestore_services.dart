@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../models/category.dart';
 import '../models/message.dart';
 import '../models/product.dart';
 import '../models/user.dart' as model;
@@ -11,6 +12,37 @@ import 'storage_service.dart';
 class FireStoreServices {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final StorageService _storage = StorageService();
+
+  Future<model.User> getUserByUid({required String uid}) async {
+    final snap = await _firestore.collection('users').doc(uid).get();
+    model.User user = model.User.fromSnap(snap.data()!);
+    return user;
+  }
+
+  Stream<List<Product>> getProducts() {
+    final snaps = _firestore.collection('products').snapshots();
+    final products = snaps.map((snap) =>
+        snap.docs.map((doc) => Product.fromJson(doc.data())).toList());
+    return products;
+  }
+
+  Stream<List<Category>> getCategories() {
+    final snaps = _firestore.collection('categories').snapshots();
+    final categories = snaps.map((snap) =>
+        snap.docs.map((doc) => Category.fromJson(doc.data())).toList());
+    return categories;
+  }
+
+  Future<Stream<List<Product>>> getProductsByRecentSearch(
+      {required List<String> recentSearch}) async {
+    final snaps = _firestore
+        .collection('products')
+        .where('name', isGreaterThanOrEqualTo: recentSearch.last)
+        .snapshots();
+    final recommendedProducts = snaps.map((snap) =>
+        snap.docs.map((doc) => Product.fromJson(doc.data())).toList());
+    return recommendedProducts;
+  }
 
   Future<String> addProduct({
     required String uid,
@@ -153,6 +185,7 @@ class FireStoreServices {
         photoUrl: photoUrl,
         phoneNum: phoneNum,
         isAdmin: isAdmin,
+        addresses: const [],
       );
 
       _firestore.collection('users').doc(uid).update(user.toJson());
@@ -217,13 +250,13 @@ class FireStoreServices {
     return res;
   }
 
-  // Stream<List<model.User>> get getDiscussionUser {
-  //   return _firestore
-  //       .collection('users')
-  //       .where('uid', isNotEqualTo: AuthServices().user.uid)
-  //       .snapshots()
-  //       .map((event) => event.docs.map((e) => model.User.fromSnap(e)).toList());
-  // }
+  Stream<List<model.User>> get getDiscussionUser {
+    return _firestore
+        .collection('users')
+        .where('uid', isNotEqualTo: AuthServices().user.uid)
+        .snapshots()
+        .map((event) => event.docs.map((e) => model.User.fromSnap(e.data())).toList());
+  }
 
   Stream<List<Message>> getMessage(String reciverUID, [bool myMessage = true]) {
     return _firestore

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../router/router.dart';
+import '../widgets/order_summary.dart';
+import 'order_confirmation/order_confirm_screen.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({Key? key}) : super(key: key);
@@ -20,11 +22,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   final List<String> address = [
     '1784 Juniper Drive',
     '2993 Liberty Avenue',
-    '297 Nguyễn Thái Học',
-    '250 Jalan Purta',
-    '117 Bevan St E',
-    '1274-39 Kokinu',
-    'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
   ];
   String _addressValue = '';
 
@@ -139,74 +136,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Column(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      'Sub-total',
-                      style: Theme.of(context).textTheme.headline5!.copyWith(
-                            color: Colors.black54,
-                            fontWeight: FontWeight.normal,
-                          ),
-                    ),
-                    Text(
-                      '{price}\$',
-                      style: Theme.of(context).textTheme.headline5,
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      'VAT (%)',
-                      style: Theme.of(context).textTheme.headline5!.copyWith(
-                            color: Colors.black54,
-                            fontWeight: FontWeight.normal,
-                          ),
-                    ),
-                    Text(
-                      '{price}\$',
-                      style: Theme.of(context).textTheme.headline5,
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      'Shipping Charge',
-                      style: Theme.of(context).textTheme.headline5!.copyWith(
-                            color: Colors.black54,
-                            fontWeight: FontWeight.normal,
-                          ),
-                    ),
-                    Text(
-                      '{price}\$',
-                      style: Theme.of(context).textTheme.headline5,
-                    ),
-                  ],
-                ),
-                const Divider(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      'Total',
-                      style: Theme.of(context).textTheme.headline5,
-                    ),
-                    Text(
-                      '{price}\$',
-                      style: Theme.of(context).textTheme.headline5,
-                    ),
-                  ],
-                ),
-              ],
-            ),
+            const OrderSummary(),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (constext) => const OrderConfirmScreen(),
+                  ),
+                );
+              },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
                   vertical: 12,

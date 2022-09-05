@@ -1,5 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+
+import 'delivery_address.dart';
 
 class User extends Equatable {
   final String uid;
@@ -7,10 +8,14 @@ class User extends Equatable {
   final String username;
   final String phoneNum;
   final String photoUrl;
-  final String? address;
-  final String? city;
-  final String? country;
+  final List<DeliveryAddress> addresses;
   final bool isAdmin;
+
+  DeliveryAddress? get defaultAddress {
+    return addresses.isEmpty
+        ? null
+        : addresses.firstWhere((address) => address.isDefault);
+  }
 
   const User({
     required this.uid,
@@ -18,47 +23,66 @@ class User extends Equatable {
     required this.username,
     this.phoneNum = '',
     required this.photoUrl,
-    this.address = '',
-    this.city = '',
-    this.country= '',
+    required this.addresses,
     this.isAdmin = false,
   });
 
-  static User fromSnap(DocumentSnapshot snap) {
-    var snapshot = snap.data() as Map<String, dynamic>;
-
+  User copyWith({
+    String? username,
+    String? phoneNum,
+    String? photoUrl,
+    List<DeliveryAddress>? addresses,
+  }) {
     return User(
-      username: snapshot["username"],
-      uid: snapshot["uid"],
-      email: snapshot["email"],
-      phoneNum: snapshot["phoneNum"],
-      photoUrl: snapshot["photoUrl"],
-      address: snap["address"],
-      city: snap["city"],
-      country: snap["country"],
-      isAdmin: snapshot["isAdmin"],
+      uid: uid,
+      email: email,
+      username: username ?? this.username,
+      phoneNum: phoneNum ?? this.phoneNum,
+      photoUrl: photoUrl ?? this.photoUrl,
+      addresses: addresses ?? this.addresses,
+      isAdmin: isAdmin,
+    );
+  }
+
+  factory User.fromSnap(Map<String, dynamic> snap) {
+    List<DeliveryAddress> addresses = [];
+    if (snap["addresses"] != null) {
+      snap["addresses"].forEach((address) {
+        addresses.add(DeliveryAddress.fromSnap(address));
+      });
+    }
+    return User(
+      username: snap["username"],
+      uid: snap["uid"],
+      email: snap["email"],
+      phoneNum: snap["phoneNum"],
+      photoUrl: snap["photoUrl"],
+      addresses: addresses,
+      isAdmin: snap["isAdmin"],
     );
   }
 
   Map<String, dynamic> toJson() {
-    Map shippingAddress = {};
-    shippingAddress['address'] = address;
-    shippingAddress['city'] = city;
-    shippingAddress['country'] = country;
-
     return {
       'uid': uid,
       'username': username,
       'email': email,
       'phoneNum': phoneNum,
       'photoUrl': photoUrl,
-      'shippingAddress': shippingAddress,
+      'deliveryAddress':
+          List<dynamic>.from(addresses.map((address) => address.toJson())),
       'isAdmin': isAdmin,
     };
-      
   }
 
   @override
-  List<Object?> get props =>
-      [uid, email, username, phoneNum, photoUrl, address, city, country, isAdmin];
+  List<Object?> get props => [
+        uid,
+        email,
+        username,
+        phoneNum,
+        photoUrl,
+        addresses,
+        isAdmin,
+      ];
 }

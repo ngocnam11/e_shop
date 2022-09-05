@@ -1,11 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../models/category.dart';
+import '../models/product.dart';
+import '../services/firestore_services.dart';
 import '../widgets/product_card.dart';
 
 class CategoryScreen extends StatelessWidget {
   const CategoryScreen({Key? key, required this.category}) : super(key: key);
-  final dynamic category;
+  final Category category;
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +23,8 @@ class CategoryScreen extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
-        child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream:
-                FirebaseFirestore.instance.collection('products').snapshots(),
+        child: StreamBuilder<List<Product>>(
+            stream: FireStoreServices().getProducts(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
@@ -33,8 +34,8 @@ class CategoryScreen extends StatelessWidget {
               if (snapshot.hasError) {
                 return const Text('Something went wrong');
               }
-              var productsInCategory = snapshot.data!.docs
-                  .where((doc) => doc.data()['category'] == category['name'])
+              var productsInCategory = snapshot.data!
+                  .where((doc) => doc.category == category.name)
                   .toList();
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,13 +43,14 @@ class CategoryScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
-                      category['name'],
+                      category.name,
                       style: Theme.of(context).textTheme.headline3,
                     ),
                   ),
                   SizedBox(
-                    height: 600,
+                    height: MediaQuery.of(context).size.height * 0.8,
                     child: GridView.builder(
+                      shrinkWrap: true,
                       itemCount: productsInCategory.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
