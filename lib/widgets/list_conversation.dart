@@ -30,54 +30,58 @@ class ListConversation extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 12),
                 itemCount: snapshot.data!.toList().length,
                 itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => ConversationScreen(
-                            user: snapshot.data!.toList()[index],
-                          ),
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Ink(
+                      height: 60,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ConversationScreen(
+                                user: snapshot.data!.toList()[index],
+                              ),
+                            ),
+                          );
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Colors.amber,
+                              backgroundImage: NetworkImage(
+                                snapshot.data!.toList()[index].photoUrl,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    snapshot.data!.toList()[index].username,
+                                    style:
+                                        Theme.of(context).textTheme.headline4,
+                                  ),
+                                  Text(
+                                    'Message',
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Text(
+                              '11/11/2022',
+                              style: Theme.of(context).textTheme.headline6,
+                            ),
+                          ],
                         ),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CircleAvatar(
-                            radius: 32,
-                            backgroundColor: Colors.amber,
-                            backgroundImage: NetworkImage(
-                              snapshot.data!.toList()[index].photoUrl,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 60,
-                            width: MediaQuery.of(context).size.width / 2,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  snapshot.data!.toList()[index].username,
-                                  style: Theme.of(context).textTheme.headline4,
-                                ),
-                                Text(
-                                  'Message',
-                                  style: Theme.of(context).textTheme.headline6,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(width: 20),
-                          Text(
-                            '11/11/2022',
-                            style: Theme.of(context).textTheme.headline6,
-                          ),
-                        ],
                       ),
                     ),
                   );

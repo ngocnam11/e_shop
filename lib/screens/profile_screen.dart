@@ -7,15 +7,12 @@ import '../widgets/custom_navigationbar.dart';
 import '../widgets/profile_menu.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key, required this.uid}) : super(key: key);
-  final String uid;
+  const ProfileScreen({Key? key}) : super(key: key);
 
   static MaterialPageRoute route() {
     return MaterialPageRoute(
       settings: const RouteSettings(name: AppRouter.profile),
-      builder: (_) => ProfileScreen(
-        uid: AuthServices().currentUser.uid,
-      ),
+      builder: (_) => const ProfileScreen(),
     );
   }
 
@@ -33,7 +30,10 @@ class ProfileScreen extends StatelessWidget {
         ],
       ),
       body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-        future: FirebaseFirestore.instance.collection('users').doc(uid).get(),
+        future: FirebaseFirestore.instance
+            .collection('users')
+            .doc(AuthServices().currentUser.uid)
+            .get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(

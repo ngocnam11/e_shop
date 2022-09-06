@@ -20,20 +20,12 @@ class PurchaseScreen extends StatefulWidget {
 }
 
 class _PurchaseScreenState extends State<PurchaseScreen> {
-  final List<String> _paymentIcon = [
-    'assets/svgs/logo/money.svg',
-    // 'assets/svgs/logo/paypal.svg',
-    'assets/svgs/logo/apple.svg',
-    'assets/svgs/logo/google.svg',
-    'assets/svgs/logo/mastercard.svg',
-  ];
-
-  final List<String> _paymentTitle = [
-    'Cash Money',
-    // 'Paypal',
-    'Apple Pay',
-    'Google Pay',
-    'Credit Card',
+  final List<Map<String, String>> _payment = [
+    {'title': 'Cash Money', 'icon': 'assets/svgs/logo/money.svg'},
+    // {'title':'Paypal','icon': 'assets/svgs/logo/paypal.svg'},
+    {'title': 'Apple Pay', 'icon': 'assets/svgs/logo/apple.svg'},
+    {'title': 'Google Pay', 'icon': 'assets/svgs/logo/google.svg'},
+    {'title': 'Credit Card', 'icon': 'assets/svgs/logo/mastercard.svg'},
   ];
 
   String _paymentMethod = '';
@@ -47,7 +39,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
       body: ListView.separated(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         itemBuilder: (context, index) {
-          if (index != _paymentTitle.length) {
+          if (index != _payment.length) {
             return Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -64,13 +56,13 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                   ),
                   child: FittedBox(
                     child: SvgPicture.asset(
-                      _paymentIcon[index],
+                      _payment[index]['icon']!,
                     ),
                   ),
                 ),
-                title: Text(_paymentTitle[index]),
+                title: Text(_payment[index]['title']!),
                 trailing: Radio<String>(
-                  value: _paymentTitle[index],
+                  value: _payment[index]['title']!,
                   groupValue: _paymentMethod,
                   onChanged: (value) {
                     setState(() {
@@ -96,7 +88,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
           );
         },
         separatorBuilder: (_, __) => const SizedBox(height: 10),
-        itemCount: _paymentTitle.length + 1,
+        itemCount: _payment.length + 1,
       ),
       bottomNavigationBar: Container(
         height: 170,
