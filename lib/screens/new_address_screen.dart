@@ -12,7 +12,7 @@ class NewAddressScreen extends StatefulWidget {
 
   static MaterialPageRoute route() {
     return MaterialPageRoute(
-      settings: const RouteSettings(name: AppRouter.newaddress),
+      settings: const RouteSettings(name: AppRouter.newAddress),
       builder: (_) => const NewAddressScreen(),
     );
   }

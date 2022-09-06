@@ -10,13 +10,15 @@ abstract class AppRouter {
   static const String search = '/search';
   static const String cart = '/cart';
   static const String checkout = '/checkout';
-  static const String newaddress = '/new_address';
+  static const String newAddress = '/new_address';
   static const String wishlist = '/wishlist';
   static const String chat = '/chat';
   static const String profile = '/profile';
   static const String notification = '/notification';
   static const String product = '/product';
   static const String account = '/account';
+  static const String purchase = '/purchase';
+  static const String newCard = '/new_card';
   static const String admin = '/admin';
 
   static Route onGenerateRoute(RouteSettings settings) {
@@ -37,7 +39,7 @@ abstract class AppRouter {
         return CartScreen.route();
       case checkout:
         return CheckoutScreen.route();
-      case newaddress:
+      case newAddress:
         return NewAddressScreen.route();
       case wishlist:
         return WishlistScreen.route();
@@ -51,6 +53,10 @@ abstract class AppRouter {
         return ProductScreen.route(product: settings.arguments);
       case account:
         return MyAccountScreen.route(isAdmin: settings.arguments as bool);
+      case purchase:
+        return PurchaseScreen.route();
+      case newCard:
+        return NewCardScreen.route();
       case admin:
         return AdHomeScreen.route();
       default:

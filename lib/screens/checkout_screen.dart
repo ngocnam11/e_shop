@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../router/router.dart';
 import '../widgets/order_summary.dart';
-import 'order_confirmation/order_confirm_screen.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({Key? key}) : super(key: key);
@@ -108,7 +107,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ),
             ),
             onPressed: () {
-              Navigator.of(context).pushNamed(AppRouter.newaddress);
+              Navigator.of(context).pushNamed(AppRouter.newAddress);
             },
             child: const Text('+ Add New Address'),
           );
@@ -139,11 +138,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             const OrderSummary(),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (constext) => const OrderConfirmScreen(),
-                  ),
-                );
+                Navigator.of(context).pushNamed(AppRouter.purchase
+                    // MaterialPageRoute(
+                    //   builder: (constext) => const OrderConfirmScreen(),
+                    // ),
+                    );
               },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
