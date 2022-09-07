@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
+import '../widgets/purchase_item.dart';
 import '../router/router.dart';
 import '../widgets/order_summary.dart';
 import 'order_confirmation/order_confirm_screen.dart';
@@ -20,13 +20,13 @@ class PurchaseScreen extends StatefulWidget {
 }
 
 class _PurchaseScreenState extends State<PurchaseScreen> {
-  final List<Map<String, String>> _payment = [
-    {'title': 'Cash Money', 'icon': 'assets/svgs/logo/money.svg'},
-    // {'title':'Paypal','icon': 'assets/svgs/logo/paypal.svg'},
-    {'title': 'Apple Pay', 'icon': 'assets/svgs/logo/apple.svg'},
-    {'title': 'Google Pay', 'icon': 'assets/svgs/logo/google.svg'},
-    {'title': 'Credit Card', 'icon': 'assets/svgs/logo/mastercard.svg'},
-  ];
+  // final List<Map<String, String>> _payment = [
+  //   {'title': 'Cash Money', 'icon': 'assets/svgs/logo/money.svg'},
+  //   // {'title':'Paypal','icon': 'assets/svgs/logo/paypal.svg'},
+  //   {'title': 'Apple Pay', 'icon': 'assets/svgs/logo/apple.svg'},
+  //   {'title': 'Google Pay', 'icon': 'assets/svgs/logo/google.svg'},
+  //   {'title': 'Credit Card', 'icon': 'assets/svgs/logo/mastercard.svg'},
+  // ];
 
   String _paymentMethod = '';
 
@@ -36,59 +36,108 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
       appBar: AppBar(
         title: const Text('Payment'),
       ),
-      body: ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        itemBuilder: (context, index) {
-          if (index != _payment.length) {
-            return Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: Column(
+          children: [
+            PurchaseItem(
+              svgIconPath: 'assets/svgs/logo/money.svg',
+              title: Text(
+                'Cash Money',
+                style: Theme.of(context).textTheme.headline6,
               ),
-              elevation: 5,
-              child: ListTile(
-                leading: Container(
-                  width: 40,
-                  height: 40,
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.grey.shade200,
-                  ),
-                  child: FittedBox(
-                    child: SvgPicture.asset(
-                      _payment[index]['icon']!,
-                    ),
-                  ),
-                ),
-                title: Text(_payment[index]['title']!),
-                trailing: Radio<String>(
-                  value: _payment[index]['title']!,
-                  groupValue: _paymentMethod,
-                  onChanged: (value) {
-                    setState(() {
-                      _paymentMethod = value!;
-                      debugPrint('Method: $_paymentMethod');
-                    });
-                  },
-                ),
-              ),
-            );
-          }
-
-          return OutlinedButton(
-            style: OutlinedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+              trailing: Radio<String>(
+                value: 'Cash Money',
+                groupValue: _paymentMethod,
+                onChanged: (value) {
+                  setState(() {
+                    _paymentMethod = value!;
+                    debugPrint('Method: $_paymentMethod');
+                  });
+                },
               ),
             ),
-            onPressed: () {
-              Navigator.of(context).pushNamed(AppRouter.newCard);
-            },
-            child: const Text('+ Add New Card'),
-          );
-        },
-        separatorBuilder: (_, __) => const SizedBox(height: 10),
-        itemCount: _payment.length + 1,
+            const Divider(),
+            PurchaseItem(
+              svgIconPath: 'assets/svgs/logo/apple.svg',
+              title: Text(
+                'Apple Pay',
+                style: Theme.of(context).textTheme.headline6,
+              ),
+              subTitle: const Text(
+                '***** **** 2472',
+                style: TextStyle(color: Colors.black54),
+              ),
+              trailing: Radio<String>(
+                value: 'Apple Pay',
+                groupValue: _paymentMethod,
+                onChanged: (value) {
+                  setState(() {
+                    _paymentMethod = value!;
+                    debugPrint('Method: $_paymentMethod');
+                  });
+                },
+              ),
+            ),
+            const Divider(),
+            PurchaseItem(
+              svgIconPath: 'assets/svgs/logo/google.svg',
+              title: Text(
+                'Google Pay',
+                style: Theme.of(context).textTheme.headline6,
+              ),
+              subTitle: const Text(
+                '589****118',
+                style: TextStyle(color: Colors.black54),
+              ),
+              trailing: Radio<String>(
+                value: 'Google Pay',
+                groupValue: _paymentMethod,
+                onChanged: (value) {
+                  setState(() {
+                    _paymentMethod = value!;
+                    debugPrint('Method: $_paymentMethod');
+                  });
+                },
+              ),
+            ),
+            const Divider(),
+            PurchaseItem(
+              svgIconPath: 'assets/svgs/logo/mastercard.svg',
+              title: Text(
+                'Credit Card',
+                style: Theme.of(context).textTheme.headline6,
+              ),
+              subTitle: const Text(
+                '245********643',
+                style: TextStyle(color: Colors.black54),
+              ),
+              trailing: Radio<String>(
+                value: 'Credit Card',
+                groupValue: _paymentMethod,
+                onChanged: (value) {
+                  setState(() {
+                    _paymentMethod = value!;
+                    debugPrint('Method: $_paymentMethod');
+                  });
+                },
+              ),
+            ),
+            const SizedBox(height: 10),
+            OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                fixedSize: const Size.fromWidth(double.maxFinite),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pushNamed(AppRouter.newCard);
+              },
+              child: const Text('+ Add New Card'),
+            )
+          ],
+        ),
       ),
       bottomNavigationBar: Container(
         height: 170,
