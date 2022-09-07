@@ -28,7 +28,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   //   {'title': 'Credit Card', 'icon': 'assets/svgs/logo/mastercard.svg'},
   // ];
 
-  String _paymentMethod = '';
+  String _paymentMethod = 'Cash Money';
 
   @override
   Widget build(BuildContext context) {
