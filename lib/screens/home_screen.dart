@@ -32,7 +32,9 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('eShop'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(AppRouter.notification);
+            },
             icon: const Icon(Icons.notifications_none_rounded),
           ),
         ],
