@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../models/user.dart';
 import '../router/router.dart';
+import '../services/auth_services.dart';
+import '../services/firestore_services.dart';
 import '../widgets/order_summary.dart';
 
 class CheckoutScreen extends StatefulWidget {
@@ -18,10 +21,13 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
-  final List<String> address = [
-    '1784 Juniper Drive',
-    '2993 Liberty Avenue',
-  ];
+  Future<String> getInitAddress() async {
+    final user = await FireStoreServices()
+        .getUserByUid(uid: AuthServices().currentUser.uid);
+    String addressValue = user.addresses[0].address;
+    return addressValue;
+  }
+
   String _addressValue = '';
 
   @override
@@ -36,85 +42,101 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           ),
         ],
       ),
-      body: ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        itemBuilder: (context, index) {
-          if (index != address.length) {
-            return Container(
-              height: 70,
-              padding: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  const Icon(Icons.location_on_outlined),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
+      body: FutureBuilder<User>(
+          future: FireStoreServices()
+              .getUserByUid(uid: AuthServices().currentUser.uid),
+          builder: (context, snapshot) {
+            final user = snapshot.data!;
+            _addressValue = user.addresses[0].address;
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (snapshot.hasError) {
+              return const Text('Something went wrong');
+            }
+            return ListView.separated(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              itemBuilder: (context, index) {
+                if (index != user.addresses.length) {
+                  return Container(
+                    height: 70,
+                    padding: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Text>[
-                        Text(
-                          'City, Country',
-                          style: Theme.of(context).textTheme.headline5,
+                      children: <Widget>[
+                        const Icon(Icons.location_on_outlined),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Text>[
+                              Text(
+                                user.addresses[index].address,
+                                style: Theme.of(context).textTheme.headline4,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                              ),
+                              Text(
+                                '${user.addresses[index].city}, ${user.addresses[index].country}',
+                                style: Theme.of(context).textTheme.headline5,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
                         ),
-                        Text(
-                          address[index],
-                          style: Theme.of(context).textTheme.bodyText1,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+                        Column(
+                          children: <Widget>[
+                            Expanded(
+                              child: Radio<String>(
+                                value: user.addresses[index].address,
+                                groupValue: _addressValue,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _addressValue = value!;
+                                    debugPrint('Address: $_addressValue');
+                                  });
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              child: TextButton(
+                                onPressed: () {},
+                                child: Text(
+                                  'Edit',
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ),
-                  Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: Radio<String>(
-                          value: address[index],
-                          groupValue: _addressValue,
-                          onChanged: (value) {
-                            setState(() {
-                              _addressValue = value!;
-                              debugPrint('Address: $_addressValue');
-                            });
-                          },
-                        ),
-                      ),
-                      Expanded(
-                        child: TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Edit',
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          }
+                  );
+                }
 
-          return OutlinedButton(
-            style: OutlinedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            onPressed: () {
-              Navigator.of(context).pushNamed(AppRouter.newAddress);
-            },
-            child: const Text('+ Add New Address'),
-          );
-        },
-        separatorBuilder: (context, index) => const SizedBox(height: 12),
-        itemCount: address.length + 1,
-      ),
+                return OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(AppRouter.newAddress);
+                  },
+                  child: const Text('+ Add New Address'),
+                );
+              },
+              separatorBuilder: (context, index) => const SizedBox(height: 12),
+              itemCount: user.addresses.length + 1,
+            );
+          }),
       bottomNavigationBar: Container(
         height: 170,
         padding: const EdgeInsets.only(
@@ -138,11 +160,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             const OrderSummary(),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).pushNamed(AppRouter.purchase
-                    // MaterialPageRoute(
-                    //   builder: (constext) => const OrderConfirmScreen(),
-                    // ),
-                    );
+                Navigator.of(context).pushNamed(AppRouter.purchase);
               },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(

@@ -26,8 +26,8 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
   final TextEditingController cityController = TextEditingController();
   final TextEditingController countryController = TextEditingController();
 
-  void addShippingAddress() async {
-    String res = await FireStoreServices().updateShippingAddress(
+  void addDeliveryAddress() async {
+    String res = await FireStoreServices().addDeliveryAddress(
       uid: AuthServices().currentUser.uid,
       address: addressController.text,
       city: cityController.text,
@@ -112,7 +112,7 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(20),
         child: ElevatedButton(
-          onPressed: addShippingAddress,
+          onPressed: addDeliveryAddress,
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(
               vertical: 16,

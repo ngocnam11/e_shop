@@ -46,8 +46,8 @@ class User extends Equatable {
 
   factory User.fromSnap(Map<String, dynamic> snap) {
     List<DeliveryAddress> addresses = [];
-    if (snap["addresses"] != null) {
-      snap["addresses"].forEach((address) {
+    if (snap["deliveryAddress"] != null) {
+      snap["deliveryAddress"].forEach((address) {
         addresses.add(DeliveryAddress.fromSnap(address));
       });
     }

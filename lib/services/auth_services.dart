@@ -126,8 +126,8 @@ class AuthServices {
   }
 
   Future<void> logout() async {
-    // final providerId =
-    //     await _auth.fetchSignInMethodsForEmail(currentUser.email!);
+    // // final providerId =
+    // //     await _auth.fetchSignInMethodsForEmail(currentUser.email!);
     try {
       // if (providerId[0] == 'google.com') {
       await _googleSignIn.signOut();

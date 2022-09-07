@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/category.dart';
+import '../models/delivery_address.dart';
 import '../models/message.dart';
 import '../models/product.dart';
 import '../models/user.dart' as model;
@@ -122,7 +123,7 @@ class FireStoreServices {
   //   return response;
   // }
 
-  Future<String> addShippingAddress({
+  Future<String> addDeliveryAddress({
     required String uid,
     required String address,
     required String city,
@@ -130,14 +131,27 @@ class FireStoreServices {
   }) async {
     String addSA = 'Some error occurred';
     try {
-      _firestore.collection('users').doc(uid).set(
-        {
-          'shippingAddress.address': address,
-          'shippingAddress.city': city,
-          'shippingAddress.country': country,
-        },
-        SetOptions(merge: true),
+      var date = DateTime.now().toLocal();
+      model.User user = await getUserByUid(uid: uid);
+
+      DeliveryAddress deliveryAddress = DeliveryAddress(
+        id: 'address${date.day}d${date.hour}h${date.minute}',
+        address: address,
+        city: city,
+        country: country,
+        isDefault: user.addresses.isEmpty ? true : false,
       );
+
+      _firestore.collection('users').doc(uid).update(
+        {
+          'deliveryAddress': FieldValue.arrayUnion(
+            [
+              deliveryAddress.toJson()
+            ],
+          ),
+        },
+      );
+      addSA = 'success';
     } catch (e) {
       addSA = e.toString();
     }
@@ -154,10 +168,11 @@ class FireStoreServices {
     String updateSA = 'Some error occurred';
     try {
       _firestore.collection('users').doc(uid).update({
-        'shippingAddress.address': address,
-        'shippingAddress.city': city,
-        'shippingAddress.country': country,
+        'deliveryAddress.address': address,
+        'deliveryAddress.city': city,
+        'deliveryAddress.country': country,
       });
+      updateSA = 'success';
     } catch (e) {
       updateSA = e.toString();
     }
