@@ -14,4 +14,6 @@ export 'category_screen.dart';
 export 'product_screen.dart';
 export 'conversation_screen.dart';
 export 'my_account_screen.dart';
+export 'purchase_screen.dart';
+export 'new_card_screen.dart';
 export 'admin_panel/ad_home_screen.dart';

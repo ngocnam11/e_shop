@@ -17,6 +17,8 @@ abstract class AppRouter {
   static const String notification = '/notification';
   static const String product = '/product';
   static const String account = '/account';
+    static const String purchase = '/purchase';
+  static const String newCard = '/new_card';
   static const String admin = '/admin';
 
   static Route onGenerateRoute(RouteSettings settings) {
@@ -51,6 +53,10 @@ abstract class AppRouter {
         return ProductScreen.route(product: settings.arguments);
       case account:
         return MyAccountScreen.route(isAdmin: settings.arguments as bool);
+      case purchase:
+        return PurchaseScreen.route();
+      case newCard:
+        return NewCardScreen.route();
       case admin:
         return AdHomeScreen.route();
       default:

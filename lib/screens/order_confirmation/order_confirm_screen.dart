@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../router/router.dart';
 import '../../widgets/order_summary.dart';
+import '../order_details_screen.dart';
 
 class OrderConfirmScreen extends StatelessWidget {
   const OrderConfirmScreen({Key? key}) : super(key: key);
@@ -42,7 +43,13 @@ class OrderConfirmScreen extends StatelessWidget {
               const Divider(),
               const OrderSummary(),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const OrderDetails(),
+                    ),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),

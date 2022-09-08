@@ -79,7 +79,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 4),
             StreamBuilder<List<Product>>(
-              stream: FireStoreServices().getProducts(),
+              stream: FireStoreServices().get5ProductsByRecentSearch(
+                  recentSearch: ['earings', 'Earings']),
               builder: (context, AsyncSnapshot<List<Product>> snapshot) {
                 if (snapshot.hasError) {
                   return const Text('Something went wrong');
@@ -94,6 +95,31 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               },
             ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: SectionTitle(
+                title: 'New Arrivals',
+                press: () {},
+              ),
+            ),
+            const SizedBox(height: 4),
+            StreamBuilder<List<Product>>(
+              stream: FireStoreServices().get5Products(),
+              builder: (context, AsyncSnapshot<List<Product>> snapshot) {
+                if (snapshot.hasError) {
+                  return const Text('Something went wrong');
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                return ProductCarousel(
+                  products: snapshot.data!.toList(),
+                );
+              },
+            ),
+            const SizedBox(height: 12),
           ],
         ),
       ),

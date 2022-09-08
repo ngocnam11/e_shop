@@ -22,13 +22,14 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
-  Future<String> getInitAddress() async {
-    final user = await FireStoreServices().getUserByUid(uid: AuthServices().currentUser.uid);
-    String addressValue = user.addresses[0].address;
-    return addressValue;
+  Future<void> getInitAddress() async {
+    final user = await FireStoreServices()
+        .getUserByUid(uid: AuthServices().currentUser.uid);
+    _addressValue = user.addresses.isNotEmpty ? user.addresses[0].address : '';
   }
-  String _addressValue = '';
-  
+
+  late String _addressValue;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -159,11 +160,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             const OrderSummary(),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (constext) => const OrderConfirmScreen(),
-                  ),
-                );
+                Navigator.of(context).pushNamed(AppRouter.purchase);
               },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
