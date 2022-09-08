@@ -21,14 +21,19 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
-  Future<String> getInitAddress() async {
+  Future<void> getInitAddress() async {
     final user = await FireStoreServices()
         .getUserByUid(uid: AuthServices().currentUser.uid);
-    String addressValue = user.addresses[0].address;
-    return addressValue;
+    _addressValue = user.addresses.isNotEmpty ? user.addresses[1].address : '';
   }
 
-  String _addressValue = '';
+  late String _addressValue;
+
+  @override
+  void initState() {
+    super.initState();
+    getInitAddress();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,100 +48,101 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         ],
       ),
       body: FutureBuilder<User>(
-          future: FireStoreServices()
-              .getUserByUid(uid: AuthServices().currentUser.uid),
-          builder: (context, snapshot) {
-            final user = snapshot.data!;
-            _addressValue = user.addresses[0].address;
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (snapshot.hasError) {
-              return const Text('Something went wrong');
-            }
-            return ListView.separated(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              itemBuilder: (context, index) {
-                if (index != user.addresses.length) {
-                  return Container(
-                    height: 70,
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[100],
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        const Icon(Icons.location_on_outlined),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Text>[
-                              Text(
-                                user.addresses[index].address,
-                                style: Theme.of(context).textTheme.headline4,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                              ),
-                              Text(
-                                '${user.addresses[index].city}, ${user.addresses[index].country}',
-                                style: Theme.of(context).textTheme.headline5,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Column(
-                          children: <Widget>[
-                            Expanded(
-                              child: Radio<String>(
-                                value: user.addresses[index].address,
-                                groupValue: _addressValue,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _addressValue = value!;
-                                    debugPrint('Address: $_addressValue');
-                                  });
-                                },
-                              ),
+        future: FireStoreServices()
+            .getUserByUid(uid: AuthServices().currentUser.uid),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.hasError) {
+            debugPrint(snapshot.error.toString());
+            return const Text('Something went wrong');
+          }
+          final user = snapshot.data!;
+          return ListView.separated(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            itemBuilder: (context, index) {
+              if (index != user.addresses.length) {
+                return Container(
+                  height: 70,
+                  padding: const EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      const Icon(Icons.location_on_outlined),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Text>[
+                            Text(
+                              user.addresses[index].address,
+                              style: Theme.of(context).textTheme.headline4,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
                             ),
-                            Expanded(
-                              child: TextButton(
-                                onPressed: () {},
-                                child: Text(
-                                  'Edit',
-                                  style: Theme.of(context).textTheme.bodyText1,
-                                ),
-                              ),
+                            Text(
+                              '${user.addresses[index].city}, ${user.addresses[index].country}',
+                              style: Theme.of(context).textTheme.headline5,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                  );
-                }
-
-                return OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+                      ),
+                      Column(
+                        children: <Widget>[
+                          Expanded(
+                            child: Radio<String>(
+                              value: user.addresses[index].address,
+                              groupValue: _addressValue,
+                              onChanged: (value) {
+                                setState(() {
+                                  _addressValue = value!;
+                                  debugPrint('Address: $_addressValue');
+                                });
+                              },
+                            ),
+                          ),
+                          Expanded(
+                            child: TextButton(
+                              onPressed: () {},
+                              child: Text(
+                                'Edit',
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(AppRouter.newAddress);
-                  },
-                  child: const Text('+ Add New Address'),
                 );
-              },
-              separatorBuilder: (context, index) => const SizedBox(height: 12),
-              itemCount: user.addresses.length + 1,
-            );
-          }),
+              }
+
+              return OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pushNamed(AppRouter.newAddress);
+                },
+                child: const Text('+ Add New Address'),
+              );
+            },
+            separatorBuilder: (context, index) => const SizedBox(height: 12),
+            itemCount: user.addresses.length + 1,
+          );
+        },
+      ),
       bottomNavigationBar: Container(
         height: 170,
         padding: const EdgeInsets.only(
