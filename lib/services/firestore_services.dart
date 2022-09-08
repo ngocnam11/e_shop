@@ -27,6 +27,13 @@ class FireStoreServices {
     return products;
   }
 
+  Stream<List<Product>> get5Products() {
+    final snaps = _firestore.collection('products').limit(5).snapshots();
+    final products = snaps.map((snap) =>
+        snap.docs.map((doc) => Product.fromJson(doc.data())).toList());
+    return products;
+  }
+
   Stream<List<Category>> getCategories() {
     final snaps = _firestore.collection('categories').snapshots();
     final categories = snaps.map((snap) =>
@@ -34,11 +41,23 @@ class FireStoreServices {
     return categories;
   }
 
-  Future<Stream<List<Product>>> getProductsByRecentSearch(
-      {required List<String> recentSearch}) async {
+  Stream<List<Product>> getProductsByRecentSearch(
+      {required List<String> recentSearch}) {
     final snaps = _firestore
         .collection('products')
         .where('name', isGreaterThanOrEqualTo: recentSearch.last)
+        .snapshots();
+    final recommendedProducts = snaps.map((snap) =>
+        snap.docs.map((doc) => Product.fromJson(doc.data())).toList());
+    return recommendedProducts;
+  }
+
+  Stream<List<Product>> get5ProductsByRecentSearch(
+      {required List<String> recentSearch}) {
+    final snaps = _firestore
+        .collection('products')
+        .where('name', isGreaterThanOrEqualTo: recentSearch.last)
+        .limit(5)
         .snapshots();
     final recommendedProducts = snaps.map((snap) =>
         snap.docs.map((doc) => Product.fromJson(doc.data())).toList());
@@ -145,9 +164,7 @@ class FireStoreServices {
       _firestore.collection('users').doc(uid).update(
         {
           'deliveryAddress': FieldValue.arrayUnion(
-            [
-              deliveryAddress.toJson()
-            ],
+            [deliveryAddress.toJson()],
           ),
         },
       );
