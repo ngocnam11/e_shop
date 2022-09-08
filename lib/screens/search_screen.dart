@@ -76,6 +76,7 @@ class SearchScreen extends StatelessWidget {
               stream: FireStoreServices().getCategories(),
               builder: (context, AsyncSnapshot<List<Category>> snapshot) {
                 if (snapshot.hasError) {
+                  debugPrint(snapshot.error.toString());
                   return const Text('Something went wrong');
                 }
                 if (snapshot.connectionState == ConnectionState.waiting) {

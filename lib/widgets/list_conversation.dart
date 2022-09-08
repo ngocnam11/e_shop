@@ -20,6 +20,7 @@ class ListConversation extends StatelessWidget {
           );
         }
         if (snapshot.hasError) {
+          debugPrint(snapshot.error.toString());
           return const Text('Something went wrong');
         }
         return snapshot.data!.toList().isEmpty

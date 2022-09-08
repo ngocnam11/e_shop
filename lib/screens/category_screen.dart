@@ -32,6 +32,7 @@ class CategoryScreen extends StatelessWidget {
                 );
               }
               if (snapshot.hasError) {
+                debugPrint(snapshot.error.toString());
                 return const Text('Something went wrong');
               }
               var productsInCategory = snapshot.data!

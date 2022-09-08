@@ -105,6 +105,7 @@ class ProductScreen extends StatelessWidget {
                         );
                       }
                       if (snapshot.hasError) {
+                        debugPrint(snapshot.error.toString());
                         return const Text('Something went wrong');
                       }
                       return Text(
@@ -170,7 +171,7 @@ class ProductScreen extends StatelessWidget {
                                     style: theme.headline3,
                                   ),
                                   Text(
-                                    '${product.colors![0]}, ${product.size![0]}',
+                                    '${product.colors!}, ${product.size!}',
                                     style: theme.headline4,
                                   ),
                                 ],
@@ -216,6 +217,7 @@ class ProductScreen extends StatelessWidget {
                   );
                 }
                 if (snapshot.hasError) {
+                  debugPrint(snapshot.error.toString());
                   return const Text('Something went wrong');
                 }
                 return OutlinedButton.icon(
