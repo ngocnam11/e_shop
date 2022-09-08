@@ -170,9 +170,21 @@ class ProductScreen extends StatelessWidget {
                                     'Color, Size',
                                     style: theme.headline3,
                                   ),
-                                  Text(
-                                    '${product.colors!}, ${product.size!}',
-                                    style: theme.headline4,
+                                  Row(
+                                    children: [
+                                      Text(
+                                        product.colors!.isEmpty
+                                            ? ''
+                                            : product.colors![0],
+                                        style: theme.headline4,
+                                      ),
+                                      Text(
+                                        product.size!.isEmpty
+                                            ? ''
+                                            : product.size![0],
+                                        style: theme.headline4,
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),

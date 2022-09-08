@@ -44,7 +44,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
               svgIconPath: 'assets/svgs/logo/money.svg',
               title: Text(
                 'Cash Money',
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.headline4,
               ),
               trailing: Radio<String>(
                 value: 'Cash Money',
@@ -62,11 +62,11 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
               svgIconPath: 'assets/svgs/logo/apple.svg',
               title: Text(
                 'Apple Pay',
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.headline4,
               ),
-              subTitle: const Text(
+              subTitle: Text(
                 '***** **** 2472',
-                style: TextStyle(color: Colors.black54),
+                style: Theme.of(context).textTheme.bodyText1,
               ),
               trailing: Radio<String>(
                 value: 'Apple Pay',
@@ -84,11 +84,11 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
               svgIconPath: 'assets/svgs/logo/google.svg',
               title: Text(
                 'Google Pay',
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.headline4,
               ),
-              subTitle: const Text(
+              subTitle: Text(
                 '589****118',
-                style: TextStyle(color: Colors.black54),
+                style: Theme.of(context).textTheme.bodyText1,
               ),
               trailing: Radio<String>(
                 value: 'Google Pay',
@@ -106,11 +106,11 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
               svgIconPath: 'assets/svgs/logo/mastercard.svg',
               title: Text(
                 'Credit Card',
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.headline4,
               ),
-              subTitle: const Text(
+              subTitle: Text(
                 '245********643',
-                style: TextStyle(color: Colors.black54),
+                style: Theme.of(context).textTheme.bodyText1,
               ),
               trailing: Radio<String>(
                 value: 'Credit Card',

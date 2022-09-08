@@ -40,6 +40,7 @@ class PurchaseItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               title,
+              const SizedBox(height: 8),
               subTitle ?? const SizedBox(),
             ],
           ),

@@ -24,7 +24,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   Future<void> getInitAddress() async {
     final user = await FireStoreServices()
         .getUserByUid(uid: AuthServices().currentUser.uid);
-    _addressValue = user.addresses.isNotEmpty ? user.addresses[1].address : '';
+    _addressValue = user.addresses.isNotEmpty ? user.addresses[0].address : '';
   }
 
   late String _addressValue;
