@@ -57,21 +57,36 @@ class ProductCard extends StatelessWidget {
                         height: 30,
                         width: 30,
                         decoration: BoxDecoration(
-                          color: Colors.blue[300]!.withOpacity(0.8),
+                          color: Colors.blue[200]!.withOpacity(0.4),
                           shape: BoxShape.circle,
                         ),
                         child: FittedBox(
                           child: IconButton(
                             onPressed: () {
-                              context
-                                  .read<WishlistBloc>()
-                                  .add(AddProductToWishlist(product));
-                              showSnackBar(context, 'Added to your Wishlist');
+                              if (state.wishlist.products.contains(product)) {
+                                context
+                                    .read<WishlistBloc>()
+                                    .add(RemoveProductFromWishlist(product));
+                                showSnackBar(
+                                  context,
+                                  'Removed from your Wishlist',
+                                );
+                              } else {
+                                context
+                                    .read<WishlistBloc>()
+                                    .add(AddProductToWishlist(product));
+                                showSnackBar(
+                                  context,
+                                  'Added to your Wishlist',
+                                );
+                              }
                             },
-                            icon: Icon(
-                              Icons.favorite_outline,
-                              color: Colors.red[400],
-                            ),
+                            icon: state.wishlist.products.contains(product)
+                                ? Icon(
+                                    Icons.favorite,
+                                    color: Colors.red[400],
+                                  )
+                                : const Icon(Icons.favorite_outline),
                           ),
                         ),
                       );
