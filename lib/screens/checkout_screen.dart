@@ -31,6 +31,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   late String _addressValue;
 
   @override
+  void initState() {
+    super.initState();
+    getInitAddress();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -47,7 +53,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               .getUserByUid(uid: AuthServices().currentUser.uid),
           builder: (context, snapshot) {
             final user = snapshot.data!;
-            _addressValue = user.addresses[0].address;
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
                 child: CircularProgressIndicator(),
