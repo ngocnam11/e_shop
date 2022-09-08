@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 
 import 'blocs/cart/cart_bloc.dart';
 import 'blocs/wishlist/wishlist_bloc.dart';
@@ -13,12 +12,9 @@ import 'config/theme.dart';
 import 'firebase_options.dart';
 import 'router/router.dart';
 import 'simple_bloc_observer.dart';
-import '.env';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Stripe.publishableKey = stripePublishableKey;
-  await Stripe.instance.applySettings();
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

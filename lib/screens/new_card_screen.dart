@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 
 import '../router/router.dart';
 
@@ -28,10 +27,6 @@ class NewCardScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.headline2,
             ),
             const SizedBox(height: 20),
-            CardFormField(
-              controller: CardFormEditController(),
-            ),
-            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {},
               child: const Text('Pay'),
