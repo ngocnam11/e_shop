@@ -47,7 +47,7 @@ class Product extends Equatable {
       name: snap['name'],
       category: snap['category'],
       imageUrl: snap['imageUrl'],
-      price: snap['price'],
+      price: snap['price'] + .0,
       quantity: snap['quantity'],
       description: snap['description'],
       colors: List<String>.from(snap['colors'].map((x) => x)),
