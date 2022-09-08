@@ -36,5 +36,5 @@ class DeliveryAddress extends Equatable {
   }
 
   @override
-  List<Object?> get props => throw [id, address, city, country, isDefault];
+  List<Object?> get props => [id, address, city, country, isDefault];
 }
