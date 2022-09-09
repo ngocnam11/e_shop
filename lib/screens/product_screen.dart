@@ -1,4 +1,3 @@
-import 'package:e_shop/screens/conversation_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,6 +8,8 @@ import '../models/user.dart';
 import '../router/router.dart';
 import '../services/firestore_services.dart';
 import '../widgets/custom_button.dart';
+import '../widgets/custom_network_image.dart';
+import 'conversation_screen.dart';
 
 class ProductScreen extends StatelessWidget {
   const ProductScreen({Key? key, required this.product}) : super(key: key);
@@ -77,12 +78,10 @@ class ProductScreen extends StatelessWidget {
                 bottomLeft: Radius.circular(16),
                 bottomRight: Radius.circular(16),
               ),
-              child: Image(
+              child: CustomNetworkImage(
+                src: product.imageUrl,
                 height: MediaQuery.of(context).size.height / 2,
                 width: MediaQuery.of(context).size.width,
-                image: NetworkImage(
-                  product.imageUrl,
-                ),
                 fit: BoxFit.cover,
               ),
             ),
@@ -153,12 +152,10 @@ class ProductScreen extends StatelessWidget {
                               const SizedBox(width: 8),
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(16),
-                                child: Image(
+                                child: CustomNetworkImage(
+                                  src: product.imageUrl,
                                   height: 70,
                                   width: 70,
-                                  image: NetworkImage(
-                                    product.imageUrl,
-                                  ),
                                   fit: BoxFit.cover,
                                 ),
                               ),

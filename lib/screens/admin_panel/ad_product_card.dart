@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../config/utils.dart';
 import '../../services/firestore_services.dart';
+import '../../widgets/custom_network_image.dart';
 import 'ad_edit_product_screen.dart';
 import 'ad_home_screen.dart';
 
@@ -52,111 +53,104 @@ class _AdProductCardState extends State<AdProductCard> {
             const SizedBox(height: 10),
             Row(
               children: [
-                SizedBox(
+                CustomNetworkImage(
+                  src: widget.snap['imageUrl'],
                   height: 80,
                   width: 80,
-                  child: Image.network(
-                    widget.snap['imageUrl'],
-                    fit: BoxFit.cover,
-                  ),
+                  fit: BoxFit.cover,
                 ),
                 const SizedBox(width: 10),
                 Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: Column(
                     children: [
-                      Column(
+                      Row(
                         children: [
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 50,
-                                child: Text(
-                                  'Price:',
-                                  style: theme.headline5,
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              Text(
-                                '\$${widget.snap['price']}',
-                                style: theme.headline5,
-                              ),
-                            ],
+                          SizedBox(
+                            width: 50,
+                            child: Text(
+                              'Price:',
+                              style: theme.headline5,
+                            ),
                           ),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 50,
-                                child: Text(
-                                  'Qty.',
-                                  style: theme.headline5,
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              Text(
-                                '${widget.snap['quantity']}',
-                                style: theme.headline4,
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => AdEditProductScreen(
-                                    id: widget.snap['id'],
-                                  ),
-                                ),
-                              );
-                            },
-                            icon: const Icon(Icons.edit),
-                          ),
-                          const SizedBox(width: 16),
-                          IconButton(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                  title: const Text(
-                                    'You are about to delete a product',
-                                  ),
-                                  titleTextStyle: theme.headline5,
-                                  content: Text(
-                                    'This will delete your product \nAre you sure?',
-                                    style: theme.headline6!.copyWith(
-                                      color: Colors.black54,
-                                    ),
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: const Text(
-                                        'Cancel',
-                                        style: TextStyle(color: Colors.black87),
-                                      ),
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        deleteProduct();
-                                      },
-                                      child: const Text('Delete'),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                            icon: const Icon(Icons.delete),
+                          const SizedBox(width: 10),
+                          Text(
+                            '\$${widget.snap['price']}',
+                            style: theme.headline5,
                           ),
                         ],
                       ),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 50,
+                            child: Text(
+                              'Qty.',
+                              style: theme.headline5,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            '${widget.snap['quantity']}',
+                            style: theme.headline4,
+                          ),
+                        ],
+                      )
                     ],
                   ),
+                ),
+                Column(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => AdEditProductScreen(
+                              id: widget.snap['id'],
+                            ),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.edit),
+                    ),
+                    const SizedBox(width: 16),
+                    IconButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text(
+                              'You are about to delete a product',
+                            ),
+                            titleTextStyle: theme.headline5,
+                            content: Text(
+                              'This will delete your product \nAre you sure?',
+                              style: theme.headline6!.copyWith(
+                                color: Colors.black54,
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text(
+                                  'Cancel',
+                                  style: TextStyle(color: Colors.black87),
+                                ),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  deleteProduct();
+                                },
+                                child: const Text('Delete'),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.delete),
+                    ),
+                  ],
                 ),
               ],
             ),

@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../config/utils.dart';
 import '../../services/firestore_services.dart';
 import '../../widgets/text_field_input.dart';
+import '../../widgets/custom_network_image.dart';
 import 'ad_product_screen.dart';
 
 class AdEditProductScreen extends StatefulWidget {
@@ -100,20 +101,19 @@ class _AdEditProductScreenState extends State<AdEditProductScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            height: 200,
-                            width: 200,
-                            child: _image != null
-                                ? Image(
-                                    image: MemoryImage(_image!),
-                                  )
-                                : Image(
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage(
-                                      snapshot.data!['imageUrl'],
-                                    ),
-                                  ),
-                          ),
+                          _image != null
+                              ? Image.memory(
+                                  _image!,
+                                  height: 200,
+                                  width: 200,
+                                  fit: BoxFit.cover,
+                                )
+                              : CustomNetworkImage(
+                                  src: snapshot.data!['imageUrl'],
+                                  height: 200,
+                                  width: 200,
+                                  fit: BoxFit.cover,
+                                ),
                           const SizedBox(width: 20),
                           IconButton(
                             onPressed: () async {

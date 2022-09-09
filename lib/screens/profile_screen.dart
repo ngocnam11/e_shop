@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../router/router.dart';
 import '../services/auth_services.dart';
 import '../widgets/custom_navigationbar.dart';
+import '../widgets/custom_network_image.dart';
 import '../widgets/profile_menu.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -58,8 +59,8 @@ class ProfileScreen extends StatelessWidget {
                             padding: const EdgeInsets.all(12),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(16),
-                              child: Image.network(
-                                snapshot.data!['photoUrl'],
+                              child: CustomNetworkImage(
+                                src: snapshot.data!['photoUrl'],
                                 height: 88,
                                 width: 88,
                                 fit: BoxFit.cover,
@@ -138,16 +139,13 @@ class ProfileScreen extends StatelessWidget {
                                       style: TextStyle(color: Colors.black87),
                                     ),
                                   ),
-                                  TextButton(
+                                  ElevatedButton(
                                     onPressed: () {
                                       AuthServices().logout();
                                       Navigator.of(context)
                                           .pushNamed(AppRouter.login);
                                     },
-                                    child: const Text(
-                                      'Yes',
-                                      style: TextStyle(color: Colors.black87),
-                                    ),
+                                    child: const Text('Yes'),
                                   ),
                                 ],
                               ),

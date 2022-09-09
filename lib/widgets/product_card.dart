@@ -5,6 +5,7 @@ import '../blocs/wishlist/wishlist_bloc.dart';
 import '../config/utils.dart';
 import '../models/product.dart';
 import '../screens/screens.dart';
+import 'custom_network_image.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
@@ -33,12 +34,10 @@ class ProductCard extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(16),
-                child: Image(
+                child: CustomNetworkImage(
+                  src: product.imageUrl,
                   height: 160,
                   width: 150,
-                  image: NetworkImage(
-                    product.imageUrl,
-                  ),
                   fit: BoxFit.cover,
                 ),
               ),

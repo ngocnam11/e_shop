@@ -112,20 +112,19 @@ class _NewProductScreenState extends State<NewProductScreen> {
               ),
               const SizedBox(height: 10),
               Center(
-                child: SizedBox(
-                  height: 200,
-                  width: 200,
-                  child: _image != null
-                      ? Image(
-                          image: MemoryImage(_image!),
-                        )
-                      : const Image(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(
-                            'https://images.unsplash.com/photo-1635107510862-53886e926b74?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=435&q=80',
-                          ),
-                        ),
-                ),
+                child: _image != null
+                    ? Image.memory(
+                        _image!,
+                        height: 200,
+                        width: 200,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.asset(
+                        'assets/images/placeholder.jpg',
+                        height: 200,
+                        width: 200,
+                        fit: BoxFit.cover,
+                      ),
               ),
               const SizedBox(height: 20),
               Text(

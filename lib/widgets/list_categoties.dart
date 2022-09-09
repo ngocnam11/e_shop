@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../screens/screens.dart';
+import 'custom_network_image.dart';
 
 class ListCategories extends StatelessWidget {
   const ListCategories({
@@ -39,17 +40,15 @@ class ListCategories extends StatelessWidget {
                     const SizedBox(width: 8),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: Image(
+                      child: CustomNetworkImage(
+                        src: categories[index].imageUrl,
                         height: 70,
                         width: 70,
-                        
-                        image: NetworkImage(categories[index].imageUrl),
                         fit: BoxFit.cover,
                       ),
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      
                       categories[index].name,
                       style: Theme.of(context).textTheme.headline3,
                     ),

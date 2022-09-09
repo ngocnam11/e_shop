@@ -1,9 +1,9 @@
-import 'package:e_shop/widgets/carousel.dart';
 import 'package:flutter/material.dart';
 
 import '../models/category.dart';
 import '../router/router.dart';
 import '../services/firestore_services.dart';
+import '../widgets/carousel.dart';
 import '../widgets/list_categoties.dart';
 import '../widgets/text_field_input.dart';
 

@@ -69,7 +69,10 @@ class OrderConfirmScreen extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         child: ElevatedButton(
           onPressed: () {
-            Navigator.of(context).pushReplacementNamed(AppRouter.home);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              AppRouter.home,
+              (route) => false,
+            );
           },
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 16),

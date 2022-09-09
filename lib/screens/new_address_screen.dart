@@ -1,9 +1,9 @@
-import 'package:e_shop/services/auth_services.dart';
-import 'package:e_shop/services/firestore_services.dart';
 import 'package:flutter/material.dart';
 
 import '../config/utils.dart';
 import '../router/router.dart';
+import '../services/auth_services.dart';
+import '../services/firestore_services.dart';
 import '../widgets/text_field_input.dart';
 import 'screens.dart';
 

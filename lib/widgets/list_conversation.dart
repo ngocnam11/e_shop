@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/user.dart';
 import '../screens/screens.dart';
 import '../services/firestore_services.dart';
+import 'custom_network_image.dart';
 
 class ListConversation extends StatelessWidget {
   const ListConversation({
@@ -49,11 +50,12 @@ class ListConversation extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CircleAvatar(
-                              radius: 30,
-                              backgroundColor: Colors.amber,
-                              backgroundImage: NetworkImage(
-                                snapshot.data!.toList()[index].photoUrl,
+                            ClipOval(
+                              child: CustomNetworkImage(
+                                src: snapshot.data!.toList()[index].photoUrl,
+                                height: 60,
+                                width: 60,
+                                fit: BoxFit.cover,
                               ),
                             ),
                             const SizedBox(width: 8),

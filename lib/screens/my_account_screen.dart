@@ -8,6 +8,7 @@ import '../config/utils.dart';
 import '../router/router.dart';
 import '../services/auth_services.dart';
 import '../services/firestore_services.dart';
+import '../widgets/custom_network_image.dart';
 import '../widgets/text_field_input.dart';
 
 class MyAccountScreen extends StatefulWidget {
@@ -133,8 +134,8 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                                   width: 100,
                                   fit: BoxFit.cover,
                                 )
-                              : Image.network(
-                                  snapshot.data!['photoUrl'],
+                              : CustomNetworkImage(
+                                  src: snapshot.data!['photoUrl'],
                                   height: 100,
                                   width: 100,
                                   fit: BoxFit.cover,
