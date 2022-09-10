@@ -39,10 +39,12 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
       final state = this.state;
       if (state is WishlistLoaded) {
         try {
-          WishlistLoaded(
-            wishlist: Wishlist(
-              products: List.from(state.wishlist.products)
-                ..remove(event.product),
+          emit(
+            WishlistLoaded(
+              wishlist: Wishlist(
+                products: List.from(state.wishlist.products)
+                  ..remove(event.product),
+              ),
             ),
           );
         } on Exception catch (_) {
