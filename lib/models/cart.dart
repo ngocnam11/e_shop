@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'product.dart';
 
 class Cart extends Equatable {
+  // final String uid;
   final List<Product> products;
   const Cart({this.products = const <Product>[]});
 
@@ -52,6 +53,61 @@ class Cart extends Equatable {
     }
   }
 
+  // factory Cart.fromSnap(Map<String, dynamic> snap) {
+  //   List<CartItem> products = [];
+  //   snap["products"].forEach((product) {
+  //     products.add(Product.fromJson(product));
+  //   });
+  //   return Cart(
+  //     products: products,
+  //   );
+  // }
+
+  // Map<String, dynamic> toJson() {
+  //   return {
+  //     'id': id,
+  //     'uid': uid,
+  //     'products': products,
+  //   }
+  // }
+
   @override
   List<List<Product>> get props => [products];
+}
+
+class CartItem extends Equatable {
+  final String id;
+  final String productId;
+  final int quantity;
+  final int price;
+  final Product? productInfo;
+
+  const CartItem({
+    required this.id,
+    required this.productId,
+    required this.price,
+    required this.quantity,
+    this.productInfo,
+  });
+
+  static CartItem fromSnap(Map<String, dynamic> snap) {
+    return CartItem(
+      id: snap["id"] ,
+      productId: snap["productId"],
+      price: snap["price"],
+      quantity: snap["quantity"],
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "id": id,
+      "productId": productId,
+      "price": price,
+      "quantity": quantity,
+    };
+  }
+  
+  @override
+  List<Object?> get props => [id, productId, price, quantity,];
 }

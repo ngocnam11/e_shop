@@ -36,5 +36,10 @@ class DeliveryAddress extends Equatable {
   }
 
   @override
+  String toString() {
+    return "$address, $city, $country";
+  }
+
+  @override
   List<Object?> get props => [id, address, city, country, isDefault];
 }
