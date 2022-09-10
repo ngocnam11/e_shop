@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/category.dart';
 import '../models/delivery_address.dart';
 import '../models/message.dart';
+import '../models/order.dart';
 import '../models/product.dart';
 import '../models/user.dart' as model;
 import 'auth_services.dart';
@@ -105,42 +106,43 @@ class FireStoreServices {
     return res;
   }
 
-  // Future<String> addCheckout({
-  //   required String uid,
-  //   required String username,
-  //   required String email,
-  //   required String phoneNum,
-  //   required String address,
-  //   required String city,
-  //   required String country,
-  //   required List<Product> products,
-  //   required String subtotal,
-  //   required String deliveryFee,
-  //   required String total,
-  // }) async {
-  //   String response = 'Some error occurred';
-  //   try {
-  //     Checkout checkout = Checkout(
-  //       uid: uid,
-  //       username: username,
-  //       email: email,
-  //       phoneNum: phoneNum,
-  //       address: address,
-  //       city: city,
-  //       country: country,
-  //       products: products,
-  //       subtotal: subtotal,
-  //       deliveryFee: deliveryFee,
-  //       total: total,
-  //     );
-  //     _firestore.collection('checkouts').doc().set(checkout.toJson());
-  //     response = 'success';
-  //   } catch (e) {
-  //     response = e.toString();
-  //   }
+  Future<String> addOrder({
+    required String customerId,
+    required String sellerId,
+    required List<Product> products,
+    // required String paymentMethod,
+    required String deliveryAddress,
+    required double subtotal,
+    required double deliveryFee,
+    required double total,
+  }) async {
+    String response = 'Some error occurred';
+    try {
+      var date = DateTime.now().toLocal();
+      Order order = Order(
+        id: 'ORD${date.year}Y${date.month}M${date.day}ES',
+        customerId: customerId,
+        sellerId: sellerId,
+        products: products,
+        paymentMethod: 'Cash Money',
+        deliveryAddress: deliveryAddress,
+        subtotal: subtotal,
+        deliveryFee: deliveryFee,
+        total: total,
+        isAccepted: false,
+        isDelivered: false,
+        isCancelled: false,
+        isReceived: false,
+        createdAt: DateTime.now(),
+      );
+      _firestore.collection('orders').doc().set(order.toJson());
+      response = 'success';
+    } catch (e) {
+      response = e.toString();
+    }
 
-  //   return response;
-  // }
+    return response;
+  }
 
   Future<String> addDeliveryAddress({
     required String uid,
@@ -209,6 +211,7 @@ class FireStoreServices {
     try {
       String photoUrl =
           await _storage.uploadImageToStorage('profilePics', file, false, '');
+      model.User userData = await getUserByUid(uid: uid);
 
       model.User user = model.User(
         uid: uid,
@@ -217,7 +220,7 @@ class FireStoreServices {
         photoUrl: photoUrl,
         phoneNum: phoneNum,
         isAdmin: isAdmin,
-        addresses: const [],
+        addresses: userData.addresses,
       );
 
       _firestore.collection('users').doc(uid).update(user.toJson());
