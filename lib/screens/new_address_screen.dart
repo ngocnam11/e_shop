@@ -1,10 +1,11 @@
-import 'package:e_shop/services/auth_services.dart';
-import 'package:e_shop/services/firestore_services.dart';
 import 'package:flutter/material.dart';
 
 import '../config/utils.dart';
 import '../router/router.dart';
+import '../services/auth_services.dart';
+import '../services/firestore_services.dart';
 import '../widgets/text_field_input.dart';
+import 'delivery_address_screen.dart';
 import 'screens.dart';
 
 class NewAddressScreen extends StatefulWidget {
@@ -41,7 +42,7 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
     } else {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => const CheckoutScreen(),
+          builder: (context) => const DeliveryAddressScreen(),
         ),
       );
     }

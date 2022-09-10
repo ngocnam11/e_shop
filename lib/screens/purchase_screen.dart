@@ -20,13 +20,6 @@ class PurchaseScreen extends StatefulWidget {
 }
 
 class _PurchaseScreenState extends State<PurchaseScreen> {
-  // final List<Map<String, String>> _payment = [
-  //   {'title': 'Cash Money', 'icon': 'assets/svgs/logo/money.svg'},
-  //   // {'title':'Paypal','icon': 'assets/svgs/logo/paypal.svg'},
-  //   {'title': 'Apple Pay', 'icon': 'assets/svgs/logo/apple.svg'},
-  //   {'title': 'Google Pay', 'icon': 'assets/svgs/logo/google.svg'},
-  //   {'title': 'Credit Card', 'icon': 'assets/svgs/logo/mastercard.svg'},
-  // ];
 
   String _paymentMethod = 'Cash Money';
 
@@ -58,71 +51,6 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
               ),
             ),
             const Divider(),
-            PurchaseItem(
-              svgIconPath: 'assets/svgs/logo/apple.svg',
-              title: Text(
-                'Apple Pay',
-                style: Theme.of(context).textTheme.headline4,
-              ),
-              subTitle: Text(
-                '***** **** 2472',
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
-              trailing: Radio<String>(
-                value: 'Apple Pay',
-                groupValue: _paymentMethod,
-                onChanged: (value) {
-                  setState(() {
-                    _paymentMethod = value!;
-                    debugPrint('Method: $_paymentMethod');
-                  });
-                },
-              ),
-            ),
-            const Divider(),
-            PurchaseItem(
-              svgIconPath: 'assets/svgs/logo/google.svg',
-              title: Text(
-                'Google Pay',
-                style: Theme.of(context).textTheme.headline4,
-              ),
-              subTitle: Text(
-                '589****118',
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
-              trailing: Radio<String>(
-                value: 'Google Pay',
-                groupValue: _paymentMethod,
-                onChanged: (value) {
-                  setState(() {
-                    _paymentMethod = value!;
-                    debugPrint('Method: $_paymentMethod');
-                  });
-                },
-              ),
-            ),
-            const Divider(),
-            PurchaseItem(
-              svgIconPath: 'assets/svgs/logo/mastercard.svg',
-              title: Text(
-                'Credit Card',
-                style: Theme.of(context).textTheme.headline4,
-              ),
-              subTitle: Text(
-                '245********643',
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
-              trailing: Radio<String>(
-                value: 'Credit Card',
-                groupValue: _paymentMethod,
-                onChanged: (value) {
-                  setState(() {
-                    _paymentMethod = value!;
-                    debugPrint('Method: $_paymentMethod');
-                  });
-                },
-              ),
-            ),
             const SizedBox(height: 10),
             OutlinedButton(
               style: OutlinedButton.styleFrom(

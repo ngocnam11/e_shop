@@ -17,17 +17,19 @@ class AdOrderScreen extends StatelessWidget {
         ),
       ),
       body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: Order.orders.length,
-              itemBuilder: (context, index) {
-                return OrderCard(
-                  order: Order.orders[index],
-                );
-              },
-            ),
-          )
+        children: const [
+          Text('data'),
+          Text('date'),
+          // Expanded(
+          //   child: ListView.builder(
+          //     itemCount: Order.orders.length,
+          //     itemBuilder: (context, index) {
+          //       return OrderCard(
+          //         order: Order.orders[index],
+          //       );
+          //     },
+          //   ),
+          // )
         ],
       ),
     );
@@ -41,7 +43,7 @@ class OrderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var products = Product.products
-        .where((product) => order.productIds.contains(product.id))
+        .where((product) => order.products.contains(product.id))
         .toList();
 
     return Padding(
