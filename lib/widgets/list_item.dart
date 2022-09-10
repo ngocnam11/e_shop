@@ -48,7 +48,7 @@ class ListItem extends StatelessWidget {
                       Expanded(
                         child: Text(
                           product.name,
-                          style: Theme.of(context).textTheme.headline5,
+                          style: Theme.of(context).textTheme.headline4,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -57,12 +57,18 @@ class ListItem extends StatelessWidget {
                       //   value: false,
                       //   onChanged: (value) {},
                       // ),
+                      const SizedBox(
+                        height: 32,
+                        width: 32,
+                      ),
                     ],
                   ),
-                  Text(
-                    'Size: L',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
+                  product.colors!.isEmpty && product.size!.isEmpty
+                      ? const SizedBox()
+                      : Text(
+                          '${product.colors![0]}, ${product.size![0]}',
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
