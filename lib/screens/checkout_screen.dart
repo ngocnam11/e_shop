@@ -1,183 +1,315 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../blocs/cart/cart_bloc.dart';
+import '../config/utils.dart';
+import '../models/cart.dart';
+import '../models/product.dart';
 import '../models/user.dart';
 import '../router/router.dart';
 import '../services/auth_services.dart';
 import '../services/firestore_services.dart';
+import '../widgets/list_item.dart';
 import '../widgets/order_summary.dart';
+import 'delivery_address_screen.dart';
+import 'order_confirmation/order_confirm_screen.dart';
 
 class CheckoutScreen extends StatefulWidget {
-  const CheckoutScreen({Key? key}) : super(key: key);
+  const CheckoutScreen({Key? key, required this.productInCart})
+      : super(key: key);
 
-  static MaterialPageRoute route() {
+  static MaterialPageRoute route({required List<Product> productInCart}) {
     return MaterialPageRoute(
       settings: const RouteSettings(name: AppRouter.checkout),
-      builder: (_) => const CheckoutScreen(),
+      builder: (_) => CheckoutScreen(
+        productInCart: productInCart,
+      ),
     );
   }
+
+  final List<Product> productInCart;
 
   @override
   State<CheckoutScreen> createState() => _CheckoutScreenState();
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
-  Future<void> getInitAddress() async {
-    final user = await FireStoreServices()
-        .getUserByUid(uid: AuthServices().currentUser.uid);
-    _addressValue = user.addresses.isNotEmpty ? user.addresses[0].address : '';
-  }
+  // late Cart cart;
 
-  late String _addressValue;
+  // void addOrder() async {
+  //   String res = await FireStoreServices().addOrder(
+  //     customerId: AuthServices().currentUser.uid,
+  //     sellerId: sellerId,
+  //     products: cart.products,
+  //     deliveryAddress: deliveryAddress,
+  //     subtotal: cart.subtotal,
+  //     deliveryFee: double.parse(cart.deliveryFeeString),
+  //     total: double.parse(cart.totalString),
+  //   );
 
-  @override
-  void initState() {
-    super.initState();
-    getInitAddress();
-  }
+  //   if (!mounted) return;
+
+  //   if (res != 'success') {
+  //     showSnackBar(context, res);
+  //   } else {
+  //     Navigator.of(context).push(
+  //       MaterialPageRoute(
+  //         builder: (context) => const OrderConfirmScreen(),
+  //       ),
+  //     );
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Shipping Address'),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.notifications_none_rounded),
-          ),
-        ],
+        title: const Text('Checkout'),
       ),
-      body: FutureBuilder<User>(
-        future: FireStoreServices()
-            .getUserByUid(uid: AuthServices().currentUser.uid),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (snapshot.hasError) {
-            debugPrint(snapshot.error.toString());
-            return const Text('Something went wrong');
-          }
-          final user = snapshot.data!;
-          return ListView.separated(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            itemBuilder: (context, index) {
-              if (index != user.addresses.length) {
-                return Container(
-                  height: 70,
-                  padding: const EdgeInsets.all(8.0),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const DeliveryAddressScreen(),
+                    ),
+                  );
+                },
+                child: Container(
+                  height: 100,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
                   decoration: BoxDecoration(
                     color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      const Icon(Icons.location_on_outlined),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Text>[
-                            Text(
-                              user.addresses[index].address,
-                              style: Theme.of(context).textTheme.headline4,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
-                            Text(
-                              '${user.addresses[index].city}, ${user.addresses[index].country}',
-                              style: Theme.of(context).textTheme.headline5,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ),
-                      ),
+                    children: [
                       Column(
-                        children: <Widget>[
-                          Expanded(
-                            child: Radio<String>(
-                              value: user.addresses[index].address,
-                              groupValue: _addressValue,
-                              onChanged: (value) {
-                                setState(() {
-                                  _addressValue = value!;
-                                  debugPrint('Address: $_addressValue');
-                                });
-                              },
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.location_on_outlined,
+                                color: Colors.red,
+                              ),
+                              Text(
+                                'Delivery Address',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline4!
+                                    .copyWith(color: Colors.blue[300]),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 24),
+                            child: SizedBox(
+                              height: 24,
+                              child: FutureBuilder<User>(
+                                future: FireStoreServices().getUserByUid(
+                                    uid: AuthServices().currentUser.uid),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                  if (snapshot.hasError) {
+                                    return const Text('Something went wrong');
+                                  }
+                                  return Text(
+                                    '${snapshot.data!.username} | (${snapshot.data!.phoneNum})',
+                                    style:
+                                        Theme.of(context).textTheme.headline4,
+                                  );
+                                },
+                              ),
                             ),
                           ),
-                          Expanded(
-                            child: TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                'Edit',
-                                style: Theme.of(context).textTheme.bodyText1,
-                              ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 24),
+                            child: Text(
+                              'delivery address',
+                              style: Theme.of(context).textTheme.headline4,
                             ),
                           ),
                         ],
                       ),
+                      const Icon(Icons.navigate_next),
                     ],
                   ),
-                );
-              }
-
-              return OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            BlocBuilder<CartBloc, CartState>(
+              builder: (context, state) {
+                if (state is CartLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (state is CartLoaded) {
+                  final products =
+                      state.cart.productQuantity(state.cart.products);
+                  return ListView.separated(
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    itemCount: products.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Divider(),
+                          FutureBuilder<User>(
+                            future: FireStoreServices().getUserByUid(
+                                uid: products.keys.elementAt(index).uid),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              if (snapshot.hasError) {
+                                return const Text('Something went wrong');
+                              }
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                child: Text(
+                                  snapshot.data!.username,
+                                  style: Theme.of(context).textTheme.headline4,
+                                ),
+                              );
+                            },
+                          ),
+                          const Divider(),
+                          ListItem(
+                            product: products.keys.elementAt(index),
+                            child: const SizedBox(
+                              width: 64,
+                              height: 40,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 12),
+                  );
+                } else {
+                  return const Text('Something went wrong');
+                }
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: InkWell(
+                onTap: () {},
+                child: Container(
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
                     borderRadius: BorderRadius.circular(8),
                   ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      const Icon(Icons.local_shipping_outlined),
+                      Text(
+                        'Delivery Method',
+                        style: Theme.of(context).textTheme.headline3,
+                      ),
+                      Text(
+                        'EShopExpress',
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                      const Icon(Icons.navigate_next),
+                    ],
+                  ),
                 ),
-                onPressed: () {
-                  Navigator.of(context).pushNamed(AppRouter.newAddress);
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).pushNamed(AppRouter.purchase);
                 },
-                child: const Text('+ Add New Address'),
-              );
-            },
-            separatorBuilder: (context, index) => const SizedBox(height: 12),
-            itemCount: user.addresses.length + 1,
-          );
-        },
+                child: Container(
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      const Icon(Icons.monetization_on_outlined),
+                      Text(
+                        'Payment Method',
+                        style: Theme.of(context).textTheme.headline3,
+                      ),
+                      Text(
+                        'Cash Money',
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                      const Icon(Icons.navigate_next),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.all(12),
+              child: OrderSummary(),
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: Container(
-        height: 170,
-        padding: const EdgeInsets.only(
-          left: 20,
-          right: 20,
-          bottom: 20,
-          top: 10,
-        ),
-        decoration: const BoxDecoration(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey,
-              blurRadius: 7,
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 6,
             ),
           ],
-          color: Colors.white,
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            const OrderSummary(),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(AppRouter.purchase);
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 12,
-                ),
-                primary: Colors.blueAccent.shade100,
-                fixedSize: const Size.fromWidth(500),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: Colors.blueAccent.shade100,
+            padding: const EdgeInsets.symmetric(vertical: 12),
+          ),
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const OrderConfirmScreen(),
               ),
-              child: const Text('Continue'),
-            ),
-          ],
+            );
+          },
+          child: Text(
+            'Order Now',
+            style: Theme.of(context)
+                .textTheme
+                .headline3!
+                .copyWith(color: Colors.white),
+          ),
         ),
       ),
     );

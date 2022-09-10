@@ -135,7 +135,10 @@ class OrderDetails extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return ListItem(
                       product: products.keys.elementAt(index),
-                      child: const SizedBox(width: 64, height: 40,),
+                      child: const SizedBox(
+                        width: 64,
+                        height: 40,
+                      ),
                     );
                   },
                   separatorBuilder: (context, index) =>

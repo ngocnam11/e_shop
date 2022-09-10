@@ -133,7 +133,7 @@ class ProductScreen extends StatelessWidget {
                     style: theme.headline3,
                   ),
                   const SizedBox(height: 12),
-                  Ink(
+                  product.colors!.isEmpty && product.size!.isEmpty ? const SizedBox() : Ink(
                     height: 80,
                     decoration: BoxDecoration(
                       color: Colors.grey[100],

@@ -88,8 +88,7 @@ class CartScreen extends StatelessWidget {
             );
           }
           if (state is CartLoaded) {
-            final products =
-                state.cart.productQuantity(state.cart.products).keys;
+            final products = state.cart.products;
             if (products.isEmpty) {
               return Padding(
                 padding: const EdgeInsets.all(20),
@@ -135,7 +134,10 @@ class CartScreen extends StatelessWidget {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.of(context).pushNamed(AppRouter.checkout);
+                          Navigator.of(context).pushNamed(
+                            AppRouter.checkout,
+                            arguments: products,
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),
