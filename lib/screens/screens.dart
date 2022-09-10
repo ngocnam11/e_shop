@@ -12,6 +12,7 @@ export 'profile_screen.dart';
 export 'notification_screen.dart';
 export 'category_screen.dart';
 export 'product_screen.dart';
+export 'order_confirmation/order_confirm_screen.dart';
 export 'conversation_screen.dart';
 export 'my_account_screen.dart';
 export 'purchase_screen.dart';

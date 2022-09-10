@@ -17,6 +17,7 @@ abstract class AppRouter {
   static const String profile = '/profile';
   static const String notification = '/notification';
   static const String product = '/product';
+  static const String orderConfirm = '/order_confirm';
   static const String account = '/account';
   static const String purchase = '/purchase';
   static const String newCard = '/new_card';
@@ -40,7 +41,8 @@ abstract class AppRouter {
         return CartScreen.route();
       case checkout:
         return CheckoutScreen.route(
-            productInCart: settings.arguments as List<Product>);
+          productInCart: settings.arguments as List<Product>,
+        );
       case newAddress:
         return NewAddressScreen.route();
       case wishlist:
@@ -53,6 +55,8 @@ abstract class AppRouter {
         return NotificationScreen.route();
       case product:
         return ProductScreen.route(product: settings.arguments);
+      case orderConfirm:
+        return OrderConfirmScreen.route();
       case account:
         return MyAccountScreen.route(isAdmin: settings.arguments as bool);
       case purchase:
