@@ -61,7 +61,9 @@ class AuthServices {
     try {
       if (email.isNotEmpty || password.isNotEmpty) {
         await _auth.signInWithEmailAndPassword(
-            email: email, password: password);
+          email: email,
+          password: password,
+        );
         res = 'success';
       } else {
         res = 'Please enter all the fields';
@@ -126,8 +128,8 @@ class AuthServices {
   }
 
   Future<void> logout() async {
-    // // final providerId =
-    // //     await _auth.fetchSignInMethodsForEmail(currentUser.email!);
+    // final providerId =
+    //     await _auth.fetchSignInMethodsForEmail(currentUser.email!);
     try {
       // if (providerId[0] == 'google.com') {
       await _googleSignIn.signOut();

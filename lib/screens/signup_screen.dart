@@ -117,18 +117,17 @@ class _SignupScreenState extends State<SignupScreen> {
               onPressed: signUpUser,
               style: ElevatedButton.styleFrom(
                 primary: Colors.blueAccent[400],
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 90,
-                  vertical: 10,
-                ),
+                fixedSize: const Size.fromWidth(double.maxFinite),
+                padding: const EdgeInsets.symmetric(vertical: 10),
               ),
               child: _isLoading
-                  ? const Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                      ),
+                  ? const CircularProgressIndicator(
+                      color: Colors.white,
                     )
-                  : const Text('Register Now'),
+                  : const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8),
+                      child: Text('Register Now'),
+                    ),
             ),
             const SizedBox(height: 20),
             Row(
