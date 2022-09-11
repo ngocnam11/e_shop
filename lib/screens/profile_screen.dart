@@ -64,6 +64,7 @@ class ProfileScreen extends StatelessWidget {
                                 height: 88,
                                 width: 88,
                                 fit: BoxFit.cover,
+                                isCurrentUserAvatar: true,
                               ),
                             ),
                           ),

@@ -1,7 +1,4 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../config/utils.dart';
 import '../router/router.dart';
@@ -27,12 +24,10 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  Uint8List? _image;
   bool _isLoading = false;
 
   @override
   void initState() {
-    getDefaultImage();
     super.initState();
   }
 
@@ -44,7 +39,6 @@ class _SignupScreenState extends State<SignupScreen> {
       email: emailController.text,
       password: passwordController.text,
       username: usernameController.text,
-      file: _image!,
     );
 
     setState(() {
@@ -53,21 +47,17 @@ class _SignupScreenState extends State<SignupScreen> {
 
     if (!mounted) return;
 
-    if (res != 'success') {
-      showSnackBar(context, res);
-    } else {
+    if (res == 'success') {
       Navigator.of(context).pushNamedAndRemoveUntil(
         AppRouter.home,
         (route) => false,
       );
+    } else {
+      showSnackBar(context, res);
     }
-  }
-
-  void getDefaultImage() async {
-    ByteData byteData =
-        await rootBundle.load('assets/images/default_avatar.png');
-
-    _image = byteData.buffer.asUint8List();
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override

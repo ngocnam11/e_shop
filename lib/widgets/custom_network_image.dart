@@ -7,12 +7,14 @@ class CustomNetworkImage extends StatelessWidget {
     this.width,
     this.height,
     this.fit,
+    this.isCurrentUserAvatar = false,
   }) : super(key: key);
 
   final String src;
   final double? width;
   final double? height;
   final BoxFit? fit;
+  final bool isCurrentUserAvatar;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,9 @@ class CustomNetworkImage extends StatelessWidget {
       imageErrorBuilder: (context, error, stackTrace) {
         debugPrint(error.toString());
         return Image.asset(
-          'assets/images/error.jpg',
+          isCurrentUserAvatar
+              ? 'assets/images/default_avatar.png'
+              : 'assets/images/error.jpg',
           width: width ?? double.maxFinite,
           height: height ?? double.maxFinite,
           fit: fit,

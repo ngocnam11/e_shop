@@ -139,6 +139,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                                   height: 100,
                                   width: 100,
                                   fit: BoxFit.cover,
+                                  isCurrentUserAvatar: true,
                                 ),
                         ),
                         Positioned(
