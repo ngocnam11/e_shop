@@ -100,10 +100,12 @@ class ProductCard extends StatelessWidget {
           Text(
             product.name,
             style: Theme.of(context).textTheme.headline4,
+            overflow: TextOverflow.ellipsis,
           ),
           Text(
             product.description,
             style: Theme.of(context).textTheme.headline6,
+            overflow: TextOverflow.ellipsis,
           ),
           Text(
             '\$${product.price}',
