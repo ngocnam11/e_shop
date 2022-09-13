@@ -47,14 +47,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(automaticallyImplyLeading: false),
       body: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const Text(
-              'Reset password',
+              'Forgot password',
               style: TextStyle(
                 fontSize: 40,
                 fontWeight: FontWeight.bold,
@@ -67,21 +67,23 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               overflow: TextOverflow.clip,
             ),
             const SizedBox(height: 20),
+            Text(
+              'Email',
+              style: Theme.of(context).textTheme.headline5,
+            ),
+            const SizedBox(height: 6),
             TextFieldInput(
               controller: emailController,
               hintText: 'Enter your email address',
-              labelText: 'Email address',
               textInputType: TextInputType.emailAddress,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blueAccent[400],
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 60,
-                    vertical: 10,
-                  ),
+                  fixedSize: const Size.fromWidth(double.maxFinite),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                 ),
                 onPressed: sendPasswordReset,
                 child: _isLoading
@@ -93,6 +95,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     : const Text('Send me password reset link'),
               ),
             ),
+            Center(
+              child: TextButton(
+                onPressed: () {
+                  Navigator.of(context).pushReplacementNamed(AppRouter.login);
+                },
+                child: const Text('Back to login'),
+              ),
+            )
           ],
         ),
       ),
