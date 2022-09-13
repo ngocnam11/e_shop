@@ -240,7 +240,7 @@ class _NewProductScreenState extends State<NewProductScreen> {
                     child: ElevatedButton(
                       onPressed: addNewProduct,
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.black,
+                        backgroundColor: Colors.black,
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),

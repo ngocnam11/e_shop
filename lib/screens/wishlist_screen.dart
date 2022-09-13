@@ -56,10 +56,12 @@ class WishlistScreen extends StatelessWidget {
                       if (state is CartLoaded) {
                         return ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.blue[300],
+                            backgroundColor: Colors.blue[300],
                           ),
                           onPressed: () {
-                            context.read<CartBloc>().add(AddProduct(state.cart.products[index]));
+                            context
+                                .read<CartBloc>()
+                                .add(AddProduct(state.cart.products[index]));
                             showSnackBar(context, 'Added to your Cart');
                           },
                           child: const Text('Add to Cart'),

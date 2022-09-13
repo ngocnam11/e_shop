@@ -194,7 +194,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                       children: [
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.blue[300],
+                            backgroundColor: Colors.blue[300],
                             padding: const EdgeInsets.symmetric(
                               horizontal: 32,
                               vertical: 12,

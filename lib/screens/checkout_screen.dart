@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../blocs/cart/cart_bloc.dart';
-import '../config/utils.dart';
-import '../models/cart.dart';
 import '../models/product.dart';
 import '../models/user.dart';
 import '../router/router.dart';
@@ -293,7 +291,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         ),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            primary: Colors.blueAccent.shade100,
+            backgroundColor: Colors.blueAccent.shade100,
             padding: const EdgeInsets.symmetric(vertical: 12),
           ),
           onPressed: () {

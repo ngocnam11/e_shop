@@ -77,7 +77,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.blueAccent[400],
+                  backgroundColor: Colors.blueAccent[400],
                   padding: const EdgeInsets.symmetric(
                     horizontal: 60,
                     vertical: 10,

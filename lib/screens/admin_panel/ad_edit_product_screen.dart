@@ -163,7 +163,7 @@ class _AdEditProductScreenState extends State<AdEditProductScreen> {
                         child: ElevatedButton(
                           onPressed: updateProduct,
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.black,
+                            backgroundColor: Colors.black,
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),

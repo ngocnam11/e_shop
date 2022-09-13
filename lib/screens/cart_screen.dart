@@ -101,7 +101,7 @@ class CartScreen extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    primary: Colors.blueAccent.shade100,
+                    backgroundColor: Colors.blueAccent.shade100,
                   ),
                   child: const Text('Continue Shopping'),
                 ),
@@ -141,7 +141,7 @@ class CartScreen extends StatelessWidget {
                         },
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),
-                          primary: Colors.blueAccent.shade100,
+                          backgroundColor: Colors.blueAccent.shade100,
                           fixedSize: const Size.fromWidth(500),
                         ),
                         child: const Text('Go to checkout'),

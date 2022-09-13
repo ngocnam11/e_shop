@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../widgets/purchase_item.dart';
 import '../router/router.dart';
-import '../widgets/order_summary.dart';
 import 'order_confirmation/order_confirm_screen.dart';
 
 class PurchaseScreen extends StatefulWidget {
@@ -87,7 +86,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
             );
           },
           style: ElevatedButton.styleFrom(
-            primary: Colors.blueAccent.shade100,
+            backgroundColor: Colors.blueAccent.shade100,
             padding: const EdgeInsets.symmetric(vertical: 12),
           ),
           child: const Text('Continue'),

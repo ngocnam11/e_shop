@@ -4,7 +4,6 @@ import '../models/user.dart';
 import '../router/router.dart';
 import '../services/auth_services.dart';
 import '../services/firestore_services.dart';
-import '../widgets/order_summary.dart';
 
 class DeliveryAddressScreen extends StatefulWidget {
   const DeliveryAddressScreen({Key? key}) : super(key: key);
@@ -153,7 +152,7 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
             );
           },
           style: ElevatedButton.styleFrom(
-            primary: Colors.blueAccent.shade100,
+            backgroundColor: Colors.blueAccent.shade100,
             padding: const EdgeInsets.symmetric(vertical: 12),
           ),
           child: const Text('Continue'),

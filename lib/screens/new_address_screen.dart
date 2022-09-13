@@ -6,7 +6,6 @@ import '../services/auth_services.dart';
 import '../services/firestore_services.dart';
 import '../widgets/text_field_input.dart';
 import 'delivery_address_screen.dart';
-import 'screens.dart';
 
 class NewAddressScreen extends StatefulWidget {
   const NewAddressScreen({Key? key}) : super(key: key);
@@ -118,7 +117,7 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
             padding: const EdgeInsets.symmetric(
               vertical: 16,
             ),
-            primary: Colors.blueAccent.shade100,
+            backgroundColor: Colors.blueAccent.shade100,
           ),
           child: const Text('Save & Continue'),
         ),

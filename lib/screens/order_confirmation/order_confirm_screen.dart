@@ -77,7 +77,7 @@ class OrderConfirmScreen extends StatelessWidget {
                         ),
                         fixedSize: const Size.fromWidth(double.maxFinite),
                         padding: const EdgeInsets.symmetric(vertical: 16),
-                        primary: Colors.indigo,
+                        backgroundColor: Colors.indigo,
                       ),
                       child: const Text('Track Your Order'),
                     ),
@@ -103,7 +103,7 @@ class OrderConfirmScreen extends StatelessWidget {
           },
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 16),
-            primary: Colors.blueAccent.shade100,
+            backgroundColor: Colors.blueAccent.shade100,
           ),
           child: const Text('Continue Shopping'),
         ),

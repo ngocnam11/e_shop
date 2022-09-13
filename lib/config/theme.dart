@@ -29,7 +29,7 @@ ThemeData theme() {
     iconTheme: const IconThemeData(color: Colors.black54),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        onPrimary: Colors.white,
+        foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),

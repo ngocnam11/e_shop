@@ -180,7 +180,7 @@ class OrderCard extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.blue,
+                      backgroundColor: Colors.blue,
                       minimumSize: const Size(150, 40),
                     ),
                     child: const Text(
@@ -193,7 +193,7 @@ class OrderCard extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.blue,
+                      backgroundColor: Colors.blue,
                       minimumSize: const Size(150, 40),
                     ),
                     child: const Text(
