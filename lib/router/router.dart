@@ -1,3 +1,4 @@
+import 'package:e_shop/models/delivery_address.dart';
 import 'package:flutter/material.dart';
 
 import '../models/product.dart';
@@ -11,7 +12,9 @@ abstract class AppRouter {
   static const String search = '/search';
   static const String cart = '/cart';
   static const String checkout = '/checkout';
-  static const String newAddress = '/new_address';
+  static const String address = '/address';
+  static const String newAddress = '/address/new';
+  static const String editAddress = '/address/edit';
   static const String wishlist = '/wishlist';
   static const String chat = '/chat';
   static const String profile = '/profile';
@@ -43,8 +46,14 @@ abstract class AppRouter {
         return CheckoutScreen.route(
           productInCart: settings.arguments as List<Product>,
         );
+      case address:
+        return DeliveryAddressScreen.route();
       case newAddress:
         return NewAddressScreen.route();
+      case editAddress:
+        return EditAddressScreen.route(
+          address: settings.arguments as DeliveryAddress,
+        );
       case wishlist:
         return WishlistScreen.route();
       case chat:

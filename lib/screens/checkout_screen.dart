@@ -73,11 +73,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: InkWell(
                 onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const DeliveryAddressScreen(),
-                    ),
-                  );
+                  Navigator.of(context).pushNamed(AppRouter.address);
                 },
                 child: Container(
                   height: 100,
@@ -114,7 +110,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               height: 24,
                               child: FutureBuilder<User>(
                                 future: FireStoreServices().getUserByUid(
-                                    uid: AuthServices().currentUser.uid),
+                                  uid: AuthServices().currentUser.uid,
+                                ),
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
@@ -123,6 +120,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     );
                                   }
                                   if (snapshot.hasError) {
+                                    debugPrint(snapshot.error.toString());
                                     return const Text('Something went wrong');
                                   }
                                   return Text(

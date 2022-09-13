@@ -8,6 +8,13 @@ import '../services/firestore_services.dart';
 class DeliveryAddressScreen extends StatefulWidget {
   const DeliveryAddressScreen({Key? key}) : super(key: key);
 
+  static MaterialPageRoute route() {
+    return MaterialPageRoute(
+      settings: const RouteSettings(name: AppRouter.address),
+      builder: (_) => const DeliveryAddressScreen(),
+    );
+  }
+
   @override
   State<DeliveryAddressScreen> createState() => _DeliveryAddressScreenState();
 }
@@ -16,7 +23,8 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
   Future<void> getInitAddress() async {
     final user = await FireStoreServices()
         .getUserByUid(uid: AuthServices().currentUser.uid);
-    _addressValue = user.addresses.isNotEmpty ? user.addresses[0].address : '';
+    _addressValue =
+        user.addresses.isNotEmpty ? user.addresses[0].toString() : '';
   }
 
   late String _addressValue;
@@ -49,6 +57,7 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
               );
             }
             if (snapshot.hasError) {
+              debugPrint(snapshot.error.toString());
               return const Text('Something went wrong');
             }
             return ListView.separated(
@@ -90,7 +99,8 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
                           children: <Widget>[
                             Expanded(
                               child: Radio<String>(
-                                value: snapshot.data!.addresses[index].address,
+                                value:
+                                    snapshot.data!.addresses[index].toString(),
                                 groupValue: _addressValue,
                                 onChanged: (value) {
                                   setState(() {
@@ -102,7 +112,12 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
                             ),
                             Expanded(
                               child: TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.of(context).pushNamed(
+                                    AppRouter.editAddress,
+                                    arguments: snapshot.data!.addresses[index],
+                                  );
+                                },
                                 child: Text(
                                   'Edit',
                                   style: Theme.of(context).textTheme.bodyText1,
