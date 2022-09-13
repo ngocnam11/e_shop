@@ -15,6 +15,8 @@ class FireStoreServices {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final StorageService _storage = StorageService();
 
+  String currentUserUid = AuthServices().currentUser.uid;
+
   Future<model.User> getUserByUid({required String uid}) async {
     final snap = await _firestore.collection('users').doc(uid).get();
     model.User user = model.User.fromSnap(snap.data()!);
@@ -200,30 +202,30 @@ class FireStoreServices {
   }
 
   Future<String> updateProfile({
-    required String uid,
-    required String email,
-    required String username,
-    required Uint8List file,
-    required String phoneNum,
-    required bool isAdmin,
+    String? username,
+    Uint8List? file,
+    String? phoneNum,
   }) async {
     String resUpdate = 'Some error occurred';
     try {
-      String photoUrl =
-          await _storage.uploadImageToStorage('profilePics', file, false, '');
-      model.User userData = await getUserByUid(uid: uid);
+      String? photoUrl;
 
-      model.User user = model.User(
-        uid: uid,
-        email: email,
+      if (file != null) {
+        photoUrl =
+            await _storage.uploadImageToStorage('profilePics', file, false, '');
+      }
+      model.User userData = await getUserByUid(uid: currentUserUid);
+
+      userData = userData.copyWith(
         username: username,
-        photoUrl: photoUrl,
         phoneNum: phoneNum,
-        isAdmin: isAdmin,
-        addresses: userData.addresses,
+        photoUrl: photoUrl,
       );
 
-      _firestore.collection('users').doc(uid).update(user.toJson());
+      _firestore
+          .collection('users')
+          .doc(currentUserUid)
+          .update(userData.toJson());
       resUpdate = 'success';
     } catch (e) {
       resUpdate = e.toString();

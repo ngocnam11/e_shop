@@ -101,10 +101,7 @@ class ProfileScreen extends StatelessWidget {
                           icon: Icons.person_outline_rounded,
                           title: 'My Account',
                           press: () {
-                            Navigator.of(context).pushNamed(
-                              AppRouter.account,
-                              arguments: snapshot.data!['isAdmin'],
-                            );
+                            Navigator.of(context).pushNamed(AppRouter.account);
                           },
                         ),
                         const SizedBox(height: 10),

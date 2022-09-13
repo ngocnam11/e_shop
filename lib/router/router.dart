@@ -67,7 +67,7 @@ abstract class AppRouter {
       case orderConfirm:
         return OrderConfirmScreen.route();
       case account:
-        return MyAccountScreen.route(isAdmin: settings.arguments as bool);
+        return MyAccountScreen.route();
       case purchase:
         return PurchaseScreen.route();
       case newCard:
