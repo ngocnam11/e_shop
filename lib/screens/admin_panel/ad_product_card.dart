@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../config/utils.dart';
+import '../../router/router.dart';
 import '../../services/firestore_services.dart';
 import '../../widgets/custom_network_image.dart';
 import 'ad_edit_product_screen.dart';
-import 'ad_home_screen.dart';
 
 class AdProductCard extends StatefulWidget {
   const AdProductCard({Key? key, required this.snap}) : super(key: key);
@@ -23,11 +23,7 @@ class _AdProductCardState extends State<AdProductCard> {
     if (res != 'success') {
       showSnackBar(context, res);
     } else {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const AdHomeScreen(),
-        ),
-      );
+      Navigator.of(context).pushNamed(AppRouter.admin);
     }
   }
 

@@ -4,14 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../config/utils.dart';
+import '../../router/router.dart';
 import '../../services/auth_services.dart';
 import '../../services/firestore_services.dart';
 import '../../widgets/my_chip_list.dart';
 import '../../widgets/text_field_input.dart';
-import 'ad_product_screen.dart';
 
 class NewProductScreen extends StatefulWidget {
   const NewProductScreen({Key? key}) : super(key: key);
+
+  static MaterialPageRoute route() {
+    return MaterialPageRoute(
+      settings: const RouteSettings(name: AppRouter.adminNewProduct),
+      builder: (_) => const NewProductScreen(),
+    );
+  }
 
   @override
   State<NewProductScreen> createState() => _NewProductScreenState();
@@ -61,11 +68,7 @@ class _NewProductScreenState extends State<NewProductScreen> {
     if (res != 'success') {
       showSnackBar(context, res);
     } else {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const AdProductScreen(),
-        ),
-      );
+      Navigator.of(context).pushNamed(AppRouter.adminProduct);
     }
   }
 

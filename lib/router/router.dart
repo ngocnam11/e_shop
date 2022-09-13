@@ -1,6 +1,6 @@
-import 'package:e_shop/models/delivery_address.dart';
 import 'package:flutter/material.dart';
 
+import '../models/delivery_address.dart';
 import '../models/product.dart';
 import '../screens/screens.dart';
 
@@ -25,6 +25,9 @@ abstract class AppRouter {
   static const String purchase = '/purchase';
   static const String newCard = '/new_card';
   static const String admin = '/admin';
+  static const String adminProduct = '/admin/product';
+  static const String adminNewProduct = '/admin/product/new';
+  static const String adminOrder = '/admin/order';
 
   static Route onGenerateRoute(RouteSettings settings) {
     debugPrint('Route: ${settings.name}');
@@ -74,6 +77,12 @@ abstract class AppRouter {
         return NewCardScreen.route();
       case admin:
         return AdHomeScreen.route();
+      case adminProduct:
+        return AdProductScreen.route();
+      case adminNewProduct:
+        return NewProductScreen.route();
+      case adminOrder:
+        return AdOrderScreen.route();
       default:
         return MaterialPageRoute(
           settings: const RouteSettings(name: '/error'),

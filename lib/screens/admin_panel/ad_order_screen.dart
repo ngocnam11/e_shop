@@ -3,10 +3,18 @@ import 'package:intl/intl.dart';
 
 import '../../models/order.dart';
 import '../../models/product.dart';
+import '../../router/router.dart';
 import '../../widgets/custom_network_image.dart';
 
 class AdOrderScreen extends StatelessWidget {
   const AdOrderScreen({Key? key}) : super(key: key);
+
+  static MaterialPageRoute route() {
+    return MaterialPageRoute(
+      settings: const RouteSettings(name: AppRouter.adminOrder),
+      builder: (_) => const AdOrderScreen(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

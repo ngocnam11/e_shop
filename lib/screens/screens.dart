@@ -20,3 +20,6 @@ export 'my_account_screen.dart';
 export 'purchase_screen.dart';
 export 'new_card_screen.dart';
 export 'admin_panel/ad_home_screen.dart';
+export 'admin_panel/ad_product_screen.dart';
+export 'admin_panel/new_product_screen.dart';
+export 'admin_panel/ad_order_screen.dart';

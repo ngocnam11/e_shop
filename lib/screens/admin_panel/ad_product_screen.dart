@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../../router/router.dart';
 import '../../services/auth_services.dart';
 import 'ad_product_card.dart';
-import 'new_product_screen.dart';
 
 class AdProductScreen extends StatefulWidget {
   const AdProductScreen({Key? key}) : super(key: key);
+
+  static MaterialPageRoute route() {
+    return MaterialPageRoute(
+      settings: const RouteSettings(name: AppRouter.adminProduct),
+      builder: (_) => const AdProductScreen(),
+    );
+  }
 
   @override
   State<AdProductScreen> createState() => _AdProductScreenState();
@@ -47,11 +54,7 @@ class _AdProductScreenState extends State<AdProductScreen> {
               child: InkWell(
                 borderRadius: BorderRadius.circular(16),
                 onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const NewProductScreen(),
-                    ),
-                  );
+                  Navigator.of(context).pushNamed(AppRouter.adminNewProduct);
                 },
                 child: Row(
                   children: <Widget>[
