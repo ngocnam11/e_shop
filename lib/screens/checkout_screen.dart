@@ -9,8 +9,7 @@ import '../services/auth_services.dart';
 import '../services/firestore_services.dart';
 import '../widgets/list_item.dart';
 import '../widgets/order_summary.dart';
-import 'delivery_address_screen.dart';
-import 'order_confirmation/order_confirm_screen.dart';
+import 'screens.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({Key? key, required this.productInCart})

@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../blocs/wishlist/wishlist_bloc.dart';
 import '../config/utils.dart';
 import '../models/product.dart';
-import '../screens/screens.dart';
+import '../router/router.dart';
 import 'custom_network_image.dart';
 
 class ProductCard extends StatelessWidget {
@@ -19,12 +19,9 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => ProductScreen(
-              product: product,
-            ),
-          ),
+        Navigator.of(context).pushNamed(
+          AppRouter.product,
+          arguments: product,
         );
       },
       child: Column(
