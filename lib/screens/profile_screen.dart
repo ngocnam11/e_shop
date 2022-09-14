@@ -141,7 +141,10 @@ class ProfileScreen extends StatelessWidget {
                                     onPressed: () {
                                       AuthServices().logout();
                                       Navigator.of(context)
-                                          .pushNamed(AppRouter.login);
+                                          .pushNamedAndRemoveUntil(
+                                        AppRouter.login,
+                                        (route) => false,
+                                      );
                                     },
                                     child: const Text('Yes'),
                                   ),
