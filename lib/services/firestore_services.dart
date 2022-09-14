@@ -23,6 +23,13 @@ class FireStoreServices {
     return user;
   }
 
+  Future<Product> getProductById({required int id}) async {
+    final snap =
+        await _firestore.collection('products').doc(id.toString()).get();
+    Product product = Product.fromJson(snap.data()!);
+    return product;
+  }
+
   Stream<List<Product>> getProducts() {
     final snaps = _firestore.collection('products').snapshots();
     final products = snaps.map((snap) =>
@@ -236,23 +243,24 @@ class FireStoreServices {
 
   Future<String> updateProduct({
     required int id,
-    required String uid,
-    required String name,
-    required String category,
-    required Uint8List file,
-    required double price,
-    required int quantity,
-    required String description,
-    required List<String> colors,
-    required List<String> size,
+    String? name,
+    String? category,
+    Uint8List? file,
+    double? price,
+    int? quantity,
+    String? description,
+    List<String>? colors,
+    List<String>? size,
   }) async {
     String rep = 'Some error occurred';
     try {
-      String imageUrl =
-          await _storage.uploadImageToStorage('profilePics', file, true, '');
-      Product product = Product(
-        id: id,
-        uid: uid,
+      String? imageUrl;
+      if (file != null) {
+        imageUrl = await _storage.uploadImageToStorage(
+            'products', file, true, id.toString());
+      }
+      Product product = await getProductById(id: id);
+      product = product.copyWith(
         name: name,
         category: category,
         imageUrl: imageUrl,
