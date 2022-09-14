@@ -27,6 +27,7 @@ abstract class AppRouter {
   static const String admin = '/admin';
   static const String adminProduct = '/admin/product';
   static const String adminNewProduct = '/admin/product/new';
+  static const String adminEditProduct = '/admin/product/edit';
   static const String adminOrder = '/admin/order';
 
   static Route onGenerateRoute(RouteSettings settings) {
@@ -81,6 +82,10 @@ abstract class AppRouter {
         return AdProductScreen.route();
       case adminNewProduct:
         return NewProductScreen.route();
+      case adminEditProduct:
+        return AdEditProductScreen.route(
+          id: settings.arguments as int,
+        );
       case adminOrder:
         return AdOrderScreen.route();
       default:
