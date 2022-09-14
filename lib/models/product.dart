@@ -9,8 +9,8 @@ class Product extends Equatable {
   final double price;
   final int quantity;
   final String description;
-  final List<String>? colors;
-  final List<String>? size;
+  final List<String> colors;
+  final List<String> size;
 
   const Product({
     required this.id,
@@ -19,11 +19,35 @@ class Product extends Equatable {
     required this.category,
     required this.imageUrl,
     required this.price,
-    this.quantity = 0,
+    required this.quantity,
     required this.description,
-    this.colors,
-    this.size,
+    this.colors = const [],
+    this.size = const [],
   });
+
+  Product copyWith({
+    String? name,
+    String? category,
+    String? imageUrl,
+    double? price,
+    int? quantity,
+    String? description,
+    List<String>? colors,
+    List<String>? size,
+  }) {
+    return Product(
+      id: id,
+      uid: uid,
+      name: name ?? this.name,
+      category: category ?? this.category,
+      imageUrl: imageUrl ?? this.imageUrl,
+      price: price ?? this.price,
+      quantity: quantity ?? this.quantity,
+      description: description ?? this.description,
+      colors: colors ?? this.colors,
+      size: size ?? this.size,
+    );
+  }
 
   Map<String, dynamic> toJson() {
     return {
@@ -77,6 +101,7 @@ class Product extends Equatable {
       imageUrl:
           'https://images.unsplash.com/photo-1462037629520-2a7c6feac7f4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1210&q=80',
       price: 120,
+      quantity: 1,
       description: '',
     ),
     const Product(
@@ -87,6 +112,7 @@ class Product extends Equatable {
       imageUrl:
           'https://images.unsplash.com/photo-1577803645773-f96470509666?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
       price: 58,
+      quantity: 2,
       description: '',
     ),
     const Product(
@@ -97,6 +123,7 @@ class Product extends Equatable {
       imageUrl:
           'https://images.unsplash.com/photo-1631160246898-58192f971b5f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1925&q=80',
       price: 35,
+      quantity: 3,
       description: '',
     ),
   ];
