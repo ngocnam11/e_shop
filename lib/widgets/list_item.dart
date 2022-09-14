@@ -62,10 +62,10 @@ class ListItem extends StatelessWidget {
                       ),
                     ],
                   ),
-                  product.colors!.isEmpty && product.size!.isEmpty
+                  product.colors.isEmpty && product.size.isEmpty
                       ? const SizedBox()
                       : Text(
-                          '${product.colors![0]}, ${product.size![0]}',
+                          '${product.colors[0]}, ${product.size[0]}',
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                   Row(

@@ -133,69 +133,72 @@ class ProductScreen extends StatelessWidget {
                     style: theme.headline3,
                   ),
                   const SizedBox(height: 12),
-                  product.colors!.isEmpty && product.size!.isEmpty ? const SizedBox() : Ink(
-                    height: 80,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[100],
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(16),
-                      onTap: () {
-                        // Navigator.of(context).push(MaterialPageRoute(builder: (context) => SelectOptionsScreen(),));
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              const SizedBox(width: 8),
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(16),
-                                child: CustomNetworkImage(
-                                  src: product.imageUrl,
-                                  height: 70,
-                                  width: 70,
-                                  fit: BoxFit.cover,
+                  product.colors.isEmpty && product.size.isEmpty
+                      ? const SizedBox()
+                      : Ink(
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[100],
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(16),
+                            onTap: () {
+                              // Navigator.of(context).push(MaterialPageRoute(builder: (context) => SelectOptionsScreen(),));
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    const SizedBox(width: 8),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(16),
+                                      child: CustomNetworkImage(
+                                        src: product.imageUrl,
+                                        height: 70,
+                                        width: 70,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Color, Size',
+                                          style: theme.headline3,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              product.colors.isEmpty
+                                                  ? ''
+                                                  : product.colors[0],
+                                              style: theme.headline4,
+                                            ),
+                                            Text(
+                                              product.size.isEmpty
+                                                  ? ''
+                                                  : product.size[0],
+                                              style: theme.headline4,
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              const SizedBox(width: 8),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Color, Size',
-                                    style: theme.headline3,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        product.colors!.isEmpty
-                                            ? ''
-                                            : product.colors![0],
-                                        style: theme.headline4,
-                                      ),
-                                      Text(
-                                        product.size!.isEmpty
-                                            ? ''
-                                            : product.size![0],
-                                        style: theme.headline4,
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
+                                const Icon(
+                                  Icons.navigate_next,
+                                  size: 40,
+                                  color: Colors.black54,
+                                ),
+                              ],
+                            ),
                           ),
-                          const Icon(
-                            Icons.navigate_next,
-                            size: 40,
-                            color: Colors.black54,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                        ),
                   const SizedBox(height: 12),
                   Text(
                     'Description',
