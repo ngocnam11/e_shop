@@ -2,7 +2,6 @@ import 'package:e_shop/models/delivery_address.dart';
 import 'package:flutter/material.dart';
 
 import '../config/utils.dart';
-// import '../router/router.dart';
 import '../router/router.dart';
 import '../services/auth_services.dart';
 import '../services/firestore_services.dart';
