@@ -82,7 +82,10 @@ class ProductCard extends StatelessWidget {
                                     Icons.favorite,
                                     color: Colors.red[400],
                                   )
-                                : const Icon(Icons.favorite_outline),
+                                : Icon(
+                                    Icons.favorite_outline,
+                                    color: Colors.red[400],
+                                  ),
                           ),
                         ),
                       );
