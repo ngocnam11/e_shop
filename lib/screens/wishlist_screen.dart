@@ -32,36 +32,38 @@ class WishlistScreen extends StatelessWidget {
         ],
       ),
       body: BlocBuilder<WishlistBloc, WishlistState>(
-        builder: (context, state) {
-          if (state is WishlistLoading) {
+        builder: (context, wishlistState) {
+          if (wishlistState is WishlistLoading) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
-          if (state is WishlistLoaded) {
-            if (state.wishlist.products.isEmpty) return const EmptyProduct();
+          if (wishlistState is WishlistLoaded) {
+            if (wishlistState.wishlist.products.isEmpty) {
+              return const EmptyProduct();
+            }
             return ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 24),
-              itemCount: state.wishlist.products.length,
+              itemCount: wishlistState.wishlist.products.length,
               itemBuilder: (context, index) {
                 return ListItem(
-                  product: state.wishlist.products[index],
+                  product: wishlistState.wishlist.products[index],
                   child: BlocBuilder<CartBloc, CartState>(
-                    builder: (context, state) {
-                      if (state is CartLoading) {
+                    builder: (context, cartState) {
+                      if (cartState is CartLoading) {
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
                       }
-                      if (state is CartLoaded) {
+                      if (cartState is CartLoaded) {
                         return ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue[300],
                           ),
                           onPressed: () {
-                            context
-                                .read<CartBloc>()
-                                .add(AddProduct(state.cart.products[index]));
+                            context.read<CartBloc>().add(AddProduct(
+                                  wishlistState.wishlist.products[index],
+                                ));
                             showSnackBar(context, 'Added to your Cart');
                           },
                           child: const Text('Add to Cart'),
