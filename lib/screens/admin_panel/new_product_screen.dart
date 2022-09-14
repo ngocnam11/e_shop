@@ -43,7 +43,7 @@ class _NewProductScreenState extends State<NewProductScreen> {
   List<String> _sizes = [];
 
   void selectImage(BuildContext context) async {
-    Uint8List image = await pickImage(ImageSource.gallery);
+    Uint8List? image = await pickImage(ImageSource.gallery);
     setState(() {
       _image = image;
     });
@@ -81,11 +81,11 @@ class _NewProductScreenState extends State<NewProductScreen> {
       ),
       body: ListView(
         shrinkWrap: true,
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        children: [
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        children: <Widget>[
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: <Widget>[
               Ink(
                 height: 80,
                 decoration: BoxDecoration(
@@ -98,7 +98,7 @@ class _NewProductScreenState extends State<NewProductScreen> {
                     selectImage(context);
                   },
                   child: Row(
-                    children: [
+                    children: <Widget>[
                       const SizedBox(width: 10),
                       const Icon(
                         Icons.add_circle,
@@ -135,126 +135,123 @@ class _NewProductScreenState extends State<NewProductScreen> {
                 style: theme.headline4,
               ),
               const SizedBox(height: 20),
-              Column(
-                children: [
-                  TextFieldInput(
-                    controller: idController,
-                    labelText: 'Product ID',
-                    textInputType: TextInputType.text,
-                  ),
-                  const SizedBox(height: 10),
-                  TextFieldInput(
-                    controller: nameController,
-                    labelText: 'Product Name',
-                    textInputType: TextInputType.text,
-                  ),
-                  const SizedBox(height: 10),
-                  TextFieldInput(
-                    controller: descriptionController,
-                    labelText: 'Product Description',
-                    textInputType: TextInputType.text,
-                  ),
-                  const SizedBox(height: 10),
-                  TextFieldInput(
-                    controller: categoryController,
-                    labelText: 'Product Category',
-                    textInputType: TextInputType.text,
-                  ),
-                  const SizedBox(height: 10),
-                  TextFieldInput(
-                    controller: priceController,
-                    labelText: 'Product Price',
-                    textInputType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 10),
-                  TextFieldInput(
-                    controller: quantityController,
-                    labelText: 'Product Quantity',
-                    textInputType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 10),
-                  TextFieldInput(
-                    controller: colorController,
-                    focusNode: _colorFocusNode,
-                    labelText: 'Product Color',
-                    textInputType: TextInputType.text,
-                    onFieldSubmitted: (String color) {
+              TextFieldInput(
+                controller: idController,
+                labelText: 'Product ID',
+                textInputType: TextInputType.text,
+              ),
+              const SizedBox(height: 10),
+              TextFieldInput(
+                controller: nameController,
+                labelText: 'Product Name',
+                textInputType: TextInputType.text,
+              ),
+              const SizedBox(height: 10),
+              TextFieldInput(
+                controller: descriptionController,
+                labelText: 'Product Description',
+                textInputType: TextInputType.text,
+              ),
+              const SizedBox(height: 10),
+              TextFieldInput(
+                controller: categoryController,
+                labelText: 'Product Category',
+                textInputType: TextInputType.text,
+              ),
+              const SizedBox(height: 10),
+              TextFieldInput(
+                controller: priceController,
+                labelText: 'Product Price',
+                textInputType: TextInputType.number,
+              ),
+              const SizedBox(height: 10),
+              TextFieldInput(
+                controller: quantityController,
+                labelText: 'Product Quantity',
+                textInputType: TextInputType.number,
+              ),
+              const SizedBox(height: 10),
+              TextFieldInput(
+                controller: colorController,
+                focusNode: _colorFocusNode,
+                labelText: 'Product Color',
+                textInputType: TextInputType.text,
+                onFieldSubmitted: (String color) {
+                  if (color.isNotEmpty) {
+                    setState(() {
+                      _colors.add(color);
+                      colorController.clear();
+                    });
+                  }
+                  _colorFocusNode.requestFocus();
+                },
+                validator: (colors) => (colors?.length ?? 0) < 2
+                    ? 'Please add at least 2 colors'
+                    : null,
+                onSaved: (colors) {
+                  _colors = colors!;
+                },
+              ),
+              MyChipList(
+                values: _colors,
+                chipBuilder: (String color) {
+                  return Chip(
+                    label: Text(color),
+                    onDeleted: () {
                       setState(() {
-                        _colors.add(color);
-                        colorController.clear();
-                        _colorFocusNode.requestFocus();
+                        _colors.remove(color);
                       });
                     },
-                    validator: (colors) => (colors?.length ?? 0) < 2
-                        ? 'Please add at least 2 colors'
-                        : null,
-                    onSaved: (colors) {
-                      _colors = colors!;
-                    },
-                  ),
-                  MyChipList(
-                    values: _colors,
-                    chipBuilder: (String color) {
-                      return Chip(
-                        label: Text(color),
-                        onDeleted: () {
-                          setState(() {
-                            _colors.remove(color);
-                          });
-                        },
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  TextFieldInput(
-                    controller: sizeController,
-                    focusNode: _sizeFocusNode,
-                    labelText: 'Product Size',
-                    textInputType: TextInputType.text,
-                    onFieldSubmitted: (String size) {
+                  );
+                },
+              ),
+              const SizedBox(height: 10),
+              TextFieldInput(
+                controller: sizeController,
+                focusNode: _sizeFocusNode,
+                labelText: 'Product Size',
+                textInputType: TextInputType.text,
+                onFieldSubmitted: (String size) {
+                  if (size.isNotEmpty) {
+                    setState(() {
+                      _sizes.add(size);
+                      sizeController.clear();
+                    });
+                  }
+                  _sizeFocusNode.requestFocus();
+                },
+                validator: (sizes) => (sizes?.length ?? 0) < 2
+                    ? 'Please add at least 2 colors'
+                    : null,
+                onSaved: (sizes) {
+                  _sizes = sizes!;
+                },
+              ),
+              MyChipList(
+                values: _sizes,
+                chipBuilder: (String size) {
+                  return Chip(
+                    label: Text(size),
+                    onDeleted: () {
                       setState(() {
-                        _sizes.add(size);
-                        sizeController.clear();
-                        _sizeFocusNode.requestFocus();
+                        _sizes.remove(size);
                       });
                     },
-                    validator: (sizes) => (sizes?.length ?? 0) < 2
-                        ? 'Please add at least 2 colors'
-                        : null,
-                    onSaved: (sizes) {
-                      _sizes = sizes!;
-                    },
-                  ),
-                  MyChipList(
-                    values: _sizes,
-                    chipBuilder: (String size) {
-                      return Chip(
-                        label: Text(size),
-                        onDeleted: () {
-                          setState(() {
-                            _sizes.remove(size);
-                          });
-                        },
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: addNewProduct,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Text(
-                          'Save',
-                          style: theme.headline5!.copyWith(color: Colors.white),
-                        ),
-                      ),
+                  );
+                },
+              ),
+              const SizedBox(height: 10),
+              Center(
+                child: ElevatedButton(
+                  onPressed: addNewProduct,
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
                     ),
                   ),
-                ],
+                  child: const Text('Save'),
+                ),
               ),
             ],
           ),

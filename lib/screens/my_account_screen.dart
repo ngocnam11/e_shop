@@ -32,9 +32,9 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
   Uint8List? _image;
 
   void selectImage() async {
-    Uint8List im = await pickImage(ImageSource.gallery);
+    Uint8List? image = await pickImage(ImageSource.gallery);
     setState(() {
-      _image = im;
+      _image = image;
     });
   }
 

@@ -4,7 +4,6 @@ import '../../config/utils.dart';
 import '../../router/router.dart';
 import '../../services/firestore_services.dart';
 import '../../widgets/custom_network_image.dart';
-import 'ad_edit_product_screen.dart';
 
 class AdProductCard extends StatefulWidget {
   const AdProductCard({Key? key, required this.snap}) : super(key: key);
@@ -31,12 +30,13 @@ class _AdProductCardState extends State<AdProductCard> {
   Widget build(BuildContext context) {
     TextTheme theme = Theme.of(context).textTheme;
     return Card(
+      elevation: 2,
       margin: const EdgeInsets.only(top: 10),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             Text(
               widget.snap['name'],
               style: theme.headline4,
@@ -48,7 +48,7 @@ class _AdProductCardState extends State<AdProductCard> {
             ),
             const SizedBox(height: 10),
             Row(
-              children: [
+              children: <Widget>[
                 CustomNetworkImage(
                   src: widget.snap['imageUrl'],
                   height: 80,
@@ -58,11 +58,11 @@ class _AdProductCardState extends State<AdProductCard> {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(
-                    children: [
+                    children: <Widget>[
                       Row(
-                        children: [
+                        children: <Widget>[
                           SizedBox(
-                            width: 50,
+                            width: 60,
                             child: Text(
                               'Price:',
                               style: theme.headline5,
@@ -76,18 +76,18 @@ class _AdProductCardState extends State<AdProductCard> {
                         ],
                       ),
                       Row(
-                        children: [
+                        children: <Widget>[
                           SizedBox(
-                            width: 50,
+                            width: 60,
                             child: Text(
-                              'Qty.',
+                              'Quantity:',
                               style: theme.headline5,
                             ),
                           ),
                           const SizedBox(width: 10),
                           Text(
                             '${widget.snap['quantity']}',
-                            style: theme.headline4,
+                            style: theme.headline5,
                           ),
                         ],
                       )
@@ -95,20 +95,17 @@ class _AdProductCardState extends State<AdProductCard> {
                   ),
                 ),
                 Column(
-                  children: [
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
                     IconButton(
                       onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => AdEditProductScreen(
-                              id: widget.snap['id'],
-                            ),
-                          ),
+                        Navigator.of(context).pushNamed(
+                          AppRouter.adminEditProduct,
+                          arguments: widget.snap['id'],
                         );
                       },
                       icon: const Icon(Icons.edit),
                     ),
-                    const SizedBox(width: 16),
                     IconButton(
                       onPressed: () {
                         showDialog(
@@ -124,7 +121,7 @@ class _AdProductCardState extends State<AdProductCard> {
                                 color: Colors.black54,
                               ),
                             ),
-                            actions: [
+                            actions: <Widget>[
                               TextButton(
                                 onPressed: () {
                                   Navigator.of(context).pop();
