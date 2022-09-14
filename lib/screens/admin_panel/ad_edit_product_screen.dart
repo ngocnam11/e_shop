@@ -79,7 +79,8 @@ class _AdEditProductScreenState extends State<AdEditProductScreen> {
     if (rep != 'success') {
       showSnackBar(context, rep);
     } else {
-      Navigator.of(context).pushNamed(AppRouter.adminProduct);
+      showSnackBar(context, 'Update Product successfully');
+      Navigator.of(context).pop(true);
     }
   }
 

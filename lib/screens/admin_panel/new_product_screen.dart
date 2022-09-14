@@ -68,7 +68,8 @@ class _NewProductScreenState extends State<NewProductScreen> {
     if (res != 'success') {
       showSnackBar(context, res);
     } else {
-      Navigator.of(context).pushNamed(AppRouter.adminProduct);
+      showSnackBar(context, 'Your Product has been uploaded!');
+      Navigator.of(context).pop(true);
     }
   }
 

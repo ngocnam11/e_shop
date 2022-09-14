@@ -30,6 +30,16 @@ class FireStoreServices {
     return product;
   }
 
+  Stream<List<Product>> getCurrentUserProducts() {
+    final snaps = _firestore
+        .collection('products')
+        .where('uid', isEqualTo: currentUserUid)
+        .snapshots();
+    final products = snaps.map((snap) =>
+        snap.docs.map((doc) => Product.fromJson(doc.data())).toList());
+    return products;
+  }
+
   Stream<List<Product>> getProducts() {
     final snaps = _firestore.collection('products').snapshots();
     final products = snaps.map((snap) =>

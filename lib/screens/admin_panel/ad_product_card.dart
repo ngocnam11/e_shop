@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 import '../../config/utils.dart';
+import '../../models/product.dart';
 import '../../router/router.dart';
 import '../../services/firestore_services.dart';
 import '../../widgets/custom_network_image.dart';
 
 class AdProductCard extends StatefulWidget {
   const AdProductCard({Key? key, required this.snap}) : super(key: key);
-  final snap;
+  final Product snap;
 
   @override
   State<AdProductCard> createState() => _AdProductCardState();
@@ -15,14 +16,15 @@ class AdProductCard extends StatefulWidget {
 
 class _AdProductCardState extends State<AdProductCard> {
   void deleteProduct() async {
-    String res = await FireStoreServices().deleteProduct(id: widget.snap['id']);
+    String res = await FireStoreServices().deleteProduct(id: widget.snap.id);
 
     if (!mounted) return;
 
     if (res != 'success') {
       showSnackBar(context, res);
     } else {
-      Navigator.of(context).pushNamed(AppRouter.admin);
+      showSnackBar(context, 'Product deleted!');
+      Navigator.of(context).pop(true);
     }
   }
 
@@ -38,19 +40,19 @@ class _AdProductCardState extends State<AdProductCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              widget.snap['name'],
+              widget.snap.name,
               style: theme.headline4,
             ),
             const SizedBox(height: 10),
             Text(
-              widget.snap['description'],
+              widget.snap.description,
               style: theme.bodyText1,
             ),
             const SizedBox(height: 10),
             Row(
               children: <Widget>[
                 CustomNetworkImage(
-                  src: widget.snap['imageUrl'],
+                  src: widget.snap.imageUrl,
                   height: 80,
                   width: 80,
                   fit: BoxFit.cover,
@@ -70,7 +72,7 @@ class _AdProductCardState extends State<AdProductCard> {
                           ),
                           const SizedBox(width: 10),
                           Text(
-                            '\$${widget.snap['price']}',
+                            '\$${widget.snap.price}',
                             style: theme.headline5,
                           ),
                         ],
@@ -86,11 +88,11 @@ class _AdProductCardState extends State<AdProductCard> {
                           ),
                           const SizedBox(width: 10),
                           Text(
-                            '${widget.snap['quantity']}',
+                            widget.snap.quantity.toString(),
                             style: theme.headline5,
                           ),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -99,16 +101,23 @@ class _AdProductCardState extends State<AdProductCard> {
                   children: <Widget>[
                     IconButton(
                       onPressed: () {
-                        Navigator.of(context).pushNamed(
+                        Navigator.of(context)
+                            .pushNamed(
                           AppRouter.adminEditProduct,
-                          arguments: widget.snap['id'],
-                        );
+                          arguments: widget.snap.id,
+                        )
+                            .then((value) {
+                          final bool? refresh = value as bool?;
+                          if (refresh ?? false) {
+                            setState(() {});
+                          }
+                        });
                       },
                       icon: const Icon(Icons.edit),
                     ),
                     IconButton(
-                      onPressed: () {
-                        showDialog(
+                      onPressed: () async {
+                        final bool? refresh = await showDialog(
                           context: context,
                           builder: (context) => AlertDialog(
                             title: const Text(
@@ -140,6 +149,9 @@ class _AdProductCardState extends State<AdProductCard> {
                             ],
                           ),
                         );
+                        if (refresh ?? false) {
+                          setState(() {});
+                        }
                       },
                       icon: const Icon(Icons.delete),
                     ),
