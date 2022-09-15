@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../models/delivery_address.dart';
-import '../models/product.dart';
 import '../screens/screens.dart';
 
 abstract class AppRouter {
@@ -47,9 +46,7 @@ abstract class AppRouter {
       case cart:
         return CartScreen.route();
       case checkout:
-        return CheckoutScreen.route(
-          productInCart: settings.arguments as List<Product>,
-        );
+        return CheckoutScreen.route('');
       case address:
         return DeliveryAddressScreen.route();
       case newAddress:

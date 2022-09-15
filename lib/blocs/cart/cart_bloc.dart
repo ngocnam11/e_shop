@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../models/cart.dart';
-import '../../models/product.dart';
+import '../../services/auth_services.dart';
 
 part 'cart_event.dart';
 part 'cart_state.dart';
@@ -27,7 +27,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             emit(
               CartLoaded(
                 cart: Cart(
-                  products: List.from(state.cart.products)..add(event.product),
+                  uid: AuthServices().currentUser.uid,
+                  products: List.from(state.cart.products)..add(event.product), 
                 ),
               ),
             );
@@ -45,6 +46,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             emit(
               CartLoaded(
                 cart: Cart(
+                  uid: AuthServices().currentUser.uid,
                   products: List.from(state.cart.products)..remove(event.product),
                 ),
               ),

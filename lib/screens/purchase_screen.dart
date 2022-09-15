@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../widgets/purchase_item.dart';
 import '../router/router.dart';
-import 'order_confirmation/order_confirm_screen.dart';
 
 class PurchaseScreen extends StatefulWidget {
   const PurchaseScreen({Key? key}) : super(key: key);
@@ -79,11 +78,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
         ),
         child: ElevatedButton(
           onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (constext) => const OrderConfirmScreen(),
-              ),
-            );
+            Navigator.of(context).popAndPushNamed(AppRouter.checkout);
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.blueAccent.shade100,

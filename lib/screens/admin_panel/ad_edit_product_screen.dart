@@ -51,7 +51,8 @@ class _AdEditProductScreenState extends State<AdEditProductScreen> {
   }
 
   Future<void> getInitProductInfo() async {
-    final product = await FireStoreServices().getProductById(id: widget.id);
+    final product =
+        await FireStoreServices().getProductById(id: widget.id.toString());
     _nameController.text = product.name;
     _categoryController.text = product.category;
     _descriptionController.text = product.description;
@@ -98,7 +99,7 @@ class _AdEditProductScreenState extends State<AdEditProductScreen> {
         title: const Text('Edit Product'),
       ),
       body: FutureBuilder<Product>(
-        future: FireStoreServices().getProductById(id: widget.id),
+        future: FireStoreServices().getProductById(id: widget.id.toString()),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             debugPrint(snapshot.error.toString());

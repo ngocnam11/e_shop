@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../blocs/cart/cart_bloc.dart';
 import '../config/utils.dart';
+import '../models/cart.dart';
 import '../models/product.dart';
 import '../models/user.dart';
 import '../router/router.dart';
@@ -11,7 +12,7 @@ import '../widgets/custom_button.dart';
 import '../widgets/custom_network_image.dart';
 import 'conversation_screen.dart';
 
-class ProductScreen extends StatelessWidget {
+class ProductScreen extends StatefulWidget {
   const ProductScreen({Key? key, required this.product}) : super(key: key);
 
   static MaterialPageRoute route({required product}) {
@@ -24,6 +25,29 @@ class ProductScreen extends StatelessWidget {
   }
 
   final Product product;
+
+  @override
+  State<ProductScreen> createState() => _ProductScreenState();
+}
+
+class _ProductScreenState extends State<ProductScreen> {
+  void addProductToCart() async {
+    String res = await FireStoreServices().addProductToCart(
+      productId: widget.product.id.toString(),
+      color: widget.product.colors.isEmpty ? 'n' : widget.product.colors[0],
+      size: widget.product.size.isEmpty ? 'n' : widget.product.size[1],
+      quantity: 1,
+      price: widget.product.price + .0,
+    );
+
+    if (!mounted) return;
+
+    if (res != 'success') {
+      showSnackBar(context, res);
+    } else {
+      showSnackBar(context, 'Added to your Cart');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +103,7 @@ class ProductScreen extends StatelessWidget {
                 bottomRight: Radius.circular(16),
               ),
               child: CustomNetworkImage(
-                src: product.imageUrl,
+                src: widget.product.imageUrl,
                 height: MediaQuery.of(context).size.height / 2,
                 width: MediaQuery.of(context).size.width,
                 fit: BoxFit.cover,
@@ -91,12 +115,13 @@ class ProductScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    product.name,
+                    widget.product.name,
                     style: theme.headline3,
                   ),
                   const SizedBox(height: 12),
                   FutureBuilder<User>(
-                    future: FireStoreServices().getUserByUid(uid: product.uid),
+                    future: FireStoreServices()
+                        .getUserByUid(uid: widget.product.uid),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(
@@ -129,11 +154,11 @@ class ProductScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    '\$${product.price}',
+                    '\$${widget.product.price}',
                     style: theme.headline3,
                   ),
                   const SizedBox(height: 12),
-                  product.colors.isEmpty && product.size.isEmpty
+                  widget.product.colors.isEmpty && widget.product.size.isEmpty
                       ? const SizedBox()
                       : Ink(
                           height: 80,
@@ -155,7 +180,7 @@ class ProductScreen extends StatelessWidget {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(16),
                                       child: CustomNetworkImage(
-                                        src: product.imageUrl,
+                                        src: widget.product.imageUrl,
                                         height: 70,
                                         width: 70,
                                         fit: BoxFit.cover,
@@ -173,15 +198,15 @@ class ProductScreen extends StatelessWidget {
                                         Row(
                                           children: [
                                             Text(
-                                              product.colors.isEmpty
+                                              widget.product.colors.isEmpty
                                                   ? ''
-                                                  : product.colors[0],
+                                                  : widget.product.colors[0],
                                               style: theme.headline4,
                                             ),
                                             Text(
-                                              product.size.isEmpty
+                                              widget.product.size.isEmpty
                                                   ? ''
-                                                  : product.size[0],
+                                                  : widget.product.size[0],
                                               style: theme.headline4,
                                             ),
                                           ],
@@ -206,7 +231,7 @@ class ProductScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    product.description,
+                    widget.product.description,
                     style: theme.headline6,
                   ),
                 ],
@@ -221,7 +246,7 @@ class ProductScreen extends StatelessWidget {
           children: [
             const SizedBox(width: 24),
             FutureBuilder<User>(
-              future: FireStoreServices().getUserByUid(uid: product.uid),
+              future: FireStoreServices().getUserByUid(uid: widget.product.uid),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
@@ -260,8 +285,23 @@ class ProductScreen extends StatelessWidget {
                     return CustomButton(
                       svg: 'assets/svgs/shopping_bag.svg',
                       press: () {
-                        context.read<CartBloc>().add(AddProduct(product));
-                        showSnackBar(context, 'Added to your Cart');
+                        addProductToCart();
+                        context.read<CartBloc>().add(
+                              AddProduct(
+                                CartItem(
+                                  id: 'ci${widget.product.id.toString()}',
+                                  productId: widget.product.id.toString(),
+                                  color: widget.product.colors.isEmpty
+                                      ? 'n'
+                                      : widget.product.colors[0],
+                                  size: widget.product.size.isEmpty
+                                      ? 'n'
+                                      : widget.product.size[0],
+                                  quantity: 1,
+                                  price: widget.product.price,
+                                ),
+                              ),
+                            );
                       },
                       textColor: Colors.white,
                       primaryColor: Colors.deepOrange[400]!,

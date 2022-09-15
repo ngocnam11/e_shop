@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../models/cart.dart';
 import '../models/category.dart';
 import '../models/delivery_address.dart';
 import '../models/message.dart';
@@ -23,9 +24,14 @@ class FireStoreServices {
     return user;
   }
 
-  Future<Product> getProductById({required int id}) async {
-    final snap =
-        await _firestore.collection('products').doc(id.toString()).get();
+  Future<Cart> getCartByUid({required String uid}) async {
+    final snap = await _firestore.collection('carts').doc(uid).get();
+    Cart cart = Cart.fromSnap(snap.data()!);
+    return cart;
+  }
+
+  Future<Product> getProductById({required String id}) async {
+    final snap = await _firestore.collection('products').doc(id).get();
     Product product = Product.fromJson(snap.data()!);
     return product;
   }
@@ -125,6 +131,129 @@ class FireStoreServices {
     return res;
   }
 
+  Future<String> addProductToCart({
+    required String productId,
+    required String color,
+    required String size,
+    required int quantity,
+    required double price,
+  }) async {
+    String res = 'Some error occurred';
+    try {
+      final uid = AuthServices().currentUser.uid;
+      CartItem newProduct = CartItem(
+        id: 'ci$productId',
+        productId: productId,
+        color: color,
+        size: size,
+        quantity: quantity,
+        price: price,
+      );
+      Cart cart = Cart(
+        uid: uid,
+        products: [newProduct],
+      );
+      final snap = await _firestore.collection('carts').doc(uid).get();
+      if (snap.data() == null) {
+        _firestore
+            .collection('carts')
+            .doc(uid)
+            .set(Cart(uid: uid, products: const []).toJson());
+      }
+
+      final cartData = Cart.fromSnap(snap.data()!);
+      if (cartData.products.isNotEmpty) {
+        print(cartData.products);
+        final products = cartData.products;
+        for (var i = 0; i < products.length; i++) {
+          if (products[i].id == 'ci$productId' &&
+              products[i].color == color &&
+              products[i].size == size) {
+            var quantity = products[i].quantity + newProduct.quantity;
+            var price = products[i].price + newProduct.price + .0;
+
+            final tmp = CartItem(
+              id: 'ci$productId',
+              productId: productId,
+              color: color,
+              size: size,
+              quantity: quantity,
+              price: price,
+            );
+            products.removeAt(i);
+            print(products);
+            products.insert(i, tmp);
+            print(products);
+
+            _firestore.collection('carts').doc(uid).set(
+                  Cart(uid: uid, products: products).toJson(),
+                  SetOptions(merge: true),
+                );
+          } else if (products[i].id == 'ci${productId}p${color}c${size}s' &&
+              products[i].color == color &&
+              products[i].size == size) {
+            var quantity = products[i].quantity + newProduct.quantity;
+            var price = products[i].price + newProduct.price + .0;
+
+            final tmp = CartItem(
+              id: 'ci${productId}p${color}c${size}s',
+              productId: productId,
+              color: color,
+              size: size,
+              quantity: quantity,
+              price: price,
+            );
+
+            products.removeAt(i);
+            products.insert(i, tmp);
+
+            _firestore.collection('carts').doc(uid).set(
+                  Cart(uid: uid, products: products).toJson(),
+                  SetOptions(merge: true),
+                );
+          } else if ((products[i].id == 'ci$productId' &&
+                  products[i].color != color &&
+                  products[i].size == size) ||
+              (products[i].id == 'ci$productId' &&
+                  products[i].size != size &&
+                  products[i].color == color)) {
+            CartItem product = CartItem(
+              id: 'ci${productId}p${color}c${size}s',
+              productId: productId,
+              color: color,
+              size: size,
+              quantity: quantity,
+              price: price + .0,
+            );
+            _firestore.collection('carts').doc(uid).update({
+              'products': FieldValue.arrayUnion([product.toJson()]),
+            });
+          } else {
+            CartItem product = CartItem(
+              id: 'ci$productId',
+              productId: productId,
+              color: color,
+              size: size,
+              quantity: quantity,
+              price: price + .0,
+            );
+            _firestore.collection('carts').doc(uid).update({
+              'products': FieldValue.arrayUnion([product.toJson()]),
+            });
+          }
+        }
+      } else {
+        _firestore.collection('carts').doc(uid).set(cart.toJson());
+      }
+
+      res = 'success';
+    } catch (e) {
+      res = e.toString();
+    }
+
+    return res;
+  }
+
   Future<String> addOrder({
     required String customerId,
     required String sellerId,
@@ -138,8 +267,9 @@ class FireStoreServices {
     String response = 'Some error occurred';
     try {
       var date = DateTime.now().toLocal();
+      final id = 'ORD${date.year}Y${date.month}M${date.day}ES';
       Order order = Order(
-        id: 'ORD${date.year}Y${date.month}M${date.day}ES',
+        id: id,
         customerId: customerId,
         sellerId: sellerId,
         products: products,
@@ -154,7 +284,7 @@ class FireStoreServices {
         isReceived: false,
         createdAt: DateTime.now(),
       );
-      _firestore.collection('orders').doc().set(order.toJson());
+      _firestore.collection('orders').doc(id).set(order.toJson());
       response = 'success';
     } catch (e) {
       response = e.toString();
@@ -269,7 +399,7 @@ class FireStoreServices {
         imageUrl = await _storage.uploadImageToStorage(
             'products', file, true, id.toString());
       }
-      Product product = await getProductById(id: id);
+      Product product = await getProductById(id: id.toString());
       product = product.copyWith(
         name: name,
         category: category,

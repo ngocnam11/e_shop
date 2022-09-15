@@ -13,19 +13,19 @@ class LoadCart extends CartEvent {
 }
 
 class AddProduct extends CartEvent {
-  final Product product;
+  final CartItem product;
 
   const AddProduct(this.product);
 
   @override
-  List<Product> get props => [product];
+  List<CartItem> get props => [product];
 }
 
 class RemoveProduct extends CartEvent {
-  final Product product;
+  final CartItem product;
 
   const RemoveProduct(this.product);
 
   @override
-  List<Product> get props => [product];
+  List<CartItem> get props => [product];
 }

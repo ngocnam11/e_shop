@@ -24,74 +24,77 @@ class NotificationScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // const Text('Today'),
-          const SizedBox(height: 12),
-          ListView.separated(
-            itemCount: 5,
-            shrinkWrap: true,
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            itemBuilder: (context, index) {
-              return Card(
-                elevation: 3,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: CircleAvatar(
-                        radius: 32,
-                        backgroundColor: Colors.blue,
-                        child: Icon(Icons.celebration_outlined),
-                        // backgroundImage: NetworkImage(),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // const Text('Today'),
+            const SizedBox(height: 12),
+            ListView.separated(
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: 5,
+              shrinkWrap: true,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              itemBuilder: (context, index) {
+                return Card(
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: CircleAvatar(
+                          radius: 32,
+                          backgroundColor: Colors.blue,
+                          child: Icon(Icons.celebration_outlined),
+                          // backgroundImage: NetworkImage(),
+                        ),
                       ),
-                    ),
-                    // const SizedBox(width: 8,),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      // const SizedBox(width: 8,),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Happy Birthday to You!',
+                              style: Theme.of(context).textTheme.headline4,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              'Gift a 20% to you!',
+                              style: Theme.of(context).textTheme.headline5,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Column(
                         children: [
-                          Text(
-                            'Happy Birthday to You!',
-                            style: Theme.of(context).textTheme.headline4,
-                            overflow: TextOverflow.ellipsis,
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.more_horiz),
                           ),
-                          Text(
-                            'Gift a 20% to you!',
-                            style: Theme.of(context).textTheme.headline5,
-                            overflow: TextOverflow.ellipsis,
+                          const SizedBox(height: 24),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              '11:11 PM',
+                              style: Theme.of(context).textTheme.headline6,
+                            ),
                           ),
                         ],
                       ),
-                    ),
-                    Column(
-                      children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.more_horiz),
-                        ),
-                        const SizedBox(height: 24),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            '11:11 PM',
-                            style: Theme.of(context).textTheme.headline6,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            },
-            separatorBuilder: (context, index) => const SizedBox(height: 8),
-          ),
-        ],
+                    ],
+                  ),
+                );
+              },
+              separatorBuilder: (context, index) => const SizedBox(height: 8),
+            ),
+          ],
+        ),
       ),
     );
   }

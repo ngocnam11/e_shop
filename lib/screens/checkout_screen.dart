@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../blocs/cart/cart_bloc.dart';
+import '../config/utils.dart';
+import '../models/cart.dart';
 import '../models/product.dart';
 import '../models/user.dart';
 import '../router/router.dart';
@@ -12,50 +14,66 @@ import '../widgets/order_summary.dart';
 import 'screens.dart';
 
 class CheckoutScreen extends StatefulWidget {
-  const CheckoutScreen({Key? key, required this.productInCart})
-      : super(key: key);
+  const CheckoutScreen({Key? key, this.deliveryAddress}) : super(key: key);
 
-  static MaterialPageRoute route({required List<Product> productInCart}) {
+  static MaterialPageRoute route(String deliveryAddress) {
     return MaterialPageRoute(
       settings: const RouteSettings(name: AppRouter.checkout),
-      builder: (_) => CheckoutScreen(
-        productInCart: productInCart,
-      ),
+      builder: (_) => CheckoutScreen(deliveryAddress: deliveryAddress),
     );
   }
 
-  final List<Product> productInCart;
+  final String? deliveryAddress;
 
   @override
   State<CheckoutScreen> createState() => _CheckoutScreenState();
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
-  // late Cart cart;
+  @override
+  void initState() {
+    super.initState();
+    getInitCart();
+  }
 
-  // void addOrder() async {
-  //   String res = await FireStoreServices().addOrder(
-  //     customerId: AuthServices().currentUser.uid,
-  //     sellerId: sellerId,
-  //     products: cart.products,
-  //     deliveryAddress: deliveryAddress,
-  //     subtotal: cart.subtotal,
-  //     deliveryFee: double.parse(cart.deliveryFeeString),
-  //     total: double.parse(cart.totalString),
-  //   );
+  Future<void> getInitCart() async {
+    final cart = await FireStoreServices()
+        .getCartByUid(uid: AuthServices().currentUser.uid);
+    _cartItem = cart.products.first;
+  }
 
-  //   if (!mounted) return;
+  Future<Product> getInitProduct() async {
+    final product =
+        await FireStoreServices().getProductById(id: _cartItem.productId);
+    return product;
+  }
 
-  //   if (res != 'success') {
-  //     showSnackBar(context, res);
-  //   } else {
-  //     Navigator.of(context).push(
-  //       MaterialPageRoute(
-  //         builder: (context) => const OrderConfirmScreen(),
-  //       ),
-  //     );
-  //   }
-  // }
+  late CartItem _cartItem;
+
+  void addOrder() async {
+    final product = await getInitProduct();
+    String res = await FireStoreServices().addOrder(
+      customerId: AuthServices().currentUser.uid,
+      sellerId: product.uid,
+      products: [product],
+      deliveryAddress: widget.deliveryAddress!,
+      subtotal: _cartItem.price,
+      deliveryFee: _cartItem.price > 30 ? 0.0 : 10.0,
+      total: _cartItem.price,
+    );
+
+    if (!mounted) return;
+
+    if (res != 'success') {
+      showSnackBar(context, res);
+    } else {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const OrderConfirmScreen(),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -167,29 +185,29 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Divider(),
-                          FutureBuilder<User>(
-                            future: FireStoreServices().getUserByUid(
-                                uid: products.keys.elementAt(index).uid),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }
-                              if (snapshot.hasError) {
-                                return const Text('Something went wrong');
-                              }
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 12),
-                                child: Text(
-                                  snapshot.data!.username,
-                                  style: Theme.of(context).textTheme.headline4,
-                                ),
-                              );
-                            },
-                          ),
+                          // FutureBuilder<User>(
+                          //   future: FireStoreServices().getUserByUid(
+                          //       uid: products.keys.elementAt(index).uid),
+                          //   builder: (context, snapshot) {
+                          //     if (snapshot.connectionState ==
+                          //         ConnectionState.waiting) {
+                          //       return const Center(
+                          //         child: CircularProgressIndicator(),
+                          //       );
+                          //     }
+                          //     if (snapshot.hasError) {
+                          //       return const Text('Something went wrong');
+                          //     }
+                          //     return Padding(
+                          //       padding:
+                          //           const EdgeInsets.symmetric(horizontal: 12),
+                          //       child: Text(
+                          //         snapshot.data!.username,
+                          //         style: Theme.of(context).textTheme.headline4,
+                          //       ),
+                          //     );
+                          //   },
+                          // ),
                           const Divider(),
                           ListItem(
                             product: products.keys.elementAt(index),
@@ -292,11 +310,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             padding: const EdgeInsets.symmetric(vertical: 12),
           ),
           onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const OrderConfirmScreen(),
-              ),
-            );
+            addOrder();
+            // Navigator.of(context).push(
+            //   MaterialPageRoute(
+            //     builder: (context) => const OrderConfirmScreen(),
+            //   ),
+            // );
           },
           child: Text(
             'Order Now',
