@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../widgets/purchase_item.dart';
 import '../router/router.dart';
-import '../widgets/order_summary.dart';
-import 'order_confirmation/order_confirm_screen.dart';
 
 class PurchaseScreen extends StatefulWidget {
   const PurchaseScreen({Key? key}) : super(key: key);
@@ -20,7 +18,6 @@ class PurchaseScreen extends StatefulWidget {
 }
 
 class _PurchaseScreenState extends State<PurchaseScreen> {
-
   String _paymentMethod = 'Cash Money';
 
   @override
@@ -84,28 +81,18 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
           ],
           color: Colors.white,
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            const OrderSummary(),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (constext) => const OrderConfirmScreen(),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 12,
-                ),
-                primary: Colors.blueAccent.shade100,
-                fixedSize: const Size.fromWidth(500),
-              ),
-              child: const Text('Continue'),
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).popAndPushNamed(AppRouter.checkout);
+          },
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(
+              vertical: 12,
             ),
-          ],
+            primary: Colors.blueAccent.shade100,
+            fixedSize: const Size.fromWidth(500),
+          ),
+          child: const Text('Continue'),
         ),
       ),
     );

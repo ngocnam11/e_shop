@@ -4,7 +4,6 @@ import '../models/user.dart';
 import '../router/router.dart';
 import '../services/auth_services.dart';
 import '../services/firestore_services.dart';
-import '../widgets/order_summary.dart';
 
 class DeliveryAddressScreen extends StatefulWidget {
   const DeliveryAddressScreen({Key? key}) : super(key: key);
@@ -150,27 +149,21 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
           ],
           color: Colors.white,
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            const OrderSummary(),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(
-                  AppRouter.checkout,
-                  // arguments: _addressValue,
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 12,
-                ),
-                primary: Colors.blueAccent.shade100,
-                fixedSize: const Size.fromWidth(500),
-              ),
-              child: const Text('Continue'),
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).popAndPushNamed(
+              AppRouter.checkout,
+              // arguments: _addressValue,
+            );
+          },
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(
+              vertical: 12,
             ),
-          ],
+            primary: Colors.blueAccent.shade100,
+            fixedSize: const Size.fromWidth(500),
+          ),
+          child: const Text('Continue'),
         ),
       ),
     );

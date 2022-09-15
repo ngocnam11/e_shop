@@ -42,7 +42,7 @@ class _AdEditProductScreenState extends State<AdEditProductScreen> {
       category: _categoryController.text,
       file: _image!,
       price: double.parse(_priceController.text),
-      quantity: int.parse(_categoryController.text),
+      quantity: int.parse(_quantityController.text),
       description: _descriptionController.text,
       colors: [],
       size: [],
