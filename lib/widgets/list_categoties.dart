@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../screens/screens.dart';
+import 'custom_network_image.dart';
 
 class ListCategories extends StatelessWidget {
   const ListCategories({
@@ -13,47 +14,44 @@ class ListCategories extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
       shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 24),
       itemBuilder: (context, index) {
-        return InkWell(
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) =>
-                    CategoryScreen(category: categories[index]),
-              ),
-            );
-          },
-          child: Container(
-            height: 80,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.grey[100],
-              borderRadius: BorderRadius.circular(16),
-            ),
+        return Ink(
+          height: 80,
+          decoration: BoxDecoration(
+            color: Colors.grey[100],
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(16),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) =>
+                      CategoryScreen(category: categories[index]),
+                ),
+              );
+            },
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    const SizedBox(width: 8),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: Image(
-                        height: 70,
-                        width: 70,
-                        
-                        image: NetworkImage(categories[index].imageUrl),
-                        fit: BoxFit.cover,
-                      ),
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: CustomNetworkImage(
+                      src: categories[index].imageUrl,
+                      height: 70,
+                      width: 70,
+                      fit: BoxFit.cover,
                     ),
-                    const SizedBox(width: 8),
-                    Text(
-                      
-                      categories[index].name,
-                      style: Theme.of(context).textTheme.headline3,
-                    ),
-                  ],
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    categories[index].name,
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
                 ),
                 const Icon(
                   Icons.navigate_next,

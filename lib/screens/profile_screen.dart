@@ -4,18 +4,16 @@ import 'package:flutter/material.dart';
 import '../router/router.dart';
 import '../services/auth_services.dart';
 import '../widgets/custom_navigationbar.dart';
+import '../widgets/custom_network_image.dart';
 import '../widgets/profile_menu.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key, required this.uid}) : super(key: key);
-  final String uid;
+  const ProfileScreen({Key? key}) : super(key: key);
 
   static MaterialPageRoute route() {
     return MaterialPageRoute(
       settings: const RouteSettings(name: AppRouter.profile),
-      builder: (_) => ProfileScreen(
-        uid: AuthServices().currentUser.uid,
-      ),
+      builder: (_) => const ProfileScreen(),
     );
   }
 
@@ -33,7 +31,10 @@ class ProfileScreen extends StatelessWidget {
         ],
       ),
       body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-        future: FirebaseFirestore.instance.collection('users').doc(uid).get(),
+        future: FirebaseFirestore.instance
+            .collection('users')
+            .doc(AuthServices().currentUser.uid)
+            .get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -58,11 +59,12 @@ class ProfileScreen extends StatelessWidget {
                             padding: const EdgeInsets.all(12),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(16),
-                              child: Image.network(
-                                snapshot.data!['photoUrl'],
+                              child: CustomNetworkImage(
+                                src: snapshot.data!['photoUrl'],
                                 height: 88,
                                 width: 88,
                                 fit: BoxFit.cover,
+                                isCurrentUserAvatar: true,
                               ),
                             ),
                           ),
@@ -99,10 +101,7 @@ class ProfileScreen extends StatelessWidget {
                           icon: Icons.person_outline_rounded,
                           title: 'My Account',
                           press: () {
-                            Navigator.of(context).pushNamed(
-                              AppRouter.account,
-                              arguments: snapshot.data!['isAdmin'],
-                            );
+                            Navigator.of(context).pushNamed(AppRouter.account);
                           },
                         ),
                         const SizedBox(height: 10),
@@ -138,16 +137,16 @@ class ProfileScreen extends StatelessWidget {
                                       style: TextStyle(color: Colors.black87),
                                     ),
                                   ),
-                                  TextButton(
+                                  ElevatedButton(
                                     onPressed: () {
                                       AuthServices().logout();
                                       Navigator.of(context)
-                                          .pushNamed(AppRouter.login);
+                                          .pushNamedAndRemoveUntil(
+                                        AppRouter.login,
+                                        (route) => false,
+                                      );
                                     },
-                                    child: const Text(
-                                      'Yes',
-                                      style: TextStyle(color: Colors.black87),
-                                    ),
+                                    child: const Text('Yes'),
                                   ),
                                 ],
                               ),

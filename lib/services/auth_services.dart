@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,7 +5,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../models/user.dart' as model;
 import 'social_signin_options.dart';
-import 'storage_service.dart';
 
 class AuthServices {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -24,7 +21,6 @@ class AuthServices {
     required String email,
     required String password,
     required String username,
-    required Uint8List file,
   }) async {
     String res = "Some error occurred";
     try {
@@ -32,14 +28,11 @@ class AuthServices {
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
 
-        String photoUrl = await StorageService()
-            .uploadImageToStorage('profilePics', file, false, '');
-
         model.User user = model.User(
           uid: cred.user!.uid,
           username: username,
           email: email,
-          photoUrl: photoUrl,
+          photoUrl: 'https://i.ibb.co/yRw8xRv/noavatar.png',
           addresses: const [],
         );
 
@@ -61,7 +54,9 @@ class AuthServices {
     try {
       if (email.isNotEmpty || password.isNotEmpty) {
         await _auth.signInWithEmailAndPassword(
-            email: email, password: password);
+          email: email,
+          password: password,
+        );
         res = 'success';
       } else {
         res = 'Please enter all the fields';
@@ -130,7 +125,7 @@ class AuthServices {
     //     await _auth.fetchSignInMethodsForEmail(currentUser.email!);
     try {
       // if (providerId[0] == 'google.com') {
-        await _googleSignIn.signOut();
+      await _googleSignIn.signOut();
       // }
       await _auth.signOut();
     } catch (e) {

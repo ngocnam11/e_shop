@@ -16,10 +16,18 @@ class FireStoreServices {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final StorageService _storage = StorageService();
 
+  String currentUserUid = AuthServices().currentUser.uid;
+
   Future<model.User> getUserByUid({required String uid}) async {
     final snap = await _firestore.collection('users').doc(uid).get();
     model.User user = model.User.fromSnap(snap.data()!);
     return user;
+  }
+
+  Future<Cart> getCartByUid({required String uid}) async {
+    final snap = await _firestore.collection('carts').doc(uid).get();
+    Cart cart = Cart.fromSnap(snap.data()!);
+    return cart;
   }
 
   Future<Product> getProductById({required String id}) async {
@@ -28,10 +36,14 @@ class FireStoreServices {
     return product;
   }
 
-  Future<Cart> getCartByUid({required String uid}) async {
-    final snap = await _firestore.collection('carts').doc(uid).get();
-    Cart cart = Cart.fromSnap(snap.data()!);
-    return cart;
+  Stream<List<Product>> getCurrentUserProducts() {
+    final snaps = _firestore
+        .collection('products')
+        .where('uid', isEqualTo: currentUserUid)
+        .snapshots();
+    final products = snaps.map((snap) =>
+        snap.docs.map((doc) => Product.fromJson(doc.data())).toList());
+    return products;
   }
 
   Stream<List<Product>> getProducts() {
@@ -337,30 +349,30 @@ class FireStoreServices {
   }
 
   Future<String> updateProfile({
-    required String uid,
-    required String email,
-    required String username,
-    required Uint8List file,
-    required String phoneNum,
-    required bool isAdmin,
+    String? username,
+    Uint8List? file,
+    String? phoneNum,
   }) async {
     String resUpdate = 'Some error occurred';
     try {
-      String photoUrl =
-          await _storage.uploadImageToStorage('profilePics', file, false, '');
-      model.User userData = await getUserByUid(uid: uid);
+      String? photoUrl;
 
-      model.User user = model.User(
-        uid: uid,
-        email: email,
+      if (file != null) {
+        photoUrl =
+            await _storage.uploadImageToStorage('profilePics', file, false, '');
+      }
+      model.User userData = await getUserByUid(uid: currentUserUid);
+
+      userData = userData.copyWith(
         username: username,
-        photoUrl: photoUrl,
         phoneNum: phoneNum,
-        isAdmin: isAdmin,
-        addresses: userData.addresses,
+        photoUrl: photoUrl,
       );
 
-      _firestore.collection('users').doc(uid).update(user.toJson());
+      _firestore
+          .collection('users')
+          .doc(currentUserUid)
+          .update(userData.toJson());
       resUpdate = 'success';
     } catch (e) {
       resUpdate = e.toString();
@@ -371,23 +383,24 @@ class FireStoreServices {
 
   Future<String> updateProduct({
     required int id,
-    required String uid,
-    required String name,
-    required String category,
-    required Uint8List file,
-    required double price,
-    required int quantity,
-    required String description,
-    required List<String> colors,
-    required List<String> size,
+    String? name,
+    String? category,
+    Uint8List? file,
+    double? price,
+    int? quantity,
+    String? description,
+    List<String>? colors,
+    List<String>? size,
   }) async {
     String rep = 'Some error occurred';
     try {
-      String imageUrl =
-          await _storage.uploadImageToStorage('profilePics', file, true, '');
-      Product product = Product(
-        id: id,
-        uid: uid,
+      String? imageUrl;
+      if (file != null) {
+        imageUrl = await _storage.uploadImageToStorage(
+            'products', file, true, id.toString());
+      }
+      Product product = await getProductById(id: id.toString());
+      product = product.copyWith(
         name: name,
         category: category,
         imageUrl: imageUrl,

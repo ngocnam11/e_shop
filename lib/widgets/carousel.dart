@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
+import 'custom_network_image.dart';
+
 class Carousel extends StatefulWidget {
   const Carousel({Key? key}) : super(key: key);
 
@@ -9,12 +11,11 @@ class Carousel extends StatefulWidget {
 }
 
 class _CarouselState extends State<Carousel> {
-    int _current = 0;
-    final CarouselController _controller = CarouselController();
+  int _current = 0;
+  final CarouselController _controller = CarouselController();
 
   @override
   Widget build(BuildContext context) {
-    
     return Stack(
       children: [
         Container(
@@ -28,7 +29,7 @@ class _CarouselState extends State<Carousel> {
               autoPlay: true,
               onPageChanged: (index, reason) {
                 setState(() {
-                _current = index;
+                  _current = index;
                 });
               },
             ),
@@ -36,10 +37,9 @@ class _CarouselState extends State<Carousel> {
                 .map(
                   (item) => ClipRRect(
                     borderRadius: BorderRadius.circular(16),
-                    child: Image.network(
+                    child: CustomNetworkImage(
+                      src: item,
                       height: 140,
-                      width: double.infinity,
-                      item,
                       fit: BoxFit.cover,
                     ),
                   ),

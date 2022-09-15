@@ -3,9 +3,18 @@ import 'package:intl/intl.dart';
 
 import '../../models/order.dart';
 import '../../models/product.dart';
+import '../../router/router.dart';
+import '../../widgets/custom_network_image.dart';
 
 class AdOrderScreen extends StatelessWidget {
   const AdOrderScreen({Key? key}) : super(key: key);
+
+  static MaterialPageRoute route() {
+    return MaterialPageRoute(
+      settings: const RouteSettings(name: AppRouter.adminOrder),
+      builder: (_) => const AdOrderScreen(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,13 +95,11 @@ class OrderCard extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 10.0),
                     child: Row(
                       children: [
-                        SizedBox(
+                        CustomNetworkImage(
+                          src: products[index].imageUrl,
                           height: 50,
                           width: 50,
-                          child: Image.network(
-                            products[index].imageUrl,
-                            fit: BoxFit.cover,
-                          ),
+                          fit: BoxFit.cover,
                         ),
                         const SizedBox(width: 10),
                         Column(
@@ -181,7 +188,7 @@ class OrderCard extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.blue,
+                      backgroundColor: Colors.blue,
                       minimumSize: const Size(150, 40),
                     ),
                     child: const Text(
@@ -194,7 +201,7 @@ class OrderCard extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.blue,
+                      backgroundColor: Colors.blue,
                       minimumSize: const Size(150, 40),
                     ),
                     child: const Text(

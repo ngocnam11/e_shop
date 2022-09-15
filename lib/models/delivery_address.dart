@@ -15,9 +15,24 @@ class DeliveryAddress extends Equatable {
     required this.isDefault,
   });
 
+  DeliveryAddress copyWith({
+    String? address,
+    String? city,
+    String? country,
+    bool? isDefault,
+  }) {
+    return DeliveryAddress(
+      id: id,
+      address: address ?? this.address,
+      city: city ?? this.city,
+      country: country ?? this.country,
+      isDefault: isDefault ?? this.isDefault,
+    );
+  }
+
   factory DeliveryAddress.fromSnap(Map<String, dynamic> snap) {
     return DeliveryAddress(
-      id: snap['id'],
+      id: snap['id'] ?? '',
       address: snap['address'],
       city: snap['city'],
       country: snap['country'],

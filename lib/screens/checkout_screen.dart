@@ -11,8 +11,7 @@ import '../services/auth_services.dart';
 import '../services/firestore_services.dart';
 import '../widgets/list_item.dart';
 import '../widgets/order_summary.dart';
-import 'delivery_address_screen.dart';
-import 'order_confirmation/order_confirm_screen.dart';
+import 'screens.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({Key? key, this.deliveryAddress}) : super(key: key);
@@ -44,8 +43,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   Future<Product> getInitProduct() async {
-    final product = await FireStoreServices()
-        .getProductById(id: _cartItem.productId);
+    final product =
+        await FireStoreServices().getProductById(id: _cartItem.productId);
     return product;
   }
 
@@ -91,11 +90,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: InkWell(
                 onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const DeliveryAddressScreen(),
-                    ),
-                  );
+                  Navigator.of(context).pushNamed(AppRouter.address);
                 },
                 child: Container(
                   height: 100,
@@ -132,7 +127,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               height: 24,
                               child: FutureBuilder<User>(
                                 future: FireStoreServices().getUserByUid(
-                                    uid: AuthServices().currentUser.uid),
+                                  uid: AuthServices().currentUser.uid,
+                                ),
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
@@ -141,6 +137,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     );
                                   }
                                   if (snapshot.hasError) {
+                                    debugPrint(snapshot.error.toString());
                                     return const Text('Something went wrong');
                                   }
                                   return Text(
@@ -179,6 +176,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   final products =
                       state.cart.productQuantity(state.cart.products);
                   return ListView.separated(
+                    physics: const NeverScrollableScrollPhysics(),
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     itemCount: products.length,
                     shrinkWrap: true,
@@ -230,7 +228,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               },
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+              padding: const EdgeInsets.all(12),
               child: InkWell(
                 onTap: () {},
                 child: Container(
@@ -258,7 +256,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+              padding: const EdgeInsets.all(12),
               child: InkWell(
                 onTap: () {
                   Navigator.of(context).pushNamed(AppRouter.purchase);
@@ -294,15 +292,22 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: Padding(
+      bottomNavigationBar: Container(
         padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 6,
+            ),
+          ],
+        ),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            primary: Colors.blue[300],
-            padding: const EdgeInsets.symmetric(
-              horizontal: 32,
-              vertical: 12,
-            ),
+            backgroundColor: Colors.blueAccent.shade100,
+            padding: const EdgeInsets.symmetric(vertical: 12),
           ),
           onPressed: () {
             addOrder();

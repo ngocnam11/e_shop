@@ -129,7 +129,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamed(AppRouter.forgotPassword);
+                    Navigator.of(context)
+                        .pushReplacementNamed(AppRouter.forgotPassword);
                   },
                   child: const Text('Forgot password?'),
                 ),
@@ -139,19 +140,18 @@ class _LoginScreenState extends State<LoginScreen> {
             ElevatedButton(
               onPressed: loginUser,
               style: ElevatedButton.styleFrom(
-                primary: Colors.blueAccent[400],
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 90,
-                  vertical: 10,
-                ),
+                backgroundColor: Colors.blueAccent[400],
+                fixedSize: const Size.fromWidth(double.maxFinite),
+                padding: const EdgeInsets.symmetric(vertical: 8),
               ),
               child: _isLoading
-                  ? const Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                      ),
+                  ? const CircularProgressIndicator(
+                      color: Colors.white,
                     )
-                  : const Text('Sign in'),
+                  : const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8),
+                      child: Text('Sign in'),
+                    ),
             ),
             const SizedBox(height: 5),
             Row(

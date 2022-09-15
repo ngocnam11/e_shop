@@ -1,43 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../services/auth_services.dart';
+import '../../models/product.dart';
+import '../../router/router.dart';
+import '../../services/firestore_services.dart';
 import 'ad_product_card.dart';
-import 'new_product_screen.dart';
 
 class AdProductScreen extends StatefulWidget {
   const AdProductScreen({Key? key}) : super(key: key);
+
+  static MaterialPageRoute route() {
+    return MaterialPageRoute(
+      settings: const RouteSettings(name: AppRouter.adminProduct),
+      builder: (_) => const AdProductScreen(),
+    );
+  }
 
   @override
   State<AdProductScreen> createState() => _AdProductScreenState();
 }
 
 class _AdProductScreenState extends State<AdProductScreen> {
-  final TextEditingController searchController = TextEditingController();
-  bool searchProducts = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Products',
-          style: TextStyle(fontSize: 18),
-        ),
+        title: const Text('Products'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
         child: Column(
           children: <Widget>[
-            // SearchBar(
-            //   controller: searchController,
-            //   hintText: 'Search a product',
-            //   press: () {
-            //     setState(() {
-            //       searchProducts = true;
-            //     });
-            //   },
-            // ),
             Ink(
               height: 80,
               decoration: BoxDecoration(
@@ -47,11 +39,14 @@ class _AdProductScreenState extends State<AdProductScreen> {
               child: InkWell(
                 borderRadius: BorderRadius.circular(16),
                 onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const NewProductScreen(),
-                    ),
-                  );
+                  Navigator.of(context)
+                      .pushNamed(AppRouter.adminNewProduct)
+                      .then((value) {
+                    final bool? refresh = value as bool?;
+                    if (refresh ?? false) {
+                      setState(() {});
+                    }
+                  }).asStream();
                 },
                 child: Row(
                   children: <Widget>[
@@ -72,75 +67,35 @@ class _AdProductScreenState extends State<AdProductScreen> {
                 ),
               ),
             ),
-            searchProducts
-                ? FutureBuilder(
-                    future: FirebaseFirestore.instance
-                        .collection('products')
-                        .where(
-                          'name',
-                          isGreaterThanOrEqualTo: searchController.text,
-                        )
-                        .get(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      if (snapshot.hasData) {
-                        return Expanded(
-                          child: ListView.builder(
-                            itemCount: (snapshot.data! as dynamic).docs.length,
-                            itemBuilder: (context, index) {
-                              return SizedBox(
-                                height: 180,
-                                child: AdProductCard(
-                                  snap: (snapshot.data! as dynamic)
-                                      .docs[index]
-                                      .data(),
-                                ),
-                              );
-                            },
+            StreamBuilder<List<Product>>(
+              stream: FireStoreServices().getCurrentUserProducts(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  debugPrint(snapshot.error.toString());
+                  return const Center(
+                    child: Text('Something went wrong'),
+                  );
+                }
+                if (snapshot.hasData) {
+                  return Expanded(
+                    child: ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        return SizedBox(
+                          height: 180,
+                          child: AdProductCard(
+                            snap: snapshot.data![index],
                           ),
                         );
-                      }
-                      return const Text('Something went wrong');
-                    },
-                  )
-                : FutureBuilder(
-                    future: FirebaseFirestore.instance
-                        .collection('products')
-                        .where(
-                          'uid',
-                          isEqualTo: AuthServices().currentUser.uid,
-                        )
-                        .get(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      if (snapshot.hasData) {
-                        return Expanded(
-                          child: ListView.builder(
-                            itemCount: (snapshot.data! as dynamic).docs.length,
-                            itemBuilder: (context, index) {
-                              return SizedBox(
-                                height: 180,
-                                child: AdProductCard(
-                                  snap: (snapshot.data! as dynamic)
-                                      .docs[index]
-                                      .data(),
-                                ),
-                              );
-                            },
-                          ),
-                        );
-                      }
-                      return const Text('Something went wrong');
-                    },
-                  ),
+                      },
+                    ),
+                  );
+                }
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            ),
           ],
         ),
       ),

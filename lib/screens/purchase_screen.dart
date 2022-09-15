@@ -65,32 +65,24 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
         ),
       ),
       bottomNavigationBar: Container(
-        height: 170,
-        padding: const EdgeInsets.only(
-          left: 20,
-          right: 20,
-          bottom: 20,
-          top: 10,
-        ),
-        decoration: const BoxDecoration(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey,
-              blurRadius: 7,
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 6,
             ),
           ],
-          color: Colors.white,
         ),
         child: ElevatedButton(
           onPressed: () {
             Navigator.of(context).popAndPushNamed(AppRouter.checkout);
           },
           style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(
-              vertical: 12,
-            ),
-            primary: Colors.blueAccent.shade100,
-            fixedSize: const Size.fromWidth(500),
+            backgroundColor: Colors.blueAccent.shade100,
+            padding: const EdgeInsets.symmetric(vertical: 12),
           ),
           child: const Text('Continue'),
         ),

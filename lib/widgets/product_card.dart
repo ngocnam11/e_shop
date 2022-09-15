@@ -4,7 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../blocs/wishlist/wishlist_bloc.dart';
 import '../config/utils.dart';
 import '../models/product.dart';
-import '../screens/screens.dart';
+import '../router/router.dart';
+import 'custom_network_image.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
@@ -18,12 +19,9 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => ProductScreen(
-              product: product,
-            ),
-          ),
+        Navigator.of(context).pushNamed(
+          AppRouter.product,
+          arguments: product,
         );
       },
       child: Column(
@@ -33,12 +31,10 @@ class ProductCard extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(16),
-                child: Image(
+                child: CustomNetworkImage(
+                  src: product.imageUrl,
                   height: 160,
                   width: 150,
-                  image: NetworkImage(
-                    product.imageUrl,
-                  ),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -104,10 +100,12 @@ class ProductCard extends StatelessWidget {
           Text(
             product.name,
             style: Theme.of(context).textTheme.headline4,
+            overflow: TextOverflow.ellipsis,
           ),
           Text(
             product.description,
             style: Theme.of(context).textTheme.headline6,
+            overflow: TextOverflow.ellipsis,
           ),
           Text(
             '\$${product.price}',

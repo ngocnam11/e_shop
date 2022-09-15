@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/cart.dart';
 import '../models/product.dart';
+import 'custom_network_image.dart';
 import '../services/firestore_services.dart';
 
 class ListItem extends StatelessWidget {
@@ -40,12 +41,10 @@ class ListItem extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(16),
-                  child: Image(
+                  child: CustomNetworkImage(
+                    src: snapshot.data!.imageUrl,
                     height: 100,
                     width: 100,
-                    image: NetworkImage(
-                      snapshot.data!.imageUrl,
-                    ),
                     fit: BoxFit.cover,
                   ),
                 ),

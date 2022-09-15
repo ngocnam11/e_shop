@@ -32,8 +32,8 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
         boxShadow: [
           BoxShadow(
             color: Colors.grey,
-            spreadRadius: 5,
-            blurRadius: 7,
+            spreadRadius: 2,
+            blurRadius: 6,
           ),
         ],
         color: Colors.white,
@@ -134,7 +134,7 @@ class CustomNavigationBarItem extends StatelessWidget {
             color: selectedColor,
             width: 0.5,
           ),
-          color: selectedColor.withOpacity(0.2),
+          color: selectedColor.withOpacity(0.1),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(

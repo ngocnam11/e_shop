@@ -8,6 +8,13 @@ import '../services/firestore_services.dart';
 class DeliveryAddressScreen extends StatefulWidget {
   const DeliveryAddressScreen({Key? key}) : super(key: key);
 
+  static MaterialPageRoute route() {
+    return MaterialPageRoute(
+      settings: const RouteSettings(name: AppRouter.address),
+      builder: (_) => const DeliveryAddressScreen(),
+    );
+  }
+
   @override
   State<DeliveryAddressScreen> createState() => _DeliveryAddressScreenState();
 }
@@ -16,7 +23,8 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
   Future<void> getInitAddress() async {
     final user = await FireStoreServices()
         .getUserByUid(uid: AuthServices().currentUser.uid);
-    _addressValue = user.addresses.isNotEmpty ? user.addresses[0].address : '';
+    _addressValue =
+        user.addresses.isNotEmpty ? user.addresses[0].toString() : '';
   }
 
   late String _addressValue;
@@ -49,6 +57,7 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
               );
             }
             if (snapshot.hasError) {
+              debugPrint(snapshot.error.toString());
               return const Text('Something went wrong');
             }
             return ListView.separated(
@@ -90,7 +99,8 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
                           children: <Widget>[
                             Expanded(
                               child: Radio<String>(
-                                value: snapshot.data!.addresses[index].address,
+                                value:
+                                    snapshot.data!.addresses[index].toString(),
                                 groupValue: _addressValue,
                                 onChanged: (value) {
                                   setState(() {
@@ -102,7 +112,12 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
                             ),
                             Expanded(
                               child: TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.of(context).pushNamed(
+                                    AppRouter.editAddress,
+                                    arguments: snapshot.data!.addresses[index],
+                                  );
+                                },
                                 child: Text(
                                   'Edit',
                                   style: Theme.of(context).textTheme.bodyText1,
@@ -123,7 +138,7 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.of(context).pushNamed(AppRouter.newaddress);
+                    Navigator.of(context).pushNamed(AppRouter.newAddress);
                   },
                   child: const Text('+ Add New Address'),
                 );
@@ -133,35 +148,27 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
             );
           }),
       bottomNavigationBar: Container(
-        height: 170,
-        padding: const EdgeInsets.only(
-          left: 20,
-          right: 20,
-          bottom: 20,
-          top: 10,
-        ),
-        decoration: const BoxDecoration(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey,
-              blurRadius: 7,
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 6,
             ),
           ],
-          color: Colors.white,
         ),
         child: ElevatedButton(
           onPressed: () {
-            Navigator.of(context).popAndPushNamed(
+            Navigator.of(context).pushNamed(
               AppRouter.checkout,
               // arguments: _addressValue,
             );
           },
           style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(
-              vertical: 12,
-            ),
-            primary: Colors.blueAccent.shade100,
-            fixedSize: const Size.fromWidth(500),
+            backgroundColor: Colors.blueAccent.shade100,
+            padding: const EdgeInsets.symmetric(vertical: 12),
           ),
           child: const Text('Continue'),
         ),

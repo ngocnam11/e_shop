@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../router/router.dart';
-import 'ad_order_screen.dart';
-import 'ad_product_screen.dart';
 
 class AdHomeScreen extends StatelessWidget {
   const AdHomeScreen({Key? key}) : super(key: key);
@@ -18,28 +16,30 @@ class AdHomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Home Screen',
-          style: TextStyle(fontSize: 18),
-        ),
+        title: const Text('Admin Home Screen'),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            height: 150,
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: InkWell(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const AdProductScreen(),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          children: [
+            Ink(
+              height: 150,
+              decoration: BoxDecoration(
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.grey,
+                    blurRadius: 2,
                   ),
-                );
-              },
-              child: const Card(
-                child: Center(
+                ],
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.white,
+              ),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(8),
+                onTap: () {
+                  Navigator.of(context).pushNamed(AppRouter.adminProduct);
+                },
+                child: const Center(
                   child: Text(
                     'Go to Products',
                     style: TextStyle(fontSize: 18),
@@ -47,21 +47,25 @@ class AdHomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-          Container(
-            height: 150,
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: InkWell(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const AdOrderScreen(),
+            const SizedBox(height: 24),
+            Ink(
+              height: 150,
+              decoration: BoxDecoration(
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.grey,
+                    blurRadius: 2,
                   ),
-                );
-              },
-              child: const Card(
-                child: Center(
+                ],
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.white,
+              ),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(8),
+                onTap: () {
+                  Navigator.of(context).pushNamed(AppRouter.adminOrder);
+                },
+                child: const Center(
                   child: Text(
                     'Go to Orders',
                     style: TextStyle(fontSize: 18),
@@ -69,8 +73,8 @@ class AdHomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

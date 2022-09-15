@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../models/product.dart';
+import '../models/delivery_address.dart';
 import '../screens/screens.dart';
 
 abstract class AppRouter {
@@ -11,16 +11,23 @@ abstract class AppRouter {
   static const String search = '/search';
   static const String cart = '/cart';
   static const String checkout = '/checkout';
-  static const String newaddress = '/new_address';
+  static const String address = '/address';
+  static const String newAddress = '/address/new';
+  static const String editAddress = '/address/edit';
   static const String wishlist = '/wishlist';
   static const String chat = '/chat';
   static const String profile = '/profile';
   static const String notification = '/notification';
   static const String product = '/product';
+  static const String orderConfirm = '/order_confirm';
   static const String account = '/account';
-    static const String purchase = '/purchase';
+  static const String purchase = '/purchase';
   static const String newCard = '/new_card';
   static const String admin = '/admin';
+  static const String adminProduct = '/admin/product';
+  static const String adminNewProduct = '/admin/product/new';
+  static const String adminEditProduct = '/admin/product/edit';
+  static const String adminOrder = '/admin/order';
 
   static Route onGenerateRoute(RouteSettings settings) {
     debugPrint('Route: ${settings.name}');
@@ -40,8 +47,14 @@ abstract class AppRouter {
         return CartScreen.route();
       case checkout:
         return CheckoutScreen.route('');
-      case newaddress:
+      case address:
+        return DeliveryAddressScreen.route();
+      case newAddress:
         return NewAddressScreen.route();
+      case editAddress:
+        return EditAddressScreen.route(
+          address: settings.arguments as DeliveryAddress,
+        );
       case wishlist:
         return WishlistScreen.route();
       case chat:
@@ -52,14 +65,26 @@ abstract class AppRouter {
         return NotificationScreen.route();
       case product:
         return ProductScreen.route(product: settings.arguments);
+      case orderConfirm:
+        return OrderConfirmScreen.route();
       case account:
-        return MyAccountScreen.route(isAdmin: settings.arguments as bool);
+        return MyAccountScreen.route();
       case purchase:
         return PurchaseScreen.route();
       case newCard:
         return NewCardScreen.route();
       case admin:
         return AdHomeScreen.route();
+      case adminProduct:
+        return AdProductScreen.route();
+      case adminNewProduct:
+        return NewProductScreen.route();
+      case adminEditProduct:
+        return AdEditProductScreen.route(
+          id: settings.arguments as int,
+        );
+      case adminOrder:
+        return AdOrderScreen.route();
       default:
         return MaterialPageRoute(
           settings: const RouteSettings(name: '/error'),

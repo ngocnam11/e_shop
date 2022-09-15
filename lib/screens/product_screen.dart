@@ -1,4 +1,3 @@
-import 'package:e_shop/screens/conversation_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -10,6 +9,8 @@ import '../models/user.dart';
 import '../router/router.dart';
 import '../services/firestore_services.dart';
 import '../widgets/custom_button.dart';
+import '../widgets/custom_network_image.dart';
+import 'conversation_screen.dart';
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen({Key? key, required this.product}) : super(key: key);
@@ -33,8 +34,8 @@ class _ProductScreenState extends State<ProductScreen> {
   void addProductToCart() async {
     String res = await FireStoreServices().addProductToCart(
       productId: widget.product.id.toString(),
-      color: widget.product.colors!.isEmpty ? 'n' : widget.product.colors![0],
-      size: widget.product.size!.isEmpty ? 'n' : widget.product.size![1],
+      color: widget.product.colors.isEmpty ? 'n' : widget.product.colors[0],
+      size: widget.product.size.isEmpty ? 'n' : widget.product.size[1],
       quantity: 1,
       price: widget.product.price + .0,
     );
@@ -101,12 +102,10 @@ class _ProductScreenState extends State<ProductScreen> {
                 bottomLeft: Radius.circular(16),
                 bottomRight: Radius.circular(16),
               ),
-              child: Image(
+              child: CustomNetworkImage(
+                src: widget.product.imageUrl,
                 height: MediaQuery.of(context).size.height / 2,
                 width: MediaQuery.of(context).size.width,
-                image: NetworkImage(
-                  widget.product.imageUrl,
-                ),
                 fit: BoxFit.cover,
               ),
             ),
@@ -130,6 +129,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         );
                       }
                       if (snapshot.hasError) {
+                        debugPrint(snapshot.error.toString());
                         return const Text('Something went wrong');
                       }
                       return Text(
@@ -158,7 +158,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     style: theme.headline3,
                   ),
                   const SizedBox(height: 12),
-                  widget.product.colors!.isEmpty && widget.product.size!.isEmpty
+                  widget.product.colors.isEmpty && widget.product.size.isEmpty
                       ? const SizedBox()
                       : Ink(
                           height: 80,
@@ -179,12 +179,10 @@ class _ProductScreenState extends State<ProductScreen> {
                                     const SizedBox(width: 8),
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(16),
-                                      child: Image(
+                                      child: CustomNetworkImage(
+                                        src: widget.product.imageUrl,
                                         height: 70,
                                         width: 70,
-                                        image: NetworkImage(
-                                          widget.product.imageUrl,
-                                        ),
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -200,15 +198,15 @@ class _ProductScreenState extends State<ProductScreen> {
                                         Row(
                                           children: [
                                             Text(
-                                              widget.product.colors!.isEmpty
+                                              widget.product.colors.isEmpty
                                                   ? ''
-                                                  : widget.product.colors![0],
+                                                  : widget.product.colors[0],
                                               style: theme.headline4,
                                             ),
                                             Text(
-                                              widget.product.size!.isEmpty
+                                              widget.product.size.isEmpty
                                                   ? ''
-                                                  : widget.product.size![0],
+                                                  : widget.product.size[0],
                                               style: theme.headline4,
                                             ),
                                           ],
@@ -256,6 +254,7 @@ class _ProductScreenState extends State<ProductScreen> {
                   );
                 }
                 if (snapshot.hasError) {
+                  debugPrint(snapshot.error.toString());
                   return const Text('Something went wrong');
                 }
                 return OutlinedButton.icon(
@@ -283,7 +282,6 @@ class _ProductScreenState extends State<ProductScreen> {
                     );
                   }
                   if (state is CartLoaded) {
-                    var date = DateTime.now().toLocal();
                     return CustomButton(
                       svg: 'assets/svgs/shopping_bag.svg',
                       press: () {
@@ -293,12 +291,12 @@ class _ProductScreenState extends State<ProductScreen> {
                                 CartItem(
                                   id: 'ci${widget.product.id.toString()}',
                                   productId: widget.product.id.toString(),
-                                  color: widget.product.colors!.isEmpty
+                                  color: widget.product.colors.isEmpty
                                       ? 'n'
-                                      : widget.product.colors![0],
-                                  size: widget.product.size!.isEmpty
+                                      : widget.product.colors[0],
+                                  size: widget.product.size.isEmpty
                                       ? 'n'
-                                      : widget.product.size![0],
+                                      : widget.product.size[0],
                                   quantity: 1,
                                   price: widget.product.price,
                                 ),
