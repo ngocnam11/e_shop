@@ -26,7 +26,9 @@ class AuthServices {
     try {
       if (email.isNotEmpty || password.isNotEmpty || username.isNotEmpty) {
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
-            email: email, password: password);
+          email: email,
+          password: password,
+        );
 
         model.User user = model.User(
           uid: cred.user!.uid,
@@ -93,14 +95,12 @@ class AuthServices {
         email: userCredential.user!.email!,
         username: userCredential.user!.displayName ?? '',
         phoneNum: userCredential.user!.phoneNumber ?? '',
-        photoUrl: userCredential.user!.photoURL ?? '',
+        photoUrl: userCredential.user!.photoURL ??
+            'https://i.ibb.co/yRw8xRv/noavatar.png',
         addresses: const [],
       );
 
-      _firestore
-          .collection('users')
-          .doc(userCredential.user!.uid)
-          .set(user.toJson());
+      _firestore.collection('users').doc(user.uid).set(user.toJson());
 
       res = 'success';
     } catch (e) {
