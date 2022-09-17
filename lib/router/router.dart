@@ -21,6 +21,8 @@ abstract class AppRouter {
   static const String product = '/product';
   static const String orderConfirm = '/order_confirm';
   static const String account = '/account';
+  static const String myOrders = '/my_orders';
+  static const String orderDetails = '/order_details';
   static const String purchase = '/purchase';
   static const String newCard = '/new_card';
   static const String admin = '/admin';
@@ -46,7 +48,7 @@ abstract class AppRouter {
       case cart:
         return CartScreen.route();
       case checkout:
-        return CheckoutScreen.route('');
+        return CheckoutScreen.route(deliveryAddress: settings.arguments as String);
       case address:
         return DeliveryAddressScreen.route();
       case newAddress:
@@ -69,6 +71,10 @@ abstract class AppRouter {
         return OrderConfirmScreen.route();
       case account:
         return MyAccountScreen.route();
+      case myOrders:
+        return MyOrdersScreen.route();
+        case orderDetails:
+        return OrderDetailsScreen.route();
       case purchase:
         return PurchaseScreen.route();
       case newCard:

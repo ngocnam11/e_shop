@@ -134,10 +134,7 @@ class CartScreen extends StatelessWidget {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.of(context).pushNamed(
-                            AppRouter.checkout,
-                            arguments: products,
-                          );
+                          Navigator.of(context).pushNamed(AppRouter.checkout, arguments: '');
                         },
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),
