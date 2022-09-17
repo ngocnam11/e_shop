@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 import 'product.dart';
@@ -12,11 +13,8 @@ class Order extends Equatable {
   final double deliveryFee;
   final double subtotal;
   final double total;
-  final bool isAccepted;
-  final bool isDelivered;
-  final bool isCancelled;
-  final bool isReceived;
-  final DateTime createdAt;
+  final String orderStatus;
+  final Timestamp createdAt;
 
   const Order({
     required this.id,
@@ -28,10 +26,7 @@ class Order extends Equatable {
     required this.deliveryFee,
     required this.subtotal,
     required this.total,
-    required this.isAccepted,
-    required this.isDelivered,
-    required this.isCancelled,
-    required this.isReceived,
+    required this.orderStatus,
     required this.createdAt,
   });
 
@@ -50,10 +45,7 @@ class Order extends Equatable {
       deliveryFee: snap['deliveryFee'],
       subtotal: snap['subtotal'],
       total: snap['total'],
-      isAccepted: snap['isAccepted'],
-      isDelivered: snap['isDelivered'],
-      isCancelled: snap['isCancelled'],
-      isReceived: snap['isReceived'],
+      orderStatus: snap['orderStatus'],
       createdAt: snap['createdAt'],
     );
   }
@@ -70,10 +62,7 @@ class Order extends Equatable {
       'deliveryFee': deliveryFee,
       'subtotal': subtotal,
       'total': total,
-      'isAccepted': isAccepted,
-      'isDelivered': isDelivered,
-      'isCancelled': isCancelled,
-      'isReceived': isReceived,
+      'orderStatus': orderStatus,
       'createdAt': createdAt,
     };
   }
@@ -88,10 +77,7 @@ class Order extends Equatable {
         deliveryFee,
         subtotal,
         total,
-        isAccepted,
-        isDelivered,
-        isCancelled,
-        isReceived,
+        orderStatus,
         createdAt,
       ];
 }
