@@ -105,6 +105,14 @@ class ProfileScreen extends StatelessWidget {
                           },
                         ),
                         const SizedBox(height: 10),
+                        ProfileMenu(
+                          icon: Icons.person_outline_rounded,
+                          title: 'My Orders',
+                          press: () {
+                            Navigator.of(context).pushNamed(AppRouter.myOrders);
+                          },
+                        ),
+                        const SizedBox(height: 10),
                         snapshot.data!['isAdmin']
                             ? ProfileMenu(
                                 icon: Icons.admin_panel_settings_outlined,
