@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../config/utils.dart';
 import '../../models/order.dart';
-import '../../models/product.dart';
 import '../../router/router.dart';
+import '../../services/firestore_services.dart';
 import '../../widgets/custom_network_image.dart';
 
 class AdOrderScreen extends StatelessWidget {
@@ -26,35 +27,63 @@ class AdOrderScreen extends StatelessWidget {
         ),
       ),
       body: Column(
-        children: const [
-          Text('data'),
-          Text('date'),
-          // Expanded(
-          //   child: ListView.builder(
-          //     itemCount: Order.orders.length,
-          //     itemBuilder: (context, index) {
-          //       return OrderCard(
-          //         order: Order.orders[index],
-          //       );
-          //     },
-          //   ),
-          // )
+        children: [
+          Expanded(
+            child: StreamBuilder<List<Order>>(
+                stream: FireStoreServices().getOrdersOfSellerId(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (snapshot.hasError) {
+                    debugPrint(snapshot.error.toString());
+                    return const Text('Something went wrong');
+                  }
+                  return ListView.separated(
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      return OrderCard(
+                        order: snapshot.data![index],
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const SizedBox(height: 12),
+                  );
+                }),
+          )
         ],
       ),
     );
   }
 }
 
-class OrderCard extends StatelessWidget {
+class OrderCard extends StatefulWidget {
   const OrderCard({Key? key, required this.order}) : super(key: key);
   final Order order;
 
   @override
-  Widget build(BuildContext context) {
-    var products = Product.products
-        .where((product) => order.products.contains(product.id))
-        .toList();
+  State<OrderCard> createState() => _OrderCardState();
+}
 
+class _OrderCardState extends State<OrderCard> {
+  void updateOrderStatus({required String orderStatus}) async {
+    String res = await FireStoreServices().updateOrderStatus(
+      id: widget.order.id,
+      orderStatus: orderStatus,
+    );
+    if (!mounted) return;
+
+    if (res != 'success') {
+      showSnackBar(context, res);
+    } else {
+      showSnackBar(context, 'Order  is $orderStatus');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
         left: 10,
@@ -71,14 +100,15 @@ class OrderCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Order ID: ${order.id}',
+                    widget.order.id,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
-                    DateFormat('dd-MM-yy').format(order.createdAt),
+                    DateFormat('dd-MM-yy')
+                        .format(widget.order.createdAt.toDate()),
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -89,16 +119,16 @@ class OrderCard extends StatelessWidget {
               const SizedBox(height: 10),
               ListView.builder(
                 shrinkWrap: true,
-                itemCount: products.length,
+                itemCount: widget.order.products.length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 10.0),
                     child: Row(
                       children: [
                         CustomNetworkImage(
-                          src: products[index].imageUrl,
-                          height: 50,
-                          width: 50,
+                          src: widget.order.products[index].imageUrl,
+                          height: 80,
+                          width: 80,
                           fit: BoxFit.cover,
                         ),
                         const SizedBox(width: 10),
@@ -106,23 +136,15 @@ class OrderCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              products[index].name,
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              widget.order.products[index].name,
+                              style: Theme.of(context).textTheme.headline4,
                             ),
-                            const SizedBox(height: 5),
-                            SizedBox(
-                              width: 285,
-                              child: Text(
-                                products[index].description,
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                ),
-                                overflow: TextOverflow.clip,
-                                maxLines: 2,
-                              ),
+                            const SizedBox(height: 8),
+                            Text(
+                              widget.order.products[index].description,
+                              style: Theme.of(context).textTheme.headline5,
+                              overflow: TextOverflow.clip,
+                              maxLines: 2,
                             ),
                           ],
                         )
@@ -137,45 +159,25 @@ class OrderCard extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                      const Text(
+                      Text(
                         'Delivery Fee',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: Theme.of(context).textTheme.headline5,
                       ),
-                      Column(
-                        children: [
-                          Text(
-                            '${order.deliveryFee}',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
+                      Text(
+                        '${widget.order.deliveryFee}',
+                        style: Theme.of(context).textTheme.headline4,
                       )
                     ],
                   ),
                   Column(
                     children: [
-                      const Text(
+                      Text(
                         'Total',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: Theme.of(context).textTheme.headline5,
                       ),
-                      Column(
-                        children: [
-                          Text(
-                            '${order.total}',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
+                      Text(
+                        '${widget.order.total}',
+                        style: Theme.of(context).textTheme.headline4,
                       )
                     ],
                   )
@@ -186,30 +188,27 @@ class OrderCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () => updateOrderStatus(orderStatus: 'Accepted'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
-                      minimumSize: const Size(150, 40),
-                    ),
-                    child: const Text(
-                      'Accept',
-                      style: TextStyle(
-                        fontSize: 12,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 36,
+                        vertical: 12,
                       ),
                     ),
+                    child: const Text('Accept'),
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () =>
+                        updateOrderStatus(orderStatus: 'Cancelled'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
-                      minimumSize: const Size(150, 40),
-                    ),
-                    child: const Text(
-                      'Cancel',
-                      style: TextStyle(
-                        fontSize: 12,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 36,
+                        vertical: 12,
                       ),
                     ),
+                    child: const Text('Cancel'),
                   )
                 ],
               )

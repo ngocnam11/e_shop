@@ -16,7 +16,7 @@ import 'screens.dart';
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({Key? key, this.deliveryAddress}) : super(key: key);
 
-  static MaterialPageRoute route(String deliveryAddress) {
+  static MaterialPageRoute route({required String deliveryAddress}) {
     return MaterialPageRoute(
       settings: const RouteSettings(name: AppRouter.checkout),
       builder: (_) => CheckoutScreen(deliveryAddress: deliveryAddress),
@@ -60,6 +60,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       subtotal: _cartItem.price,
       deliveryFee: _cartItem.price > 30 ? 0.0 : 10.0,
       total: _cartItem.price,
+      orderStatus: 'Pending',
     );
 
     if (!mounted) return;
@@ -67,13 +68,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     if (res != 'success') {
       showSnackBar(context, res);
     } else {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const OrderConfirmScreen(),
-        ),
-      );
+      Navigator.of(context).pushNamed(AppRouter.orderConfirm);
     }
   }
+  String deliveryAddress = 'Choose delivery address';
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +88,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: InkWell(
                 onTap: () {
-                  Navigator.of(context).pushNamed(AppRouter.address);
+                  Navigator.of(context)
+                      .pushNamed(AppRouter.address)
+                      .then((value) {
+                    deliveryAddress = value.toString();
+                    setState(() {});
+                  });
                 },
                 child: Container(
                   height: 100,
@@ -152,7 +155,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 24),
                             child: Text(
-                              'delivery address',
+                              deliveryAddress,
                               style: Theme.of(context).textTheme.headline4,
                             ),
                           ),
@@ -228,7 +231,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               },
             ),
             Padding(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
               child: InkWell(
                 onTap: () {},
                 child: Container(
@@ -256,7 +259,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
               child: InkWell(
                 onTap: () {
                   Navigator.of(context).pushNamed(AppRouter.purchase);

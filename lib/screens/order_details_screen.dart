@@ -2,10 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../blocs/cart/cart_bloc.dart';
+import '../router/router.dart';
 import '../widgets/list_item.dart';
 
-class OrderDetails extends StatelessWidget {
-  const OrderDetails({Key? key}) : super(key: key);
+class OrderDetailsScreen extends StatelessWidget {
+  const OrderDetailsScreen({Key? key}) : super(key: key);
+
+  static MaterialPageRoute route() {
+    return MaterialPageRoute(
+      settings: const RouteSettings(name: AppRouter.orderDetails),
+      builder: (_) => const OrderDetailsScreen(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

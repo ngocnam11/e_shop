@@ -90,6 +90,26 @@ class FireStoreServices {
     return recommendedProducts;
   }
 
+  Stream<List<Order>> getCurrentUserOrders() {
+    final snaps = _firestore
+        .collection('orders')
+        .where('customerId', isEqualTo: currentUserUid)
+        .snapshots();
+    final orders = snaps.map(
+        (snap) => snap.docs.map((doc) => Order.fromJson(doc.data())).toList());
+    return orders;
+  }
+
+  Stream<List<Order>> getOrdersOfSellerId() {
+    final snaps = _firestore
+        .collection('orders')
+        .where('sellerId', isEqualTo: currentUserUid)
+        .snapshots();
+    final orders = snaps.map(
+        (snap) => snap.docs.map((doc) => Order.fromJson(doc.data())).toList());
+    return orders;
+  }
+
   Future<String> addProduct({
     required String uid,
     required int id,
@@ -263,11 +283,12 @@ class FireStoreServices {
     required double subtotal,
     required double deliveryFee,
     required double total,
+    required String orderStatus,
   }) async {
     String response = 'Some error occurred';
     try {
       var date = DateTime.now().toLocal();
-      final id = 'ORD${date.year}Y${date.month}M${date.day}ES';
+      final id = 'ORD${date.year}Y${date.month}M${date.day}ES${date.second}';
       Order order = Order(
         id: id,
         customerId: customerId,
@@ -278,11 +299,8 @@ class FireStoreServices {
         subtotal: subtotal,
         deliveryFee: deliveryFee,
         total: total,
-        isAccepted: false,
-        isDelivered: false,
-        isCancelled: false,
-        isReceived: false,
-        createdAt: DateTime.now(),
+        orderStatus: orderStatus,
+        createdAt: Timestamp.now(),
       );
       _firestore.collection('orders').doc(id).set(order.toJson());
       response = 'success';
@@ -325,6 +343,22 @@ class FireStoreServices {
     }
 
     return addSA;
+  }
+
+  Future<String> updateOrderStatus({
+    required String id,
+    required String orderStatus,
+  }) async {
+    String updateOrder = 'Some error occurred';
+    try {
+      _firestore.collection('orders').doc(id).update({
+        'orderStatus': orderStatus,
+      });
+      updateOrder = 'success';
+    } catch (e) {
+      updateOrder = e.toString();
+    }
+    return updateOrder;
   }
 
   Future<String> updateShippingAddress({

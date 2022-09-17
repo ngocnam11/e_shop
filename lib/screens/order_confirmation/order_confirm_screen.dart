@@ -6,7 +6,6 @@ import '../../router/router.dart';
 import '../../services/auth_services.dart';
 import '../../services/firestore_services.dart';
 import '../../widgets/order_summary.dart';
-import '../order_details_screen.dart';
 
 class OrderConfirmScreen extends StatelessWidget {
   const OrderConfirmScreen({Key? key}) : super(key: key);
@@ -65,11 +64,7 @@ class OrderConfirmScreen extends StatelessWidget {
                     const OrderSummary(),
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const OrderDetails(),
-                          ),
-                        );
+                        Navigator.of(context).pushNamed(AppRouter.orderDetails);
                       },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -81,7 +76,7 @@ class OrderConfirmScreen extends StatelessWidget {
                       ),
                       child: const Text('Track Your Order'),
                     ),
-                    const Text('Order #123456'),
+                    const Text('Order #ORD2022Y9M20ES19'),
                   ],
                 );
               } else {

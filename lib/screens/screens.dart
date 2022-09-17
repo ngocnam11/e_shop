@@ -17,6 +17,8 @@ export 'product_screen.dart';
 export 'order_confirmation/order_confirm_screen.dart';
 export 'conversation_screen.dart';
 export 'my_account_screen.dart';
+export 'my_orders_screen.dart';
+export 'order_details_screen.dart';
 export 'purchase_screen.dart';
 export 'new_card_screen.dart';
 export 'admin_panel/ad_home_screen.dart';

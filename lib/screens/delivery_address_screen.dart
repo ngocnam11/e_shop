@@ -161,9 +161,8 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
         ),
         child: ElevatedButton(
           onPressed: () {
-            Navigator.of(context).pushNamed(
-              AppRouter.checkout,
-              // arguments: _addressValue,
+            Navigator.of(context).pop(
+              _addressValue,
             );
           },
           style: ElevatedButton.styleFrom(
