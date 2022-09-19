@@ -21,39 +21,30 @@ class AdOrderScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Orders',
-          style: TextStyle(fontSize: 18),
-        ),
+        title: const Text('Orders'),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: StreamBuilder<List<Order>>(
-                stream: FireStoreServices().getOrdersOfSellerId(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  if (snapshot.hasError) {
-                    debugPrint(snapshot.error.toString());
-                    return const Text('Something went wrong');
-                  }
-                  return ListView.separated(
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      return OrderCard(
-                        order: snapshot.data![index],
-                      );
-                    },
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const SizedBox(height: 12),
-                  );
-                }),
-          )
-        ],
+      body: StreamBuilder<List<Order>>(
+        stream: FireStoreServices().getOrdersOfSellerId(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.hasError) {
+            debugPrint(snapshot.error.toString());
+            return const Text('Something went wrong');
+          }
+          return ListView.separated(
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) {
+              return OrderCard(
+                order: snapshot.data![index],
+              );
+            },
+            separatorBuilder: (_, __) => const SizedBox(height: 12),
+          );
+        },
       ),
     );
   }
@@ -73,6 +64,7 @@ class _OrderCardState extends State<OrderCard> {
       id: widget.order.id,
       orderStatus: orderStatus,
     );
+
     if (!mounted) return;
 
     if (res != 'success') {
@@ -84,136 +76,126 @@ class _OrderCardState extends State<OrderCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: 10,
-        right: 10,
-        top: 10,
-      ),
-      child: Card(
-        margin: EdgeInsets.zero,
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    widget.order.id,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    DateFormat('dd-MM-yy')
-                        .format(widget.order.createdAt.toDate()),
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: widget.order.products.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
-                    child: Row(
-                      children: [
-                        CustomNetworkImage(
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 12),
+      elevation: 6,
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  '#${widget.order.id}',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+                Text(
+                  DateFormat('dd-MM-yy')
+                      .format(widget.order.createdAt.toDate()),
+                  style: Theme.of(context).textTheme.headline5,
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: widget.order.products.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 10.0),
+                  child: Row(
+                    children: <Widget>[
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: CustomNetworkImage(
                           src: widget.order.products[index].imageUrl,
                           height: 80,
                           width: 80,
                           fit: BoxFit.cover,
                         ),
-                        const SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              widget.order.products[index].name,
-                              style: Theme.of(context).textTheme.headline4,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              widget.order.products[index].description,
-                              style: Theme.of(context).textTheme.headline5,
-                              overflow: TextOverflow.clip,
-                              maxLines: 2,
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Column(
-                    children: [
-                      Text(
-                        'Delivery Fee',
-                        style: Theme.of(context).textTheme.headline5,
                       ),
-                      Text(
-                        '${widget.order.deliveryFee}',
-                        style: Theme.of(context).textTheme.headline4,
-                      )
+                      const SizedBox(width: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            widget.order.products[index].name,
+                            style: Theme.of(context).textTheme.headline4,
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            widget.order.products[index].description,
+                            style: Theme.of(context).textTheme.headline5,
+                            overflow: TextOverflow.clip,
+                            maxLines: 2,
+                          ),
+                        ],
+                      ),
                     ],
                   ),
-                  Column(
-                    children: [
-                      Text(
-                        'Total',
-                        style: Theme.of(context).textTheme.headline5,
-                      ),
-                      Text(
-                        '${widget.order.total}',
-                        style: Theme.of(context).textTheme.headline4,
-                      )
-                    ],
-                  )
-                ],
-              ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ElevatedButton(
-                    onPressed: () => updateOrderStatus(orderStatus: 'Accepted'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 36,
-                        vertical: 12,
-                      ),
+                );
+              },
+              separatorBuilder: (_, __) => const SizedBox(height: 8),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    Text(
+                      'Delivery Fee',
+                      style: Theme.of(context).textTheme.headline5,
                     ),
-                    child: const Text('Accept'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () =>
-                        updateOrderStatus(orderStatus: 'Cancelled'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 36,
-                        vertical: 12,
-                      ),
+                    Text(
+                      '\$${widget.order.deliveryFee}',
+                      style: Theme.of(context).textTheme.headline4,
                     ),
-                    child: const Text('Cancel'),
-                  )
-                ],
-              )
-            ],
-          ),
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () =>
+                          updateOrderStatus(orderStatus: 'Accepted'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 36,
+                          vertical: 12,
+                        ),
+                      ),
+                      child: const Text('Accept'),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: <Widget>[
+                    Text(
+                      'Total',
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
+                    Text(
+                      '\$${widget.order.total}',
+                      style: Theme.of(context).textTheme.headline4,
+                    ),
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () =>
+                          updateOrderStatus(orderStatus: 'Cancelled'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 36,
+                          vertical: 12,
+                        ),
+                      ),
+                      child: const Text('Cancel'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
