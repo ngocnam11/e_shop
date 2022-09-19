@@ -28,6 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool _rememberMe = false;
   bool _isLoading = false;
+  bool _isObscure = true;
 
   void loginUser() async {
     setState(() {
@@ -108,7 +109,18 @@ class _LoginScreenState extends State<LoginScreen> {
               hintText: 'Enter your password',
               labelText: 'Password',
               textInputType: TextInputType.visiblePassword,
-              isPass: true,
+              isPass: _isObscure,
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _isObscure ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.black54,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _isObscure = !_isObscure;
+                  });
+                },
+              ),
             ),
             const SizedBox(height: 8),
             Row(

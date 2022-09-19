@@ -27,6 +27,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController passwordController = TextEditingController();
 
   bool _isLoading = false;
+  bool _isObscure = true;
 
   @override
   void initState() {
@@ -103,7 +104,18 @@ class _SignupScreenState extends State<SignupScreen> {
               hintText: 'Enter your password',
               labelText: 'Password',
               textInputType: TextInputType.visiblePassword,
-              isPass: true,
+              isPass: _isObscure,
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _isObscure ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.black54,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _isObscure = !_isObscure;
+                  });
+                },
+              ),
             ),
             const SizedBox(height: 30),
             ElevatedButton(
