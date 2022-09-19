@@ -15,12 +15,10 @@ import 'conversation_screen.dart';
 class ProductScreen extends StatefulWidget {
   const ProductScreen({Key? key, required this.product}) : super(key: key);
 
-  static MaterialPageRoute route({required product}) {
+  static MaterialPageRoute route({required Product product}) {
     return MaterialPageRoute(
       settings: const RouteSettings(name: AppRouter.product),
-      builder: (_) => ProductScreen(
-        product: product,
-      ),
+      builder: (_) => ProductScreen(product: product),
     );
   }
 
