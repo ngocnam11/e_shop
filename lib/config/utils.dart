@@ -22,10 +22,6 @@ void showSnackBar(BuildContext context, String content) {
       SnackBar(
         content: Text(content),
         duration: const Duration(seconds: 5),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
       ),
     );
 }

@@ -124,11 +124,8 @@ class _AdProductCardState extends State<AdProductCard> {
                               'You are about to delete a product',
                             ),
                             titleTextStyle: theme.headline5,
-                            content: Text(
+                            content: const Text(
                               'This will delete your product \nAre you sure?',
-                              style: theme.headline6!.copyWith(
-                                color: Colors.black54,
-                              ),
                             ),
                             actions: <Widget>[
                               TextButton(
