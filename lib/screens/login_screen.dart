@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../blocs/wishlist/wishlist_bloc.dart';
 import '../config/utils.dart';
 import '../router/router.dart';
 import '../services/auth_services.dart';
@@ -43,6 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
         AppRouter.home,
         (route) => false,
       );
+      BlocProvider.of<WishlistBloc>(context).add(LoadWishlist());
     } else {
       showSnackBar(context, res);
     }
