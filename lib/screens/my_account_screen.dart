@@ -11,6 +11,8 @@ import '../services/firestore_services.dart';
 import '../widgets/custom_network_image.dart';
 import '../widgets/text_field_input.dart';
 
+enum MyAccountMenu { changePassword, deleteAccount }
+
 class MyAccountScreen extends StatefulWidget {
   const MyAccountScreen({Key? key}) : super(key: key);
 
@@ -76,6 +78,45 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Account'),
+        actions: <Widget>[
+          PopupMenuButton<MyAccountMenu>(
+            onSelected: (value) async {
+              switch (value) {
+                case MyAccountMenu.changePassword:
+                  Navigator.of(context).pushNamed(AppRouter.changePassword);
+                  break;
+                case MyAccountMenu.deleteAccount:
+              }
+            },
+            itemBuilder: (context) {
+              return [
+                PopupMenuItem<MyAccountMenu>(
+                  value: MyAccountMenu.changePassword,
+                  child: Row(
+                    children: const [
+                      Icon(Icons.lock_outline_rounded),
+                      SizedBox(width: 4),
+                      Text('Change Password'),
+                    ],
+                  ),
+                ),
+                PopupMenuItem<MyAccountMenu>(
+                  value: MyAccountMenu.deleteAccount,
+                  child: Row(
+                    children: const [
+                      Icon(
+                        Icons.delete_forever_outlined,
+                        color: Colors.red,
+                      ),
+                      SizedBox(width: 4),
+                      Text('Delete Account'),
+                    ],
+                  ),
+                ),
+              ];
+            },
+          ),
+        ],
       ),
       body: FutureBuilder<User>(
         future: FireStoreServices().getUserByUid(

@@ -22,6 +22,7 @@ abstract class AppRouter {
   static const String product = '/product';
   static const String orderConfirm = '/order_confirm';
   static const String account = '/account';
+  static const String changePassword = '/account/change_password';
   static const String myOrders = '/my_orders';
   static const String orderDetails = '/order_details';
   static const String purchase = '/purchase';
@@ -73,6 +74,8 @@ abstract class AppRouter {
         return OrderConfirmScreen.route();
       case account:
         return MyAccountScreen.route();
+      case changePassword:
+        return ChangePasswordScreen.route();
       case myOrders:
         return MyOrdersScreen.route();
       case orderDetails:

@@ -120,6 +120,32 @@ class AuthServices {
     return res;
   }
 
+  Future<String> changeUserPassword({
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    String res = 'Some error occurred';
+    try {
+      if (oldPassword.isNotEmpty || newPassword.isNotEmpty) {
+        final AuthCredential credential = EmailAuthProvider.credential(
+          email: currentUser.email!,
+          password: oldPassword,
+        );
+
+        await currentUser.reauthenticateWithCredential(credential);
+        await currentUser.updatePassword(newPassword);
+        await logout();
+
+        res = 'success';
+      } else {
+        res = 'Please enter all the fields';
+      }
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
+  }
+
   Future<void> logout() async {
     // final providerId =
     //     await _auth.fetchSignInMethodsForEmail(currentUser.email!);
