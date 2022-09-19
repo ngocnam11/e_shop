@@ -38,7 +38,7 @@ class AuthServices {
           addresses: const [],
         );
 
-        _firestore.collection('users').doc(cred.user!.uid).set(user.toJson());
+        _firestore.collection('users').doc(user.uid).set(user.toJson());
 
         res = 'success';
       }
