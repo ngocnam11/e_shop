@@ -7,6 +7,10 @@ class Wishlist extends Equatable {
 
   const Wishlist({this.products = const <Product>[]});
 
+  Wishlist copyWith({List<Product>? products}) {
+    return Wishlist(products: products ?? this.products);
+  }
+
   @override
   List<Object?> get props => [products];
 }
