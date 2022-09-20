@@ -55,6 +55,12 @@ ThemeData theme() {
         borderRadius: BorderRadius.circular(8),
       ),
     ),
+    popupMenuTheme: PopupMenuThemeData(
+      elevation: 6,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+    ),
   );
 }
 

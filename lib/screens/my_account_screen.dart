@@ -11,7 +11,7 @@ import '../services/firestore_services.dart';
 import '../widgets/custom_network_image.dart';
 import '../widgets/text_field_input.dart';
 
-enum MyAccountMenu { changePassword, deleteAccount }
+enum MyAccountMenu { address, changePassword, deleteAccount }
 
 class MyAccountScreen extends StatefulWidget {
   const MyAccountScreen({Key? key}) : super(key: key);
@@ -82,6 +82,9 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
           PopupMenuButton<MyAccountMenu>(
             onSelected: (value) async {
               switch (value) {
+                case MyAccountMenu.address:
+                  Navigator.of(context).pushNamed(AppRouter.address);
+                  break;
                 case MyAccountMenu.changePassword:
                   Navigator.of(context).pushNamed(AppRouter.changePassword);
                   break;
@@ -91,9 +94,19 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
             itemBuilder: (context) {
               return [
                 PopupMenuItem<MyAccountMenu>(
+                  value: MyAccountMenu.address,
+                  child: Row(
+                    children: const <Widget>[
+                      Icon(Icons.location_on_outlined),
+                      SizedBox(width: 4),
+                      Text('My Address'),
+                    ],
+                  ),
+                ),
+                PopupMenuItem<MyAccountMenu>(
                   value: MyAccountMenu.changePassword,
                   child: Row(
-                    children: const [
+                    children: const <Widget>[
                       Icon(Icons.lock_outline_rounded),
                       SizedBox(width: 4),
                       Text('Change Password'),
@@ -103,7 +116,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                 PopupMenuItem<MyAccountMenu>(
                   value: MyAccountMenu.deleteAccount,
                   child: Row(
-                    children: const [
+                    children: const <Widget>[
                       Icon(
                         Icons.delete_forever_outlined,
                         color: Colors.red,
@@ -174,7 +187,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                             ),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                   Padding(
