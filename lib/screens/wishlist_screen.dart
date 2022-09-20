@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../blocs/cart/cart_bloc.dart';
 import '../blocs/wishlist/wishlist_bloc.dart';
@@ -26,7 +27,7 @@ class WishlistScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Wishlist'),
-        actions: [
+        actions: <Widget>[
           TextButton(
             child: const Text('Delete'),
             onPressed: () {},
@@ -63,7 +64,11 @@ class WishlistScreen extends StatelessWidget {
                       );
                     },
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.only(
+                        left: 8,
+                        bottom: 8,
+                        top: 8,
+                      ),
                       child: FutureBuilder<Product>(
                         future: FireStoreServices().getProductById(
                           id: wishlistState.wishlist.products[index].id
@@ -76,7 +81,7 @@ class WishlistScreen extends StatelessWidget {
                           }
                           if (snapshot.hasData) {
                             return Row(
-                              children: [
+                              children: <Widget>[
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(16),
                                   child: CustomNetworkImage(
@@ -90,99 +95,91 @@ class WishlistScreen extends StatelessWidget {
                                 Expanded(
                                   child: Column(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceAround,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            child: Text(
-                                              snapshot.data!.name,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .headline4,
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                          IconButton(
-                                            onPressed: () {
-                                              context.read<WishlistBloc>().add(
-                                                  RemoveProductFromWishlist(
-                                                      wishlistState.wishlist
-                                                          .products[index]));
-                                              showSnackBar(
-                                                context,
-                                                'Removed from your Wishlist',
-                                              );
-                                            },
-                                            icon: Icon(
-                                              Icons.heart_broken_rounded,
-                                              color: Colors.red[400],
-                                            ),
-                                          )
-                                          // const SizedBox(
-                                          //   height: 32,
-                                          //   width: 32,
-                                          // ),
-                                        ],
+                                    children: <Widget>[
+                                      Text(
+                                        snapshot.data!.name,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline4,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
-                                      // Text(
-                                      //   '${wishlistState.wishlist.products[index].colors[0]}, ${wishlistState.wishlist.products[index].size[0]}',
-                                      //   style:
-                                      //       Theme.of(context).textTheme.bodyText1,
-                                      // ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            '\$${wishlistState.wishlist.products[index].price}',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline5,
-                                          ),
-                                          BlocBuilder<CartBloc, CartState>(
-                                            builder: (context, cartState) {
-                                              if (cartState is CartLoading) {
-                                                return const Center(
-                                                  child:
-                                                      CircularProgressIndicator(),
-                                                );
-                                              }
-                                              if (cartState is CartLoaded) {
-                                                return ElevatedButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    backgroundColor:
-                                                        Colors.blue[300],
-                                                  ),
-                                                  onPressed: () {
-                                                    context
-                                                        .read<CartBloc>()
-                                                        .add(AddProduct(
-                                                            cartState.cart
-                                                                    .products[
-                                                                index]));
-                                                    showSnackBar(context,
-                                                        'Added to your Cart');
-                                                  },
-                                                  child:
-                                                      const Text('Add to Cart'),
-                                                );
-                                              } else {
-                                                return const Text(
-                                                    'Something went wrong');
-                                              }
-                                            },
-                                          ),
-                                        ],
+                                      Text(
+                                        '\$${wishlistState.wishlist.products[index].price}',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline5,
                                       ),
                                     ],
                                   ),
+                                ),
+                                Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Tooltip(
+                                      message: 'Remove from Wishlist',
+                                      child: IconButton(
+                                        onPressed: () {
+                                          context.read<WishlistBloc>().add(
+                                              RemoveProductFromWishlist(
+                                                  wishlistState.wishlist
+                                                      .products[index]));
+                                          showSnackBar(
+                                            context,
+                                            'Removed from your Wishlist',
+                                          );
+                                        },
+                                        icon: Icon(
+                                          Icons.heart_broken_rounded,
+                                          color: Colors.red[400],
+                                        ),
+                                      ),
+                                    ),
+                                    BlocBuilder<CartBloc, CartState>(
+                                      builder: (context, cartState) {
+                                        if (cartState is CartLoading) {
+                                          return const Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        }
+                                        if (cartState is CartLoaded) {
+                                          return Tooltip(
+                                            message: 'Add to Cart',
+                                            child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    Colors.blue[300],
+                                                shape: const CircleBorder(),
+                                                padding:
+                                                    const EdgeInsets.all(4),
+                                              ),
+                                              onPressed: () {
+                                                context.read<CartBloc>().add(
+                                                    AddProduct(cartState
+                                                        .cart.products[index]));
+                                                showSnackBar(context,
+                                                    'Added to your Cart');
+                                              },
+                                              child: SvgPicture.asset(
+                                                'assets/svgs/add-to-basket.svg',
+                                                width: 20,
+                                                height: 20,
+                                                fit: BoxFit.cover,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          return const Text(
+                                              'Something went wrong');
+                                        }
+                                      },
+                                    ),
+                                  ],
                                 ),
                               ],
                             );

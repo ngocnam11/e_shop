@@ -68,6 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
         AppRouter.home,
         (route) => false,
       );
+      BlocProvider.of<WishlistBloc>(context).add(LoadWishlist());
     } else {
       showSnackBar(context, res);
     }
