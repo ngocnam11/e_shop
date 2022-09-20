@@ -11,7 +11,6 @@ import '../services/auth_services.dart';
 import '../services/firestore_services.dart';
 import '../widgets/list_item.dart';
 import '../widgets/order_summary.dart';
-import 'screens.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({Key? key, this.deliveryAddress}) : super(key: key);
@@ -71,6 +70,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       Navigator.of(context).pushNamed(AppRouter.orderConfirm);
     }
   }
+
   String deliveryAddress = 'Choose delivery address';
 
   @override
