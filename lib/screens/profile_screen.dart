@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../config/utils.dart';
 import '../models/user.dart';
 import '../router/router.dart';
 import '../services/auth_services.dart';
@@ -48,7 +47,7 @@ class ProfileScreen extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(
-                    width: screenWidth - 40,
+                    width: MediaQuery.of(context).size.width - 40,
                     child: Card(
                       elevation: 16,
                       shape: RoundedRectangleBorder(

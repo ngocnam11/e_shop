@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -26,6 +25,3 @@ void showSnackBar(BuildContext context, String content) {
       ),
     );
 }
-
-final screenWidth = window.physicalSize.width / window.devicePixelRatio;
-final screenHeight = window.physicalSize.height / window.devicePixelRatio;
