@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
+import '../models/message.dart';
 import '../models/user.dart';
 import '../screens/screens.dart';
 import '../services/firestore_services.dart';
@@ -59,29 +61,83 @@ class ListConversation extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(width: 8),
-                            Expanded(
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    snapshot.data!.toList()[index].username,
-                                    style:
-                                        Theme.of(context).textTheme.headline4,
-                                  ),
-                                  Text(
-                                    'Message',
-                                    style:
-                                        Theme.of(context).textTheme.headline6,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Text(
-                              '11/11/2022',
-                              style: Theme.of(context).textTheme.headline6,
+                            StreamBuilder<List<Message>>(
+                              stream: FireStoreServices().getMessage(
+                                  snapshot.data!.toList()[index].uid),
+                              builder: (context, messageSnapshot1) {
+                                if (messageSnapshot1.hasData) {
+                                  return StreamBuilder<List<Message>>(
+                                    stream: FireStoreServices().getMessage(
+                                        snapshot.data!.toList()[index].uid,
+                                        false),
+                                    builder: (context, messageSnapshot2) {
+                                      if (messageSnapshot2.hasData) {
+                                        var messages = [
+                                          ...messageSnapshot1.data!,
+                                          ...messageSnapshot2.data!
+                                        ];
+                                        messages.sort((i, j) =>
+                                            i.createAt!.compareTo(j.createAt!));
+                                        messages = messages.reversed.toList();
+                                        return Expanded(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    snapshot.data!
+                                                        .toList()[index]
+                                                        .username,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline4,
+                                                  ),
+                                                  Text(
+                                                    messages.isEmpty
+                                                        ? 'No message'
+                                                        : messages[0].content!,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline6,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ],
+                                              ),
+                                              Text(
+                                                messages.isEmpty
+                                                    ? ''
+                                                    : DateFormat('dd-MM-yy')
+                                                        .format(messages[0]
+                                                            .createAt!
+                                                            .toDate()),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headline6,
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      } else {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      }
+                                    },
+                                  );
+                                } else {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                              },
                             ),
                           ],
                         ),
