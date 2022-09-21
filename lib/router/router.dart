@@ -20,6 +20,7 @@ abstract class AppRouter {
   static const String profile = '/profile';
   static const String notification = '/notification';
   static const String product = '/product';
+  static const String selectOptions = '/select_options';
   static const String orderConfirm = '/order_confirm';
   static const String account = '/account';
   static const String changePassword = '/account/change_password';
@@ -70,6 +71,10 @@ abstract class AppRouter {
         return NotificationScreen.route();
       case product:
         return ProductScreen.route(product: settings.arguments as Product);
+      case selectOptions:
+        return SelectOptionsScreen.route(
+          options: settings.arguments as Map<String, dynamic>,
+        );
       case orderConfirm:
         return OrderConfirmScreen.route();
       case account:

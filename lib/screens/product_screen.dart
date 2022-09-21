@@ -32,8 +32,8 @@ class _ProductScreenState extends State<ProductScreen> {
   void addProductToCart() async {
     String res = await FireStoreServices().addProductToCart(
       productId: widget.product.id.toString(),
-      color: widget.product.colors.isEmpty ? 'n' : widget.product.colors[0],
-      size: widget.product.size.isEmpty ? 'n' : widget.product.size[1],
+      color: _color,
+      size: _size,
       quantity: 1,
       price: widget.product.price + .0,
     );
@@ -45,6 +45,30 @@ class _ProductScreenState extends State<ProductScreen> {
     } else {
       showSnackBar(context, 'Added to your Cart');
     }
+  }
+
+  Future<void> getInitValue() async {
+    final user =
+        await FireStoreServices().getUserByUid(uid: widget.product.uid);
+    _sellerName = user.username;
+    if (widget.product.colors.isNotEmpty) {
+      _color = widget.product.colors.first;
+    }
+    if (widget.product.size.isNotEmpty) {
+      _size = widget.product.size.first;
+    }
+  }
+
+  late String _sellerName;
+  String _color = '';
+  String _size = '';
+
+  @override
+  void initState() {
+    super.initState();
+    getInitValue().then((_) {
+      setState(() {});
+    });
   }
 
   @override
@@ -96,9 +120,8 @@ class _ProductScreenState extends State<ProductScreen> {
         child: Column(
           children: [
             ClipRRect(
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(16),
-                bottomRight: Radius.circular(16),
+              borderRadius: const BorderRadius.vertical(
+                bottom: Radius.circular(16),
               ),
               child: CustomNetworkImage(
                 src: widget.product.imageUrl,
@@ -156,72 +179,119 @@ class _ProductScreenState extends State<ProductScreen> {
                     style: theme.headline3,
                   ),
                   const SizedBox(height: 12),
-                  widget.product.colors.isEmpty && widget.product.size.isEmpty
-                      ? const SizedBox()
-                      : Ink(
-                          height: 80,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[100],
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(16),
-                            onTap: () {
-                              // Navigator.of(context).push(MaterialPageRoute(builder: (context) => SelectOptionsScreen(),));
+                  if (widget.product.colors.isNotEmpty ||
+                      widget.product.size.isNotEmpty)
+                    Ink(
+                      height: 80,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[100],
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(16),
+                        onTap: () {
+                          Navigator.of(context).pushNamed(
+                            AppRouter.selectOptions,
+                            arguments: {
+                              'sellerName': _sellerName,
+                              'product': widget.product,
                             },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          ).then((value) {
+                            final options = value as Map<String, dynamic>?;
+                            if (options != null) {
+                              setState(() {
+                                _color = options['color'];
+                                _size = options['size'];
+                              });
+                            }
+                          });
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
                               children: [
-                                Row(
+                                const SizedBox(width: 8),
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(16),
+                                  child: CustomNetworkImage(
+                                    src: widget.product.imageUrl,
+                                    height: 70,
+                                    width: 70,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    const SizedBox(width: 8),
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(16),
-                                      child: CustomNetworkImage(
-                                        src: widget.product.imageUrl,
-                                        height: 70,
-                                        width: 70,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                    Row(
                                       children: [
-                                        Text(
-                                          'Color, Size',
-                                          style: theme.headline3,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              widget.product.colors.isEmpty
-                                                  ? ''
-                                                  : widget.product.colors[0],
-                                              style: theme.headline4,
+                                        if (widget.product.colors.isNotEmpty &&
+                                            widget.product.size.isEmpty)
+                                          Text(
+                                            'Color',
+                                            style: theme.headline4!.copyWith(
+                                              color: Colors.black54,
+                                              fontWeight: FontWeight.normal,
                                             ),
-                                            Text(
-                                              widget.product.size.isEmpty
-                                                  ? ''
-                                                  : widget.product.size[0],
-                                              style: theme.headline4,
+                                          ),
+                                        if (widget.product.size.isNotEmpty &&
+                                            widget.product.colors.isEmpty)
+                                          Text(
+                                            'Size',
+                                            style: theme.headline4!.copyWith(
+                                              color: Colors.black54,
+                                              fontWeight: FontWeight.normal,
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        if (widget.product.colors.isNotEmpty &&
+                                            widget.product.size.isNotEmpty)
+                                          Text(
+                                            'Color, Size',
+                                            style: theme.headline4!.copyWith(
+                                              color: Colors.black54,
+                                              fontWeight: FontWeight.normal,
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        if (widget.product.colors.isNotEmpty &&
+                                            widget.product.size.isEmpty)
+                                          Text(
+                                            _color,
+                                            style: theme.headline4,
+                                          ),
+                                        if (widget.product.size.isNotEmpty &&
+                                            widget.product.colors.isEmpty)
+                                          Text(
+                                            _size,
+                                            style: theme.headline4,
+                                          ),
+                                        if (widget.product.colors.isNotEmpty &&
+                                            widget.product.size.isNotEmpty)
+                                          Text(
+                                            '$_color / $_size',
+                                            style: theme.headline4,
+                                          ),
                                       ],
                                     ),
                                   ],
                                 ),
-                                const Icon(
-                                  Icons.navigate_next,
-                                  size: 40,
-                                  color: Colors.black54,
-                                ),
                               ],
                             ),
-                          ),
+                            const Icon(
+                              Icons.navigate_next,
+                              size: 40,
+                              color: Colors.black54,
+                            ),
+                          ],
                         ),
+                      ),
+                    ),
                   const SizedBox(height: 12),
                   Text(
                     'Description',
