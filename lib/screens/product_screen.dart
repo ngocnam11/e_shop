@@ -35,9 +35,10 @@ class _ProductScreenState extends State<ProductScreen> {
     String res = await FireStoreServices().addProductToCart(
       productId: widget.product.id.toString(),
       color: widget.product.colors.isEmpty ? 'n' : widget.product.colors[0],
-      size: widget.product.size.isEmpty ? 'n' : widget.product.size[1],
+      size: widget.product.size.isEmpty ? 'n' : widget.product.size[0],
       quantity: 1,
       price: widget.product.price + .0,
+      sellerId: widget.product.uid,
     );
 
     if (!mounted) return;
@@ -299,6 +300,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                       : widget.product.size[0],
                                   quantity: 1,
                                   price: widget.product.price,
+                                  sellerId: widget.product.uid,
                                 ),
                               ),
                             );

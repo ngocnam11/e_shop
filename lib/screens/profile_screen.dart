@@ -106,7 +106,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         ProfileMenu(
-                          icon: Icons.person_outline_rounded,
+                          icon: Icons.local_mall_outlined,
                           title: 'My Orders',
                           press: () {
                             Navigator.of(context).pushNamed(AppRouter.myOrders);

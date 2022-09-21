@@ -121,7 +121,7 @@ class OrderDetailsScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Text(
-              'Order Code #123456',
+              '#ORD2022Y9M17ES',
               style: Theme.of(context).textTheme.headline4,
             ),
           ),
@@ -143,9 +143,13 @@ class OrderDetailsScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return ListItem(
                       product: products.keys.elementAt(index),
-                      child: const SizedBox(
-                        width: 64,
-                        height: 40,
+                      child: SizedBox(
+                        width: 80,
+                        height: 24,
+                        child: Text(
+                          'Quantity: 1',
+                          style: Theme.of(context).textTheme.headline5,
+                        ),
                       ),
                     );
                   },

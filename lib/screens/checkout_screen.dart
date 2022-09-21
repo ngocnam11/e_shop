@@ -55,8 +55,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     String res = await FireStoreServices().addOrder(
       customerId: AuthServices().currentUser.uid,
       sellerId: product.uid,
-      products: [product],
-      deliveryAddress: widget.deliveryAddress!,
+      products: [
+        product.copyWith(
+          quantity: _cartItem.quantity,
+          colors: [_cartItem.color!],
+          size: [_cartItem.size!],
+        )
+      ],
+      deliveryAddress: deliveryAddress,
       subtotal: _cartItem.price,
       deliveryFee: _cartItem.price > 30 ? 0.0 : 10.0,
       total: _cartItem.price,
@@ -71,6 +77,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       Navigator.of(context).pushNamed(AppRouter.orderConfirm);
     }
   }
+
   String deliveryAddress = 'Choose delivery address';
 
   @override
@@ -188,35 +195,39 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Divider(),
-                          // FutureBuilder<User>(
-                          //   future: FireStoreServices().getUserByUid(
-                          //       uid: products.keys.elementAt(index).uid),
-                          //   builder: (context, snapshot) {
-                          //     if (snapshot.connectionState ==
-                          //         ConnectionState.waiting) {
-                          //       return const Center(
-                          //         child: CircularProgressIndicator(),
-                          //       );
-                          //     }
-                          //     if (snapshot.hasError) {
-                          //       return const Text('Something went wrong');
-                          //     }
-                          //     return Padding(
-                          //       padding:
-                          //           const EdgeInsets.symmetric(horizontal: 12),
-                          //       child: Text(
-                          //         snapshot.data!.username,
-                          //         style: Theme.of(context).textTheme.headline4,
-                          //       ),
-                          //     );
-                          //   },
-                          // ),
+                          FutureBuilder<User>(
+                            future: FireStoreServices().getUserByUid(
+                                uid: products.keys.elementAt(index).sellerId),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              if (snapshot.hasError) {
+                                return const Text('Something went wrong');
+                              }
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                child: Text(
+                                  snapshot.data!.username,
+                                  style: Theme.of(context).textTheme.headline4,
+                                ),
+                              );
+                            },
+                          ),
                           const Divider(),
                           ListItem(
                             product: products.keys.elementAt(index),
-                            child: const SizedBox(
-                              width: 64,
-                              height: 40,
+                            child: SizedBox(
+                              width: 80,
+                              height: 24,
+                              child: Text(
+                                'Quantity: ${products.length}',
+                                style: Theme.of(context).textTheme.headline5,
+                              ),
                             ),
                           ),
                         ],
@@ -314,11 +325,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           ),
           onPressed: () {
             addOrder();
-            // Navigator.of(context).push(
-            //   MaterialPageRoute(
-            //     builder: (context) => const OrderConfirmScreen(),
-            //   ),
-            // );
           },
           child: Text(
             'Order Now',

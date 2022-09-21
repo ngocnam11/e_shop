@@ -113,10 +113,17 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
                             Expanded(
                               child: TextButton(
                                 onPressed: () {
-                                  Navigator.of(context).pushNamed(
+                                  Navigator.of(context)
+                                      .pushNamed(
                                     AppRouter.editAddress,
                                     arguments: snapshot.data!.addresses[index],
-                                  );
+                                  )
+                                      .then((value) {
+                                    final bool? refresh = value as bool?;
+                                    if (refresh ?? false) {
+                                      setState(() {});
+                                    }
+                                  });
                                 },
                                 child: Text(
                                   'Edit',
@@ -138,7 +145,14 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.of(context).pushNamed(AppRouter.newAddress);
+                    Navigator.of(context)
+                        .pushNamed(AppRouter.newAddress)
+                        .then((value) {
+                      final bool? refresh = value as bool?;
+                      if (refresh ?? false) {
+                        setState(() {});
+                      }
+                    });
                   },
                   child: const Text('+ Add New Address'),
                 );
