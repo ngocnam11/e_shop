@@ -157,6 +157,7 @@ class FireStoreServices {
     required String size,
     required int quantity,
     required double price,
+    required String sellerId,
   }) async {
     String res = 'Some error occurred';
     try {
@@ -168,6 +169,7 @@ class FireStoreServices {
         size: size,
         quantity: quantity,
         price: price,
+        sellerId: sellerId,
       );
       Cart cart = Cart(
         uid: uid,
@@ -199,6 +201,7 @@ class FireStoreServices {
               size: size,
               quantity: quantity,
               price: price,
+              sellerId: sellerId,
             );
             products.removeAt(i);
             print(products);
@@ -222,6 +225,7 @@ class FireStoreServices {
               size: size,
               quantity: quantity,
               price: price,
+              sellerId: sellerId,
             );
 
             products.removeAt(i);
@@ -244,6 +248,7 @@ class FireStoreServices {
               size: size,
               quantity: quantity,
               price: price + .0,
+              sellerId: sellerId,
             );
             _firestore.collection('carts').doc(uid).update({
               'products': FieldValue.arrayUnion([product.toJson()]),
@@ -256,6 +261,7 @@ class FireStoreServices {
               size: size,
               quantity: quantity,
               price: price + .0,
+              sellerId: sellerId,
             );
             _firestore.collection('carts').doc(uid).update({
               'products': FieldValue.arrayUnion([product.toJson()]),
@@ -361,19 +367,34 @@ class FireStoreServices {
     return updateOrder;
   }
 
-  Future<String> updateShippingAddress({
+  Future<String> updateDeliveryAddress({
     required String uid,
+    required String id,
     required String address,
     required String city,
     required String country,
+    required bool isDefault,
   }) async {
     String updateSA = 'Some error occurred';
     try {
-      _firestore.collection('users').doc(uid).update({
-        'deliveryAddress.address': address,
-        'deliveryAddress.city': city,
-        'deliveryAddress.country': country,
-      });
+      model.User user = await getUserByUid(uid: uid);
+      final addresses = user.addresses;
+      for (var i = 0; i < addresses.length; i++) {
+        if (addresses[i].id == id) {
+          final tempAddress = DeliveryAddress(
+            id: id,
+            address: address,
+            city: city,
+            country: country,
+            isDefault: isDefault,
+          );
+          addresses.removeAt(i);
+          addresses.insert(i, tempAddress);
+          _firestore.collection('users').doc(uid).update(
+            user.copyWith(addresses: addresses).toJson(),
+          );
+        }
+      }
       updateSA = 'success';
     } catch (e) {
       updateSA = e.toString();
