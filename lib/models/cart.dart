@@ -1,7 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-import 'product.dart';
-
 class Cart extends Equatable {
   final String uid;
   final List<CartItem> products;
@@ -90,7 +88,7 @@ class CartItem extends Equatable {
   final String? size;
   final int quantity;
   final double price;
-  final Product? productInfo;
+  final String sellerId;
 
   const CartItem({
     required this.id,
@@ -99,7 +97,7 @@ class CartItem extends Equatable {
     this.size,
     required this.price,
     required this.quantity,
-    this.productInfo,
+    required this.sellerId,
   });
 
   static CartItem fromSnap(Map<String, dynamic> snap) {
@@ -110,6 +108,7 @@ class CartItem extends Equatable {
       size: snap["size"],
       price: snap["price"] + .0,
       quantity: snap["quantity"],
+      sellerId: snap["sellerId"],
     );
   }
 
@@ -121,6 +120,7 @@ class CartItem extends Equatable {
       "size": size,
       "price": price,
       "quantity": quantity,
+      "sellerId": sellerId,
     };
   }
 
@@ -132,5 +132,6 @@ class CartItem extends Equatable {
         size,
         price,
         quantity,
+        sellerId,
       ];
 }
