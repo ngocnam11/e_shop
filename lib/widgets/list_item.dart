@@ -76,7 +76,7 @@ class ListItem extends StatelessWidget {
                         ],
                       ),
                       Text(
-                        '${product.color![0]}, ${product.size![0]}',
+                        '${product.color}, ${product.size}',
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
                       Row(

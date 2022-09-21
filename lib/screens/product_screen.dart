@@ -36,6 +36,7 @@ class _ProductScreenState extends State<ProductScreen> {
       size: _size,
       quantity: 1,
       price: widget.product.price + .0,
+      sellerId: widget.product.uid,
     );
 
     if (!mounted) return;
@@ -367,6 +368,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                       : widget.product.size[0],
                                   quantity: 1,
                                   price: widget.product.price,
+                                  sellerId: widget.product.uid,
                                 ),
                               ),
                             );

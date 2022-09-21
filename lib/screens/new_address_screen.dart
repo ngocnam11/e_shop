@@ -39,11 +39,7 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
     if (res != 'success') {
       showSnackBar(context, res);
     } else {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const DeliveryAddressScreen(),
-        ),
-      );
+      Navigator.of(context).pop(true);
     }
   }
 

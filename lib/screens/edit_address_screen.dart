@@ -25,10 +25,10 @@ class EditAddressScreen extends StatefulWidget {
   }
 
   @override
-  State<EditAddressScreen> createState() => _NewAddressScreenState();
+  State<EditAddressScreen> createState() => _EditAddressScreenState();
 }
 
-class _NewAddressScreenState extends State<EditAddressScreen> {
+class _EditAddressScreenState extends State<EditAddressScreen> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _cityController = TextEditingController();
   final TextEditingController _countryController = TextEditingController();
@@ -42,11 +42,13 @@ class _NewAddressScreenState extends State<EditAddressScreen> {
   }
 
   void updateDeliveryAddress() async {
-    String res = await FireStoreServices().updateShippingAddress(
+    String res = await FireStoreServices().updateDeliveryAddress(
       uid: AuthServices().currentUser.uid,
+      id: widget.deliveryAddress.id,
       address: _addressController.text,
       city: _cityController.text,
       country: _countryController.text,
+      isDefault: widget.deliveryAddress.isDefault,
     );
 
     if (!mounted) return;
@@ -54,8 +56,7 @@ class _NewAddressScreenState extends State<EditAddressScreen> {
     if (res != 'success') {
       showSnackBar(context, res);
     } else {
-      Navigator.of(context).pop();
-      setState(() {});
+      Navigator.of(context).pop(true);
     }
   }
 
