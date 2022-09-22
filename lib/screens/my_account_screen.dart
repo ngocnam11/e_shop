@@ -113,6 +113,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                     ],
                   ),
                 ),
+                const PopupMenuDivider(),
                 PopupMenuItem<MyAccountMenu>(
                   value: MyAccountMenu.deleteAccount,
                   child: Row(
