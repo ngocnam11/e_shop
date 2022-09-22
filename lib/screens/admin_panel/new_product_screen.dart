@@ -79,6 +79,7 @@ class _NewProductScreenState extends State<NewProductScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add a Product'),
+        backgroundColor: Colors.white,
       ),
       body: ListView(
         shrinkWrap: true,

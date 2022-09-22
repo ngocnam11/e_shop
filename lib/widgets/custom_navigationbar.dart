@@ -70,7 +70,10 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
             label: 'Wishlist',
             onPressed: () {
               _currentRoute = AppRouter.wishlist;
-              Navigator.of(context).pushNamed(_currentRoute);
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                _currentRoute,
+                (route) => false,
+              );
             },
             isCurrentPage: _currentRoute == AppRouter.wishlist,
           ),

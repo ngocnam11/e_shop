@@ -35,6 +35,32 @@ ThemeData theme() {
         ),
       ),
     ),
+    dialogTheme: DialogTheme(
+      backgroundColor: Colors.white,
+      actionsPadding: const EdgeInsets.all(12),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      contentTextStyle: const TextStyle(
+        fontSize: 14,
+        color: Colors.black54,
+      ),
+    ),
+    chipTheme: const ChipThemeData(
+      padding: EdgeInsets.all(4),
+    ),
+    snackBarTheme: SnackBarThemeData(
+      behavior: SnackBarBehavior.floating,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+    ),
+    popupMenuTheme: PopupMenuThemeData(
+      elevation: 6,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+    ),
   );
 }
 

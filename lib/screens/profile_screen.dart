@@ -1,8 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../models/user.dart';
 import '../router/router.dart';
 import '../services/auth_services.dart';
+import '../services/firestore_services.dart';
 import '../widgets/custom_navigationbar.dart';
 import '../widgets/custom_network_image.dart';
 import '../widgets/profile_menu.dart';
@@ -30,11 +31,10 @@ class ProfileScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-        future: FirebaseFirestore.instance
-            .collection('users')
-            .doc(AuthServices().currentUser.uid)
-            .get(),
+      body: FutureBuilder<User>(
+        future: FireStoreServices().getUserByUid(
+          uid: AuthServices().currentUser.uid,
+        ),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -60,7 +60,7 @@ class ProfileScreen extends StatelessWidget {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(16),
                               child: CustomNetworkImage(
-                                src: snapshot.data!['photoUrl'],
+                                src: snapshot.data!.photoUrl,
                                 height: 88,
                                 width: 88,
                                 fit: BoxFit.cover,
@@ -68,20 +68,21 @@ class ProfileScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 12),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                snapshot.data!['username'],
-                                style: Theme.of(context).textTheme.headline3,
-                              ),
-                              const SizedBox(height: 12),
-                              Text(
-                                snapshot.data!['email'],
-                                style: Theme.of(context).textTheme.headline6,
-                              ),
-                            ],
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  snapshot.data!.username,
+                                  style: Theme.of(context).textTheme.headline3,
+                                ),
+                                const SizedBox(height: 12),
+                                Text(
+                                  snapshot.data!.email,
+                                  style: Theme.of(context).textTheme.headline6,
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -89,7 +90,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 40),
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 24),
+                    padding: const EdgeInsets.symmetric(vertical: 20),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(color: Colors.grey[300]!, width: 2),
@@ -113,8 +114,10 @@ class ProfileScreen extends StatelessWidget {
                           },
                         ),
                         const SizedBox(height: 10),
-                        snapshot.data!['isAdmin']
-                            ? ProfileMenu(
+                        if (snapshot.data!.isAdmin)
+                          Column(
+                            children: [
+                              ProfileMenu(
                                 icon: Icons.admin_panel_settings_outlined,
                                 title: 'Go to Admin Panel',
                                 press: () {
@@ -122,12 +125,13 @@ class ProfileScreen extends StatelessWidget {
                                     AppRouter.admin,
                                   );
                                 },
-                              )
-                            : const SizedBox(),
-                        const SizedBox(height: 10),
+                              ),
+                              const SizedBox(height: 10),
+                            ],
+                          ),
                         ProfileMenu(
                           icon: Icons.logout,
-                          title: 'Log out',
+                          title: 'Log Out',
                           press: () {
                             showDialog(
                               context: context,
