@@ -73,12 +73,16 @@ class ConversationScreen extends StatelessWidget {
               ),
             ),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Expanded(
                   child: TextFieldInput(
                     controller: msgController,
                     hintText: 'Aa',
-                    textInputType: TextInputType.text,
+                    textInputType: TextInputType.multiline,
+                    maxLines: 8,
+                    contentPadding: const EdgeInsets.all(12),
+                    textInputAction: TextInputAction.newline,
                   ),
                 ),
                 IconButton(

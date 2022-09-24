@@ -16,6 +16,10 @@ class TextFieldInput extends StatelessWidget {
     this.onFieldSubmitted,
     this.errorText,
     this.focusNode,
+    this.minLines = 1,
+    this.maxLines,
+    this.contentPadding = const EdgeInsets.all(8),
+    this.textInputAction,
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -31,6 +35,10 @@ class TextFieldInput extends StatelessWidget {
   final void Function(String)? onFieldSubmitted;
   final String? errorText;
   final FocusNode? focusNode;
+  final int? minLines;
+  final int? maxLines;
+  final EdgeInsetsGeometry? contentPadding;
+  final TextInputAction? textInputAction;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +56,7 @@ class TextFieldInput extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
         ),
         filled: true,
-        contentPadding: const EdgeInsets.all(8),
+        contentPadding: contentPadding,
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
         errorText: errorText,
@@ -61,6 +69,9 @@ class TextFieldInput extends StatelessWidget {
       keyboardType: textInputType,
       readOnly: readOnly,
       focusNode: focusNode,
+      minLines: minLines,
+      maxLines: maxLines,
+      textInputAction: textInputAction,
     );
   }
 }

@@ -84,32 +84,35 @@ class ListConversation extends StatelessWidget {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    snapshot.data!
-                                                        .toList()[index]
-                                                        .username,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headline4,
-                                                  ),
-                                                  Text(
-                                                    messages.isEmpty
-                                                        ? 'No message'
-                                                        : messages[0].content!,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headline6,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                ],
+                                              Expanded(
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      snapshot.data!
+                                                          .toList()[index]
+                                                          .username,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .headline4,
+                                                    ),
+                                                    Text(
+                                                      messages.isEmpty
+                                                          ? 'No message'
+                                                          : messages[0]
+                                                              .content!,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .headline6,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                               Text(
                                                 messages.isEmpty

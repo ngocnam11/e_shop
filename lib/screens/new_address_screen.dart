@@ -5,7 +5,6 @@ import '../router/router.dart';
 import '../services/auth_services.dart';
 import '../services/firestore_services.dart';
 import '../widgets/text_field_input.dart';
-import 'delivery_address_screen.dart';
 
 class NewAddressScreen extends StatefulWidget {
   const NewAddressScreen({Key? key}) : super(key: key);
