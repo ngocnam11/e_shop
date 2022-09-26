@@ -280,6 +280,54 @@ class FireStoreServices {
     return res;
   }
 
+  Future<String> removeProductFromCart({
+    required String id,
+    required String productId,
+    required String color,
+    required String size,
+    required double priceOfItem,
+    required String sellerId,
+  }) async {
+    String resDel = 'Some error occurred';
+    try {
+      final snap =
+          await _firestore.collection('carts').doc(currentUserUid).get();
+      final cartData = Cart.fromSnap(snap.data()!);
+      final products = cartData.products;
+      for (var i = 0; i < products.length; i++) {
+        if (products[i].id == id &&
+            products[i].color == color &&
+            products[i].size == size) {
+          var quantity = products[i].quantity - 1;
+          var price = products[i].price - priceOfItem + .0;
+
+          final tmp = CartItem(
+            id: id,
+            productId: productId,
+            color: color,
+            size: size,
+            quantity: quantity,
+            price: price,
+            sellerId: sellerId,
+          );
+          products.removeAt(i);
+          print(products);
+          products.insert(i, tmp);
+          print(products);
+
+          _firestore.collection('carts').doc(currentUserUid).set(
+                Cart(uid: currentUserUid, products: products).toJson(),
+                SetOptions(merge: true),
+              );
+        }
+      }
+      resDel = 'success';
+    } catch (e) {
+      resDel = e.toString();
+    }
+    return resDel;
+  }
+
   Future<String> addOrder({
     required String customerId,
     required String sellerId,
@@ -390,9 +438,9 @@ class FireStoreServices {
           );
           addresses.removeAt(i);
           addresses.insert(i, tempAddress);
-          _firestore.collection('users').doc(uid).update(
-            user.copyWith(addresses: addresses).toJson(),
-          );
+          await _firestore.collection('users').doc(uid).update(
+                user.copyWith(addresses: addresses).toJson(),
+              );
         }
       }
       updateSA = 'success';
@@ -488,6 +536,27 @@ class FireStoreServices {
     }
 
     return res;
+  }
+
+  Future<String> deleteDeliveryAddress({required String id}) async {
+    String deleteDA = 'Some error occurred';
+    try {
+      model.User user = await getUserByUid(uid: currentUserUid);
+      final addresses = user.addresses;
+      for (var i = 0; i < addresses.length; i++) {
+        if (addresses[i].id == id) {
+          addresses.removeAt(i);
+          await _firestore.collection('users').doc(currentUserUid).update(
+                user.copyWith(addresses: addresses).toJson(),
+              );
+        }
+      }
+      deleteDA = 'success';
+    } catch (e) {
+      deleteDA = e.toString();
+    }
+
+    return deleteDA;
   }
 
   Stream<List<model.User>> get getDiscussionUser {

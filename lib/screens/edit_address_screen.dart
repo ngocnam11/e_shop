@@ -60,11 +60,31 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
     }
   }
 
+  void deleteDeliveryAddress() async {
+    String res = await FireStoreServices().deleteDeliveryAddress(
+      id: widget.deliveryAddress.id,
+    );
+
+    if (!mounted) return;
+
+    if (res != 'success') {
+      showSnackBar(context, res);
+    } else {
+      Navigator.of(context).pop(true);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Address'),
+        actions: [
+          IconButton(
+            onPressed: deleteDeliveryAddress,
+            icon: const Icon(Icons.delete),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
