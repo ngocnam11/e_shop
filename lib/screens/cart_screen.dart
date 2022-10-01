@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../blocs/cart/cart_bloc.dart';
+import '../config/utils.dart';
+import '../services/firestore_services.dart';
 import '../widgets/empty_product.dart';
 import '../router/router.dart';
 import '../widgets/list_item.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
   const CartScreen({
     Key? key,
   }) : super(key: key);
@@ -16,6 +18,62 @@ class CartScreen extends StatelessWidget {
       settings: const RouteSettings(name: AppRouter.cart),
       builder: (_) => const CartScreen(),
     );
+  }
+
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  void removeProductToCart({
+    required String id,
+    required String productId,
+    required String color,
+    required String size,
+    required double priceOfItem,
+    required String sellerId,
+  }) async {
+    String res = await FireStoreServices().removeProductFromCart(
+      id: id,
+      productId: productId,
+      color: color,
+      size: size,
+      priceOfItem: priceOfItem,
+      sellerId: sellerId,
+    );
+
+    if (!mounted) return;
+
+    if (res != 'success') {
+      showSnackBar(context, res);
+    } else {
+      showSnackBar(context, 'Removed from your Cart');
+    }
+  }
+
+  void addProductToCart({
+    required String productId,
+    required String color,
+    required String size,
+    required double price,
+    required String sellerId,
+  }) async {
+    String res = await FireStoreServices().addProductToCart(
+      productId: productId,
+      color: color,
+      size: size,
+      quantity: 1,
+      price: price,
+      sellerId: sellerId,
+    );
+
+    if (!mounted) return;
+
+    if (res != 'success') {
+      showSnackBar(context, res);
+    } else {
+      showSnackBar(context, 'Added to your Cart');
+    }
   }
 
   @override
@@ -52,6 +110,14 @@ class CartScreen extends StatelessWidget {
                     children: [
                       IconButton(
                         onPressed: () {
+                          removeProductToCart(
+                            id: state.cart.products[index].id,
+                            productId: state.cart.products[index].productId,
+                            color: state.cart.products[index].color!,
+                            size: state.cart.products[index].size!,
+                            priceOfItem: state.cart.products[index].price,
+                            sellerId: state.cart.products[index].sellerId,
+                          );
                           context.read<CartBloc>().add(
                               RemoveProduct(products.keys.elementAt(index)));
                         },
@@ -63,6 +129,13 @@ class CartScreen extends StatelessWidget {
                       ),
                       IconButton(
                         onPressed: () {
+                          addProductToCart(
+                            productId: state.cart.products[index].productId,
+                            color: state.cart.products[index].color!,
+                            size: state.cart.products[index].size!,
+                            price: state.cart.products[index].price,
+                            sellerId: state.cart.products[index].sellerId,
+                          );
                           context
                               .read<CartBloc>()
                               .add(AddProduct(products.keys.elementAt(index)));
@@ -134,7 +207,8 @@ class CartScreen extends StatelessWidget {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.of(context).pushNamed(AppRouter.checkout, arguments: '');
+                          Navigator.of(context)
+                              .pushNamed(AppRouter.checkout, arguments: '');
                         },
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),

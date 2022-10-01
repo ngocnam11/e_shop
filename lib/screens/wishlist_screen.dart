@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../blocs/cart/cart_bloc.dart';
 import '../blocs/wishlist/wishlist_bloc.dart';
 import '../config/utils.dart';
+import '../models/cart.dart';
 import '../models/product.dart';
 import '../services/firestore_services.dart';
 import '../widgets/custom_network_image.dart';
@@ -12,7 +13,7 @@ import '../widgets/empty_product.dart';
 import '../router/router.dart';
 import '../widgets/custom_navigationbar.dart';
 
-class WishlistScreen extends StatelessWidget {
+class WishlistScreen extends StatefulWidget {
   const WishlistScreen({Key? key}) : super(key: key);
 
   static MaterialPageRoute route() {
@@ -20,6 +21,36 @@ class WishlistScreen extends StatelessWidget {
       settings: const RouteSettings(name: AppRouter.wishlist),
       builder: (_) => const WishlistScreen(),
     );
+  }
+
+  @override
+  State<WishlistScreen> createState() => _WishlistScreenState();
+}
+
+class _WishlistScreenState extends State<WishlistScreen> {
+  void addProductToCart({
+    required String productId,
+    required String color,
+    required String size,
+    required double price,
+    required String sellerId,
+  }) async {
+    String res = await FireStoreServices().addProductToCart(
+      productId: productId,
+      color: color,
+      size: size,
+      quantity: 1,
+      price: price,
+      sellerId: sellerId,
+    );
+
+    if (!mounted) return;
+
+    if (res != 'success') {
+      showSnackBar(context, res);
+    } else {
+      showSnackBar(context, 'Added to your Cart');
+    }
   }
 
   @override
@@ -158,9 +189,80 @@ class WishlistScreen extends StatelessWidget {
                                                     const EdgeInsets.all(4),
                                               ),
                                               onPressed: () {
-                                                context.read<CartBloc>().add(
-                                                    AddProduct(cartState
-                                                        .cart.products[index]));
+                                                addProductToCart(
+                                                  productId: wishlistState
+                                                      .wishlist
+                                                      .products[index]
+                                                      .id
+                                                      .toString(),
+                                                  color: wishlistState
+                                                          .wishlist
+                                                          .products[index]
+                                                          .colors
+                                                          .isEmpty
+                                                      ? 'n'
+                                                      : wishlistState
+                                                          .wishlist
+                                                          .products[index]
+                                                          .colors[0],
+                                                  size: wishlistState
+                                                          .wishlist
+                                                          .products[index]
+                                                          .size
+                                                          .isEmpty
+                                                      ? 'n'
+                                                      : wishlistState
+                                                          .wishlist
+                                                          .products[index]
+                                                          .size[0],
+                                                  price: wishlistState.wishlist
+                                                      .products[index].price,
+                                                  sellerId: wishlistState
+                                                      .wishlist
+                                                      .products[index]
+                                                      .uid,
+                                                );
+                                                context
+                                                    .read<CartBloc>()
+                                                    .add(AddProduct(
+                                                      CartItem(
+                                                        id: 'ci${wishlistState.wishlist.products[index].id.toString()}',
+                                                        productId: wishlistState
+                                                            .wishlist
+                                                            .products[index]
+                                                            .id
+                                                            .toString(),
+                                                        color: wishlistState
+                                                                .wishlist
+                                                                .products[index]
+                                                                .colors
+                                                                .isEmpty
+                                                            ? 'n'
+                                                            : wishlistState
+                                                                .wishlist
+                                                                .products[index]
+                                                                .colors[0],
+                                                        size: wishlistState
+                                                                .wishlist
+                                                                .products[index]
+                                                                .size
+                                                                .isEmpty
+                                                            ? 'n'
+                                                            : wishlistState
+                                                                .wishlist
+                                                                .products[index]
+                                                                .size[0],
+                                                        price: wishlistState
+                                                            .wishlist
+                                                            .products[index]
+                                                            .price,
+                                                        quantity: 1,
+                                                        sellerId: wishlistState
+                                                            .wishlist
+                                                            .products[index]
+                                                            .uid,
+                                                      ),
+                                                    ));
                                                 showSnackBar(context,
                                                     'Added to your Cart');
                                               },
