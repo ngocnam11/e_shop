@@ -17,7 +17,7 @@ class TextFieldInput extends StatelessWidget {
     this.errorText,
     this.focusNode,
     this.minLines = 1,
-    this.maxLines,
+    this.maxLines = 1,
     this.contentPadding = const EdgeInsets.all(8),
     this.textInputAction,
   }) : super(key: key);
