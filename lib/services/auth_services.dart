@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../models/user.dart' as model;
+import '../models/user.dart';
 import 'social_signin_options.dart';
 
 class AuthServices {
@@ -30,12 +30,10 @@ class AuthServices {
           password: password,
         );
 
-        model.User user = model.User(
+        UserModel user = UserModel(
           uid: cred.user!.uid,
           username: username,
           email: email,
-          photoUrl: 'https://i.ibb.co/yRw8xRv/noavatar.png',
-          addresses: const [],
         );
 
         _firestore.collection('users').doc(user.uid).set(user.toJson());
@@ -90,17 +88,21 @@ class AuthServices {
         userCredential = await _auth.signInWithPopup(GoogleAuthProvider());
       }
 
-      model.User user = model.User(
-        uid: userCredential.user!.uid,
-        email: userCredential.user!.email!,
-        username: userCredential.user!.displayName ?? '',
-        phoneNum: userCredential.user!.phoneNumber ?? '',
-        photoUrl: userCredential.user!.photoURL ??
-            'https://i.ibb.co/yRw8xRv/noavatar.png',
-        addresses: const [],
-      );
+      final snapshot = await _firestore
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .get();
+      if (!snapshot.exists) {
+        UserModel user = UserModel(
+          uid: userCredential.user!.uid,
+          email: userCredential.user!.email!,
+          username: userCredential.user!.displayName ?? '',
+          phoneNum: userCredential.user!.phoneNumber ?? '',
+          photoUrl: userCredential.user!.photoURL!,
+        );
 
-      _firestore.collection('users').doc(user.uid).set(user.toJson());
+        _firestore.collection('users').doc(user.uid).set(user.toJson());
+      }
 
       res = 'success';
     } catch (e) {

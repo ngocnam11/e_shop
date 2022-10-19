@@ -141,7 +141,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     style: theme.headline3,
                   ),
                   const SizedBox(height: 12),
-                  FutureBuilder<User>(
+                  FutureBuilder<UserModel>(
                     future: FireStoreServices()
                         .getUserByUid(uid: widget.product.uid),
                     builder: (context, snapshot) {
@@ -314,7 +314,7 @@ class _ProductScreenState extends State<ProductScreen> {
         child: Row(
           children: [
             const SizedBox(width: 24),
-            FutureBuilder<User>(
+            FutureBuilder<UserModel>(
               future: FireStoreServices().getUserByUid(uid: widget.product.uid),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {

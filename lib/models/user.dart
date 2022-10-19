@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import 'delivery_address.dart';
 
-class User extends Equatable {
+class UserModel extends Equatable {
   final String uid;
   final String email;
   final String username;
@@ -17,23 +17,35 @@ class User extends Equatable {
         : addresses.firstWhere((address) => address.isDefault);
   }
 
-  const User({
+  const UserModel({
     required this.uid,
     required this.email,
     required this.username,
     this.phoneNum = '',
-    required this.photoUrl,
-    required this.addresses,
+    this.photoUrl = 'https://i.ibb.co/yRw8xRv/noavatar.png',
+    this.addresses = const [],
     this.isAdmin = false,
   });
 
-  User copyWith({
+  static const empty = UserModel(
+    uid: '',
+    email: '',
+    username: '',
+    photoUrl: '',
+    addresses: [],
+  );
+
+  bool get isEmpty => this == UserModel.empty;
+
+  bool get isNotEmpty => this != UserModel.empty;
+
+  UserModel copyWith({
     String? username,
     String? phoneNum,
     String? photoUrl,
     List<DeliveryAddress>? addresses,
   }) {
-    return User(
+    return UserModel(
       uid: uid,
       email: email,
       username: username ?? this.username,
@@ -44,21 +56,21 @@ class User extends Equatable {
     );
   }
 
-  factory User.fromSnap(Map<String, dynamic> snap) {
+  factory UserModel.fromJson(Map<String, dynamic> json) {
     List<DeliveryAddress> addresses = [];
-    if (snap["deliveryAddress"] != null) {
-      snap["deliveryAddress"].forEach((address) {
+    if (json["deliveryAddress"] != null) {
+      json["deliveryAddress"].forEach((address) {
         addresses.add(DeliveryAddress.fromSnap(address));
       });
     }
-    return User(
-      username: snap["username"],
-      uid: snap["uid"],
-      email: snap["email"],
-      phoneNum: snap["phoneNum"],
-      photoUrl: snap["photoUrl"],
+    return UserModel(
+      username: json["username"],
+      uid: json["uid"],
+      email: json["email"],
+      phoneNum: json["phoneNum"],
+      photoUrl: json["photoUrl"],
       addresses: addresses,
-      isAdmin: snap["isAdmin"],
+      isAdmin: json["isAdmin"],
     );
   }
 

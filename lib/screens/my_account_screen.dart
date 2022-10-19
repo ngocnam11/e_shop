@@ -132,7 +132,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
           ),
         ],
       ),
-      body: FutureBuilder<User>(
+      body: FutureBuilder<UserModel>(
         future: FireStoreServices().getUserByUid(
           uid: AuthServices().currentUser.uid,
         ),

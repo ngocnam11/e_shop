@@ -30,7 +30,7 @@ class OrderConfirmScreen extends StatelessWidget {
           height: MediaQuery.of(context).size.height * 0.6,
           padding: const EdgeInsets.all(20),
           margin: const EdgeInsets.symmetric(horizontal: 20),
-          child: FutureBuilder<User>(
+          child: FutureBuilder<UserModel>(
             future: FireStoreServices().getUserByUid(
               uid: AuthServices().currentUser.uid,
             ),

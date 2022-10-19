@@ -31,7 +31,7 @@ class ProfileScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: FutureBuilder<User>(
+      body: FutureBuilder<UserModel>(
         future: FireStoreServices().getUserByUid(
           uid: AuthServices().currentUser.uid,
         ),

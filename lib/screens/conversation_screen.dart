@@ -10,7 +10,7 @@ import '../widgets/text_field_input.dart';
 
 class ConversationScreen extends StatelessWidget {
   const ConversationScreen({Key? key, required this.user}) : super(key: key);
-  final User user;
+  final UserModel user;
 
   @override
   Widget build(BuildContext context) {

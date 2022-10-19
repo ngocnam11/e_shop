@@ -8,7 +8,7 @@ import '../models/delivery_address.dart';
 import '../models/message.dart';
 import '../models/order.dart';
 import '../models/product.dart';
-import '../models/user.dart' as model;
+import '../models/user.dart';
 import 'auth_services.dart';
 import 'storage_service.dart';
 
@@ -18,9 +18,9 @@ class FireStoreServices {
 
   String currentUserUid = AuthServices().currentUser.uid;
 
-  Future<model.User> getUserByUid({required String uid}) async {
+  Future<UserModel> getUserByUid({required String uid}) async {
     final snap = await _firestore.collection('users').doc(uid).get();
-    model.User user = model.User.fromSnap(snap.data()!);
+    UserModel user = UserModel.fromJson(snap.data()!);
     return user;
   }
 
@@ -374,7 +374,7 @@ class FireStoreServices {
     String addSA = 'Some error occurred';
     try {
       var date = DateTime.now().toLocal();
-      model.User user = await getUserByUid(uid: uid);
+      UserModel user = await getUserByUid(uid: uid);
 
       DeliveryAddress deliveryAddress = DeliveryAddress(
         id: 'address${date.day}d${date.hour}h${date.minute}',
@@ -425,7 +425,7 @@ class FireStoreServices {
   }) async {
     String updateSA = 'Some error occurred';
     try {
-      model.User user = await getUserByUid(uid: uid);
+      UserModel user = await getUserByUid(uid: uid);
       final addresses = user.addresses;
       for (var i = 0; i < addresses.length; i++) {
         if (addresses[i].id == id) {
@@ -464,7 +464,7 @@ class FireStoreServices {
         photoUrl =
             await _storage.uploadImageToStorage('profilePics', file, false, '');
       }
-      model.User userData = await getUserByUid(uid: currentUserUid);
+      UserModel userData = await getUserByUid(uid: currentUserUid);
 
       userData = userData.copyWith(
         username: username,
@@ -541,7 +541,7 @@ class FireStoreServices {
   Future<String> deleteDeliveryAddress({required String id}) async {
     String deleteDA = 'Some error occurred';
     try {
-      model.User user = await getUserByUid(uid: currentUserUid);
+      UserModel user = await getUserByUid(uid: currentUserUid);
       final addresses = user.addresses;
       for (var i = 0; i < addresses.length; i++) {
         if (addresses[i].id == id) {
@@ -559,13 +559,13 @@ class FireStoreServices {
     return deleteDA;
   }
 
-  Stream<List<model.User>> get getDiscussionUser {
+  Stream<List<UserModel>> get getDiscussionUser {
     return _firestore
         .collection('users')
         .where('uid', isNotEqualTo: AuthServices().currentUser.uid)
         .snapshots()
         .map((event) =>
-            event.docs.map((e) => model.User.fromSnap(e.data())).toList());
+            event.docs.map((e) => UserModel.fromJson(e.data())).toList());
   }
 
   Stream<List<Message>> getMessage(String reciverUID, [bool myMessage = true]) {

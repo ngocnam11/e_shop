@@ -47,7 +47,7 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
           ),
         ],
       ),
-      body: FutureBuilder<User>(
+      body: FutureBuilder<UserModel>(
           future: FireStoreServices()
               .getUserByUid(uid: AuthServices().currentUser.uid),
           builder: (context, snapshot) {

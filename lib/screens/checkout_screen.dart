@@ -134,7 +134,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             padding: const EdgeInsets.only(left: 24),
                             child: SizedBox(
                               height: 24,
-                              child: FutureBuilder<User>(
+                              child: FutureBuilder<UserModel>(
                                 future: FireStoreServices().getUserByUid(
                                   uid: AuthServices().currentUser.uid,
                                 ),
@@ -194,7 +194,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Divider(),
-                          FutureBuilder<User>(
+                          FutureBuilder<UserModel>(
                             future: FireStoreServices().getUserByUid(
                                 uid: products.keys.elementAt(index).sellerId),
                             builder: (context, snapshot) {

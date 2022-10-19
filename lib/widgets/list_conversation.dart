@@ -14,7 +14,7 @@ class ListConversation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<User>>(
+    return StreamBuilder<List<UserModel>>(
       stream: FireStoreServices().getDiscussionUser,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
