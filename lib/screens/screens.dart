@@ -28,3 +28,4 @@ export 'admin_panel/ad_product_screen.dart';
 export 'admin_panel/new_product_screen.dart';
 export 'admin_panel/ad_edit_product_screen.dart';
 export 'admin_panel/ad_order_screen.dart';
+export 'not_found_screen.dart';

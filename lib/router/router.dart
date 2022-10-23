@@ -102,17 +102,7 @@ abstract class AppRouter {
       case adminOrder:
         return AdOrderScreen.route();
       default:
-        return MaterialPageRoute(
-          settings: const RouteSettings(name: '/error'),
-          builder: (_) => Scaffold(
-            appBar: AppBar(
-              title: const Text('Error'),
-            ),
-            body: const Center(
-              child: Text('Something went wrong!'),
-            ),
-          ),
-        );
+        return NotFoundScreen.route();
     }
   }
 }
