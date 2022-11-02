@@ -57,7 +57,7 @@ class Cart extends Equatable {
     }
   }
 
-  factory Cart.fromSnap(Map<String, dynamic> snap) {
+  factory Cart.fromJson(Map<String, dynamic> snap) {
     List<CartItem> products = [];
     snap["products"].forEach((product) {
       products.add(CartItem.fromSnap(product));

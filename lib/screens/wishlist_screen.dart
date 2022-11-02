@@ -102,8 +102,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                       ),
                       child: FutureBuilder<Product>(
                         future: FireStoreServices().getProductById(
-                          id: wishlistState.wishlist.products[index].id
-                              .toString(),
+                          id: wishlistState.wishlist.products[index].id,
                         ),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
@@ -193,8 +192,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                                   productId: wishlistState
                                                       .wishlist
                                                       .products[index]
-                                                      .id
-                                                      .toString(),
+                                                      .id,
                                                   color: wishlistState
                                                           .wishlist
                                                           .products[index]
@@ -226,12 +224,11 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                                     .read<CartBloc>()
                                                     .add(AddProduct(
                                                       CartItem(
-                                                        id: 'ci${wishlistState.wishlist.products[index].id.toString()}',
+                                                        id: 'ci${wishlistState.wishlist.products[index].id}',
                                                         productId: wishlistState
                                                             .wishlist
                                                             .products[index]
-                                                            .id
-                                                            .toString(),
+                                                            .id,
                                                         color: wishlistState
                                                                 .wishlist
                                                                 .products[index]
