@@ -1,6 +1,6 @@
+import 'dart:developer';
 import 'dart:typed_data';
 
-import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -45,7 +45,7 @@ class StorageService {
     try {
       await ref.delete();
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
     }
   }
 }

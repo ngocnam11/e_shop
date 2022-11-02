@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../models/cart.dart';
 import '../models/product.dart';
-import 'custom_network_image.dart';
 import '../services/firestore_services.dart';
+import 'custom_network_image.dart';
 
 class ListItem extends StatelessWidget {
   const ListItem({
@@ -35,6 +35,7 @@ class ListItem extends StatelessWidget {
               );
             }
             if (snapshot.hasError) {
+              debugPrint(snapshot.error.toString());
               return const Text('Something went wrong');
             }
             return Row(

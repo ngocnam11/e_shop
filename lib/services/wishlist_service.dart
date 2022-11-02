@@ -1,5 +1,6 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 
 import '../models/product.dart';
 import '../models/wishlist.dart';
@@ -41,7 +42,7 @@ class WishlistService {
         "products": productsMapData,
       });
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
     }
   }
 
@@ -52,7 +53,7 @@ class WishlistService {
         "products": FieldValue.arrayRemove([product.toJson()]),
       });
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
     }
   }
 }

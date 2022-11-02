@@ -205,6 +205,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 );
                               }
                               if (snapshot.hasError) {
+                                debugPrint(snapshot.error.toString());
                                 return const Text('Something went wrong');
                               }
                               return Padding(

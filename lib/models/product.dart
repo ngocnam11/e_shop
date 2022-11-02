@@ -92,8 +92,8 @@ class Product extends Equatable {
         sizes,
       ];
 
-  static List<Product> products = [
-    const Product(
+  static const List<Product> products = [
+    Product(
       id: '',
       uid: '',
       name: 'Vagabond Sack',
@@ -104,7 +104,7 @@ class Product extends Equatable {
       quantity: 1,
       description: '',
     ),
-    const Product(
+    Product(
       id: '',
       uid: '',
       name: 'Stella Sunglasses',
@@ -115,7 +115,7 @@ class Product extends Equatable {
       quantity: 2,
       description: '',
     ),
-    const Product(
+    Product(
       id: '',
       uid: '',
       name: 'Whitney Belt',

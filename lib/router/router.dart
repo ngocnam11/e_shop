@@ -52,7 +52,8 @@ abstract class AppRouter {
         return CartScreen.route();
       case checkout:
         return CheckoutScreen.route(
-            deliveryAddress: settings.arguments as String);
+          deliveryAddress: settings.arguments as String,
+        );
       case address:
         return DeliveryAddressScreen.route();
       case newAddress:
@@ -96,9 +97,7 @@ abstract class AppRouter {
       case adminNewProduct:
         return NewProductScreen.route();
       case adminEditProduct:
-        return AdEditProductScreen.route(
-          id: settings.arguments as String,
-        );
+        return AdEditProductScreen.route(id: settings.arguments as String);
       case adminOrder:
         return AdOrderScreen.route();
       default:

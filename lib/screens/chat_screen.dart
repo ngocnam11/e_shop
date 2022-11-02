@@ -23,7 +23,7 @@ class ChatScreen extends StatelessWidget {
         title: const Text('Chat'),
       ),
       body: Column(
-        children: [
+        children: <Widget>[
           const Divider(),
           Padding(
             padding: const EdgeInsets.symmetric(
@@ -37,7 +37,7 @@ class ChatScreen extends StatelessWidget {
             ),
           ),
           const Divider(),
-          Expanded(
+          const Expanded(
             child: ListConversation(),
           ),
         ],

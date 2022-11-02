@@ -108,6 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
               stream: FireStoreServices().get5Products(),
               builder: (context, AsyncSnapshot<List<Product>> snapshot) {
                 if (snapshot.hasError) {
+                  debugPrint(snapshot.error.toString());
                   return const Text('Something went wrong');
                 }
                 if (snapshot.connectionState == ConnectionState.waiting) {

@@ -31,7 +31,7 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   void addProductToCart() async {
     String res = await FireStoreServices().addProductToCart(
-      productId: widget.product.id.toString(),
+      productId: widget.product.id,
       color: _color,
       size: _size,
       quantity: 1,

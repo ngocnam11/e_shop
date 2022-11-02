@@ -7,9 +7,9 @@ import '../../config/utils.dart';
 import '../../models/product.dart';
 import '../../router/router.dart';
 import '../../services/firestore_services.dart';
+import '../../widgets/custom_network_image.dart';
 import '../../widgets/my_chip_list.dart';
 import '../../widgets/text_field_input.dart';
-import '../../widgets/custom_network_image.dart';
 
 class AdEditProductScreen extends StatefulWidget {
   const AdEditProductScreen({Key? key, required this.id}) : super(key: key);
@@ -51,8 +51,7 @@ class _AdEditProductScreenState extends State<AdEditProductScreen> {
   }
 
   Future<void> getInitProductInfo() async {
-    final product =
-        await FireStoreServices().getProductById(id: widget.id);
+    final product = await FireStoreServices().getProductById(id: widget.id);
     _nameController.text = product.name;
     _categoryController.text = product.category;
     _descriptionController.text = product.description;

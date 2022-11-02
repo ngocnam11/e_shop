@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../blocs/cart/cart_bloc.dart';
 import '../config/utils.dart';
+import '../router/router.dart';
 import '../services/firestore_services.dart';
 import '../widgets/empty_product.dart';
-import '../router/router.dart';
 import '../widgets/list_item.dart';
 
 class CartScreen extends StatefulWidget {
