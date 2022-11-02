@@ -208,13 +208,13 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                                   size: wishlistState
                                                           .wishlist
                                                           .products[index]
-                                                          .size
+                                                          .sizes
                                                           .isEmpty
                                                       ? 'n'
                                                       : wishlistState
                                                           .wishlist
                                                           .products[index]
-                                                          .size[0],
+                                                          .sizes[0],
                                                   price: wishlistState.wishlist
                                                       .products[index].price,
                                                   sellerId: wishlistState
@@ -245,13 +245,13 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                                         size: wishlistState
                                                                 .wishlist
                                                                 .products[index]
-                                                                .size
+                                                                .sizes
                                                                 .isEmpty
                                                             ? 'n'
                                                             : wishlistState
                                                                 .wishlist
                                                                 .products[index]
-                                                                .size[0],
+                                                                .sizes[0],
                                                         price: wishlistState
                                                             .wishlist
                                                             .products[index]

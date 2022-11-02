@@ -147,7 +147,7 @@ class OrderDetailsScreen extends StatelessWidget {
                         width: 80,
                         height: 24,
                         child: Text(
-                          products.values.elementAt(index).toString(),
+                          'Quantity: ${products.values.elementAt(index).toString()}',
                           style: Theme.of(context).textTheme.headline5,
                         ),
                       ),

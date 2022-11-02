@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uuid/uuid.dart';
 
 import '../models/cart.dart';
 import '../models/category.dart';
@@ -15,6 +16,7 @@ import 'storage_service.dart';
 class FireStoreServices {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final StorageService _storage = StorageService();
+  var uuid = const Uuid();
 
   String currentUserUid = AuthServices().currentUser.uid;
 
@@ -112,7 +114,7 @@ class FireStoreServices {
 
   Future<String> addProduct({
     required String uid,
-    required int id,
+    // required int id,
     required String name,
     required String category,
     required double price,
@@ -120,12 +122,13 @@ class FireStoreServices {
     required Uint8List file,
     required String description,
     required List<String> colors,
-    required List<String> size,
+    required List<String> sizes,
   }) async {
     String res = 'Some error occurred';
     try {
-      String photoUrl = await _storage.uploadImageToStorage(
-          'products', file, true, id.toString());
+      String id = uuid.v4();
+      String photoUrl =
+          await _storage.uploadImageToStorage('products', file, true, id);
       Product product = Product(
         id: id,
         uid: uid,
@@ -136,12 +139,12 @@ class FireStoreServices {
         quantity: quantity,
         description: description,
         colors: colors,
-        size: size,
+        sizes: sizes,
       );
 
       _firestore
           .collection('products')
-          .doc(id.toString())
+          .doc(id)
           .set(product.toJson());
       res = 'success';
     } catch (e) {
@@ -485,7 +488,7 @@ class FireStoreServices {
   }
 
   Future<String> updateProduct({
-    required int id,
+    required String id,
     String? name,
     String? category,
     Uint8List? file,
@@ -493,16 +496,16 @@ class FireStoreServices {
     int? quantity,
     String? description,
     List<String>? colors,
-    List<String>? size,
+    List<String>? sizes,
   }) async {
     String rep = 'Some error occurred';
     try {
       String? imageUrl;
       if (file != null) {
         imageUrl = await _storage.uploadImageToStorage(
-            'products', file, true, id.toString());
+            'products', file, true, id);
       }
-      Product product = await getProductById(id: id.toString());
+      Product product = await getProductById(id: id);
       product = product.copyWith(
         name: name,
         category: category,
@@ -511,12 +514,12 @@ class FireStoreServices {
         quantity: quantity,
         description: description,
         colors: colors,
-        size: size,
+        sizes: sizes,
       );
 
-      _firestore
+      await _firestore
           .collection('products')
-          .doc(id.toString())
+          .doc(id)
           .update(product.toJson());
       rep = 'success';
     } catch (e) {
@@ -525,11 +528,11 @@ class FireStoreServices {
     return rep;
   }
 
-  Future<String> deleteProduct({required int id}) async {
+  Future<String> deleteProduct({required String id}) async {
     String res = 'Some error occurred';
     try {
-      await _storage.deleteImageFromStorage('products', true, id.toString());
-      await _firestore.collection('products').doc(id.toString()).delete();
+      await _storage.deleteImageFromStorage('products', true, id);
+      await _firestore.collection('products').doc(id).delete();
       res = 'success';
     } catch (e) {
       res = e.toString();

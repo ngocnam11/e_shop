@@ -58,7 +58,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         product.copyWith(
           quantity: _cartItem.quantity,
           colors: [_cartItem.color!],
-          size: [_cartItem.size!],
+          sizes: [_cartItem.size!],
         )
       ],
       deliveryAddress: deliveryAddress,

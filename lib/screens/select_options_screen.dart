@@ -37,8 +37,8 @@ class _SelectOptionsScreenState extends State<SelectOptionsScreen> {
     if (product.colors.isNotEmpty) {
       _selectedColor = product.colors.first;
     }
-    if (product.size.isNotEmpty) {
-      _selectedSize = product.size.first;
+    if (product.sizes.isNotEmpty) {
+      _selectedSize = product.sizes.first;
     }
   }
 
@@ -117,7 +117,7 @@ class _SelectOptionsScreenState extends State<SelectOptionsScreen> {
             ),
           ),
           const SizedBox(height: 12),
-          if (product.colors.isNotEmpty && product.size.isEmpty)
+          if (product.colors.isNotEmpty && product.sizes.isEmpty)
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -137,7 +137,7 @@ class _SelectOptionsScreenState extends State<SelectOptionsScreen> {
                 colorSelection(colorList: product.colors),
               ],
             ),
-          if (product.size.isNotEmpty && product.colors.isEmpty)
+          if (product.sizes.isNotEmpty && product.colors.isEmpty)
             Column(
               children: [
                 RichText(
@@ -153,10 +153,10 @@ class _SelectOptionsScreenState extends State<SelectOptionsScreen> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                sizeSelection(sizeList: product.size),
+                sizeSelection(sizeList: product.sizes),
               ],
             ),
-          if (product.colors.isNotEmpty && product.size.isNotEmpty)
+          if (product.colors.isNotEmpty && product.sizes.isNotEmpty)
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -188,7 +188,7 @@ class _SelectOptionsScreenState extends State<SelectOptionsScreen> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                sizeSelection(sizeList: product.size),
+                sizeSelection(sizeList: product.sizes),
               ],
             ),
         ],

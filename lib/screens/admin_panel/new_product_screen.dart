@@ -52,7 +52,6 @@ class _NewProductScreenState extends State<NewProductScreen> {
   void addNewProduct() async {
     String res = await FireStoreServices().addProduct(
       uid: AuthServices().currentUser.uid,
-      id: int.parse(idController.text),
       name: nameController.text,
       category: categoryController.text,
       price: double.parse(priceController.text),
@@ -60,7 +59,7 @@ class _NewProductScreenState extends State<NewProductScreen> {
       file: _image!,
       description: descriptionController.text,
       colors: _colors,
-      size: _sizes,
+      sizes: _sizes,
     );
 
     if (!mounted) return;
@@ -137,12 +136,6 @@ class _NewProductScreenState extends State<NewProductScreen> {
                 style: theme.headline4,
               ),
               const SizedBox(height: 20),
-              TextFieldInput(
-                controller: idController,
-                labelText: 'Product ID',
-                textInputType: TextInputType.text,
-              ),
-              const SizedBox(height: 10),
               TextFieldInput(
                 controller: nameController,
                 labelText: 'Product Name',

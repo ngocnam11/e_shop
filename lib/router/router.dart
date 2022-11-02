@@ -97,7 +97,7 @@ abstract class AppRouter {
         return NewProductScreen.route();
       case adminEditProduct:
         return AdEditProductScreen.route(
-          id: settings.arguments as int,
+          id: settings.arguments as String,
         );
       case adminOrder:
         return AdOrderScreen.route();

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class Product extends Equatable {
-  final int id;
+  final String id;
   final String uid;
   final String name;
   final String category;
@@ -10,7 +10,7 @@ class Product extends Equatable {
   final int quantity;
   final String description;
   final List<String> colors;
-  final List<String> size;
+  final List<String> sizes;
 
   const Product({
     required this.id,
@@ -22,7 +22,7 @@ class Product extends Equatable {
     required this.quantity,
     required this.description,
     this.colors = const [],
-    this.size = const [],
+    this.sizes = const [],
   });
 
   Product copyWith({
@@ -33,7 +33,7 @@ class Product extends Equatable {
     int? quantity,
     String? description,
     List<String>? colors,
-    List<String>? size,
+    List<String>? sizes,
   }) {
     return Product(
       id: id,
@@ -45,7 +45,7 @@ class Product extends Equatable {
       quantity: quantity ?? this.quantity,
       description: description ?? this.description,
       colors: colors ?? this.colors,
-      size: size ?? this.size,
+      sizes: sizes ?? this.sizes,
     );
   }
 
@@ -60,7 +60,7 @@ class Product extends Equatable {
       'quantity': quantity,
       'description': description,
       'colors': colors,
-      'size': size,
+      'sizes': sizes,
     };
   }
 
@@ -75,7 +75,7 @@ class Product extends Equatable {
       quantity: snap['quantity'],
       description: snap['description'],
       colors: List<String>.from(snap['colors'].map((x) => x)),
-      size: List<String>.from(snap['size'].map((x) => x)),
+      sizes: List<String>.from(snap['sizes'].map((x) => x)),
     );
   }
 
@@ -89,12 +89,12 @@ class Product extends Equatable {
         quantity,
         description,
         colors,
-        size,
+        sizes,
       ];
 
   static List<Product> products = [
     const Product(
-      id: 1,
+      id: '',
       uid: '',
       name: 'Vagabond Sack',
       category: 'Accessories',
@@ -105,7 +105,7 @@ class Product extends Equatable {
       description: '',
     ),
     const Product(
-      id: 2,
+      id: '',
       uid: '',
       name: 'Stella Sunglasses',
       category: 'Accessories',
@@ -116,7 +116,7 @@ class Product extends Equatable {
       description: '',
     ),
     const Product(
-      id: 3,
+      id: '',
       uid: '',
       name: 'Whitney Belt',
       category: 'Accessories',

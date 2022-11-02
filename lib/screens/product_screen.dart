@@ -55,8 +55,8 @@ class _ProductScreenState extends State<ProductScreen> {
     if (widget.product.colors.isNotEmpty) {
       _color = widget.product.colors.first;
     }
-    if (widget.product.size.isNotEmpty) {
-      _size = widget.product.size.first;
+    if (widget.product.sizes.isNotEmpty) {
+      _size = widget.product.sizes.first;
     }
   }
 
@@ -181,7 +181,7 @@ class _ProductScreenState extends State<ProductScreen> {
                   ),
                   const SizedBox(height: 12),
                   if (widget.product.colors.isNotEmpty ||
-                      widget.product.size.isNotEmpty)
+                      widget.product.sizes.isNotEmpty)
                     Ink(
                       height: 80,
                       decoration: BoxDecoration(
@@ -230,7 +230,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                     Row(
                                       children: [
                                         if (widget.product.colors.isNotEmpty &&
-                                            widget.product.size.isEmpty)
+                                            widget.product.sizes.isEmpty)
                                           Text(
                                             'Color',
                                             style: theme.headline4!.copyWith(
@@ -238,7 +238,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                               fontWeight: FontWeight.normal,
                                             ),
                                           ),
-                                        if (widget.product.size.isNotEmpty &&
+                                        if (widget.product.sizes.isNotEmpty &&
                                             widget.product.colors.isEmpty)
                                           Text(
                                             'Size',
@@ -248,7 +248,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                             ),
                                           ),
                                         if (widget.product.colors.isNotEmpty &&
-                                            widget.product.size.isNotEmpty)
+                                            widget.product.sizes.isNotEmpty)
                                           Text(
                                             'Color, Size',
                                             style: theme.headline4!.copyWith(
@@ -261,19 +261,19 @@ class _ProductScreenState extends State<ProductScreen> {
                                     Row(
                                       children: [
                                         if (widget.product.colors.isNotEmpty &&
-                                            widget.product.size.isEmpty)
+                                            widget.product.sizes.isEmpty)
                                           Text(
                                             _color,
                                             style: theme.headline4,
                                           ),
-                                        if (widget.product.size.isNotEmpty &&
+                                        if (widget.product.sizes.isNotEmpty &&
                                             widget.product.colors.isEmpty)
                                           Text(
                                             _size,
                                             style: theme.headline4,
                                           ),
                                         if (widget.product.colors.isNotEmpty &&
-                                            widget.product.size.isNotEmpty)
+                                            widget.product.sizes.isNotEmpty)
                                           Text(
                                             '$_color / $_size',
                                             style: theme.headline4,
@@ -358,14 +358,14 @@ class _ProductScreenState extends State<ProductScreen> {
                         context.read<CartBloc>().add(
                               AddProduct(
                                 CartItem(
-                                  id: 'ci${widget.product.id.toString()}',
-                                  productId: widget.product.id.toString(),
+                                  id: 'ci${widget.product.id}',
+                                  productId: widget.product.id,
                                   color: widget.product.colors.isEmpty
                                       ? 'n'
                                       : widget.product.colors[0],
-                                  size: widget.product.size.isEmpty
+                                  size: widget.product.sizes.isEmpty
                                       ? 'n'
-                                      : widget.product.size[0],
+                                      : widget.product.sizes[0],
                                   quantity: 1,
                                   price: widget.product.price,
                                   sellerId: widget.product.uid,

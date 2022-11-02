@@ -13,9 +13,9 @@ import '../../widgets/custom_network_image.dart';
 
 class AdEditProductScreen extends StatefulWidget {
   const AdEditProductScreen({Key? key, required this.id}) : super(key: key);
-  final int id;
+  final String id;
 
-  static MaterialPageRoute route({required int id}) {
+  static MaterialPageRoute route({required String id}) {
     return MaterialPageRoute(
       settings: const RouteSettings(name: AppRouter.adminEditProduct),
       builder: (_) => AdEditProductScreen(id: id),
@@ -52,14 +52,14 @@ class _AdEditProductScreenState extends State<AdEditProductScreen> {
 
   Future<void> getInitProductInfo() async {
     final product =
-        await FireStoreServices().getProductById(id: widget.id.toString());
+        await FireStoreServices().getProductById(id: widget.id);
     _nameController.text = product.name;
     _categoryController.text = product.category;
     _descriptionController.text = product.description;
     _priceController.text = product.price.toString();
     _quantityController.text = product.quantity.toString();
     _colors = product.colors;
-    _sizes = product.size;
+    _sizes = product.sizes;
   }
 
   void updateProduct() async {
@@ -72,7 +72,7 @@ class _AdEditProductScreenState extends State<AdEditProductScreen> {
       quantity: int.parse(_quantityController.text),
       description: _descriptionController.text,
       colors: _colors,
-      size: _sizes,
+      sizes: _sizes,
     );
 
     if (!mounted) return;
@@ -99,7 +99,7 @@ class _AdEditProductScreenState extends State<AdEditProductScreen> {
         title: const Text('Edit Product'),
       ),
       body: FutureBuilder<Product>(
-        future: FireStoreServices().getProductById(id: widget.id.toString()),
+        future: FireStoreServices().getProductById(id: widget.id),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             debugPrint(snapshot.error.toString());
