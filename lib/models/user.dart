@@ -60,7 +60,7 @@ class UserModel extends Equatable {
     List<DeliveryAddress> addresses = [];
     if (json["deliveryAddress"] != null) {
       json["deliveryAddress"].forEach((address) {
-        addresses.add(DeliveryAddress.fromSnap(address));
+        addresses.add(DeliveryAddress.fromJson(address));
       });
     }
     return UserModel(

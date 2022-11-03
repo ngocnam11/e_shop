@@ -28,7 +28,7 @@ class FireStoreServices {
 
   Future<Cart> getCartByUid({required String uid}) async {
     final snap = await _firestore.collection('carts').doc(uid).get();
-    Cart cart = Cart.fromSnap(snap.data()!);
+    Cart cart = Cart.fromJson(snap.data()!);
     return cart;
   }
 
@@ -186,7 +186,7 @@ class FireStoreServices {
             .set(Cart(uid: uid, products: const []).toJson());
       }
 
-      final cartData = Cart.fromSnap(snap.data()!);
+      final cartData = Cart.fromJson(snap.data()!);
       if (cartData.products.isNotEmpty) {
         print(cartData.products);
         final products = cartData.products;
@@ -295,7 +295,7 @@ class FireStoreServices {
     try {
       final snap =
           await _firestore.collection('carts').doc(currentUserUid).get();
-      final cartData = Cart.fromSnap(snap.data()!);
+      final cartData = Cart.fromJson(snap.data()!);
       final products = cartData.products;
       for (var i = 0; i < products.length; i++) {
         if (products[i].id == id &&

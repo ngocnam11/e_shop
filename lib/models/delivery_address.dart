@@ -30,7 +30,7 @@ class DeliveryAddress extends Equatable {
     );
   }
 
-  factory DeliveryAddress.fromSnap(Map<String, dynamic> snap) {
+  factory DeliveryAddress.fromJson(Map<String, dynamic> snap) {
     return DeliveryAddress(
       id: snap['id'] ?? '',
       address: snap['address'],
