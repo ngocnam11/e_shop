@@ -3,13 +3,13 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
-import '../models/cart.dart';
-import '../models/category.dart';
-import '../models/delivery_address.dart';
-import '../models/message.dart';
-import '../models/order.dart';
-import '../models/product.dart';
-import '../models/user.dart';
+import '../data/models/cart.dart';
+import '../data/models/category.dart';
+import '../data/models/delivery_address.dart';
+import '../data/models/message.dart';
+import '../data/models/order.dart';
+import '../data/models/product.dart';
+import '../data/models/user.dart';
 import 'auth_services.dart';
 import 'storage_service.dart';
 
@@ -142,10 +142,7 @@ class FireStoreServices {
         sizes: sizes,
       );
 
-      _firestore
-          .collection('products')
-          .doc(id)
-          .set(product.toJson());
+      _firestore.collection('products').doc(id).set(product.toJson());
       res = 'success';
     } catch (e) {
       res = e.toString();
@@ -502,8 +499,8 @@ class FireStoreServices {
     try {
       String? imageUrl;
       if (file != null) {
-        imageUrl = await _storage.uploadImageToStorage(
-            'products', file, true, id);
+        imageUrl =
+            await _storage.uploadImageToStorage('products', file, true, id);
       }
       Product product = await getProductById(id: id);
       product = product.copyWith(
@@ -517,10 +514,7 @@ class FireStoreServices {
         sizes: sizes,
       );
 
-      await _firestore
-          .collection('products')
-          .doc(id)
-          .update(product.toJson());
+      await _firestore.collection('products').doc(id).update(product.toJson());
       rep = 'success';
     } catch (e) {
       rep = e.toString();
