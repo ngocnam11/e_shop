@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class TextFieldInput extends StatelessWidget {
   const TextFieldInput({
     super.key,
-    required this.controller,
+    this.controller,
     this.isPass = false,
     this.hintText,
     required this.textInputType,
@@ -20,9 +20,10 @@ class TextFieldInput extends StatelessWidget {
     this.maxLines = 1,
     this.contentPadding = const EdgeInsets.all(8),
     this.textInputAction,
+    this.onChanged,
   });
 
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final bool isPass;
   final String? hintText;
   final TextInputType textInputType;
@@ -39,6 +40,7 @@ class TextFieldInput extends StatelessWidget {
   final int? maxLines;
   final EdgeInsetsGeometry? contentPadding;
   final TextInputAction? textInputAction;
+  final void Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +74,7 @@ class TextFieldInput extends StatelessWidget {
       minLines: minLines,
       maxLines: maxLines,
       textInputAction: textInputAction,
+      onChanged: onChanged,
     );
   }
 }

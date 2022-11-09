@@ -5,8 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../config/utils.dart';
 import '../../data/models/cart.dart';
 import '../../data/models/product.dart';
-import '../../logic/blocs/cart/cart_bloc.dart';
-import '../../logic/blocs/wishlist/wishlist_bloc.dart';
+import '../../logic/blocs/blocs.dart';
 import '../../services/firestore_services.dart';
 import '../router/app_router.dart';
 import '../widgets/custom_navigationbar.dart';
@@ -58,12 +57,6 @@ class _WishlistScreenState extends State<WishlistScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Wishlist'),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('Delete'),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: BlocBuilder<WishlistBloc, WishlistState>(
         builder: (context, wishlistState) {

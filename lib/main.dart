@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -7,9 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'config/theme.dart';
+import 'data/repositories/repositories.dart';
 import 'firebase_options.dart';
-import 'logic/blocs/cart/cart_bloc.dart';
-import 'logic/blocs/wishlist/wishlist_bloc.dart';
+import 'logic/blocs/blocs.dart';
 import 'logic/debug/app_bloc_observer.dart';
 import 'presentation/router/app_router.dart';
 
@@ -34,20 +33,35 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
+    return MultiRepositoryProvider(
       providers: [
-        BlocProvider(create: (_) => WishlistBloc()..add(LoadWishlist())),
-        BlocProvider(create: (_) => CartBloc()..add(LoadCart())),
+        RepositoryProvider<AuthRepository>(
+          create: (_) => AuthRepository(),
+        ),
+        RepositoryProvider<UserRepository>(
+          create: (_) => UserRepository(),
+        ),
+        RepositoryProvider<WishlistRepository>(
+          create: (_) => WishlistRepository(),
+        ),
       ],
-      child: MaterialApp(
-        scrollBehavior: MyCustomScrollBehavior(),
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter eShop',
-        theme: theme(),
-        initialRoute: FirebaseAuth.instance.currentUser == null
-            ? AppRouter.login
-            : AppRouter.home,
-        onGenerateRoute: AppRouter.onGenerateRoute,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => WishlistBloc(
+              authRepository: context.read<AuthRepository>(),
+            )..add(LoadWishlist()),
+          ),
+          BlocProvider(create: (_) => CartBloc()..add(LoadCart())),
+        ],
+        child: MaterialApp(
+          scrollBehavior: MyCustomScrollBehavior(),
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter eShop',
+          theme: theme(),
+          initialRoute: AppRouter.initialRoute,
+          onGenerateRoute: AppRouter.onGenerateRoute,
+        ),
       ),
     );
   }

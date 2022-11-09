@@ -2,229 +2,226 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../config/utils.dart';
-import '../../logic/blocs/wishlist/wishlist_bloc.dart';
-import '../../services/auth_services.dart';
+import '../../data/repositories/repositories.dart';
+import '../../logic/blocs/blocs.dart';
+import '../../logic/cubit/login/login_cubit.dart';
 import '../router/app_router.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/text_field_input.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LoginScreen extends StatelessWidget {
+  LoginScreen({super.key});
 
   static Route route() {
     return MaterialPageRoute(
       settings: const RouteSettings(name: AppRouter.login),
-      builder: (_) => const LoginScreen(),
+      builder: (_) => BlocProvider(
+        create: (context) => LoginCubit(
+          authRepository: context.read<AuthRepository>(),
+          userRepository: context.read<UserRepository>(),
+        ),
+        child: LoginScreen(),
+      ),
     );
   }
 
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-
-  bool _rememberMe = false;
-  bool _isLoading = false;
-  bool _isObscure = true;
-
-  void loginUser() async {
-    setState(() {
-      _isLoading = true;
-    });
-    String res = await AuthServices().loginUser(
-      email: emailController.text,
-      password: passwordController.text,
-    );
-
-    if (!mounted) return;
-
-    if (res == 'success') {
-      Navigator.of(context).pushNamedAndRemoveUntil(
-        AppRouter.home,
-        (route) => false,
-      );
-      BlocProvider.of<WishlistBloc>(context).add(LoadWishlist());
-    } else {
-      showSnackBar(context, res);
-    }
-    setState(() {
-      _isLoading = false;
-    });
-  }
-
-  void googleLogin() async {
-    setState(() {
-      _isLoading = true;
-    });
-    String res = await AuthServices().logInWithGoogle();
-
-    if (!mounted) return;
-
-    if (res == 'success') {
-      Navigator.of(context).pushNamedAndRemoveUntil(
-        AppRouter.home,
-        (route) => false,
-      );
-      BlocProvider.of<WishlistBloc>(context).add(LoadWishlist());
-    } else {
-      showSnackBar(context, res);
-    }
-    setState(() {
-      _isLoading = false;
-    });
-  }
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          children: <Widget>[
-            const SizedBox(height: 24),
-            Image.asset(
-              'assets/images/logo_eshop.png',
-              width: 280,
-            ),
-            const Text(
-              'Welcome to eShop',
-              style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              'Please login to start using app.',
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            const SizedBox(height: 20),
-            TextFieldInput(
-              controller: emailController,
-              hintText: 'Enter your email',
-              labelText: 'Email',
-              textInputType: TextInputType.emailAddress,
-            ),
-            const SizedBox(height: 16),
-            TextFieldInput(
-              controller: passwordController,
-              hintText: 'Enter your password',
-              labelText: 'Password',
-              textInputType: TextInputType.visiblePassword,
-              isPass: _isObscure,
-              suffixIcon: IconButton(
-                icon: Icon(
-                  _isObscure ? Icons.visibility : Icons.visibility_off,
-                  color: Colors.black54,
+      body: BlocListener<LoginCubit, LoginState>(
+        listener: (context, state) {
+          if (state.status == LoginStatus.error) {
+            showSnackBar(
+              context,
+              state.errorMessage ?? 'Login Failure',
+            );
+          }
+          if (state.status == LoginStatus.success) {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              AppRouter.home,
+              (route) => false,
+            );
+          }
+        },
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            children: <Widget>[
+              const SizedBox(height: 24),
+              Image.asset(
+                'assets/images/logo_eshop.png',
+                width: 280,
+              ),
+              const Text(
+                'Welcome to eShop',
+                style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                'Please login to start using app.',
+                style: Theme.of(context).textTheme.headline6,
+              ),
+              const SizedBox(height: 20),
+              BlocBuilder<LoginCubit, LoginState>(
+                buildWhen: (previous, current) =>
+                    previous.email != current.email,
+                builder: (context, state) => TextFieldInput(
+                  focusNode: _emailFocusNode,
+                  hintText: 'Enter your email',
+                  labelText: 'Email',
+                  textInputType: TextInputType.emailAddress,
+                  onChanged: (email) =>
+                      context.read<LoginCubit>().emailChanged(email),
+                  onFieldSubmitted: (_) => _passwordFocusNode.requestFocus(),
                 ),
-                onPressed: () {
-                  setState(() {
-                    _isObscure = !_isObscure;
-                  });
+              ),
+              const SizedBox(height: 16),
+              BlocBuilder<LoginCubit, LoginState>(
+                buildWhen: (previous, current) =>
+                    previous.password != current.password ||
+                    previous.isObsecure != current.isObsecure,
+                builder: (context, state) => TextFieldInput(
+                    focusNode: _passwordFocusNode,
+                    hintText: 'Enter your password',
+                    labelText: 'Password',
+                    textInputType: TextInputType.visiblePassword,
+                    isPass: state.isObsecure,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        state.isObsecure
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        color: Colors.black54,
+                      ),
+                      onPressed: context.read<LoginCubit>().obsecureChanged,
+                    ),
+                    onChanged: (password) =>
+                        context.read<LoginCubit>().passwordChanged(password),
+                    onFieldSubmitted: state.isFormValid
+                        ? (_) {
+                            context
+                                .read<LoginCubit>()
+                                .logInWithEmailAndPassword();
+                            context.read<WishlistBloc>().add(LoadWishlist());
+                          }
+                        : null),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  BlocBuilder<LoginCubit, LoginState>(
+                    buildWhen: (previous, current) =>
+                        previous.remember != current.remember,
+                    builder: (context, state) => TextButton.icon(
+                      onPressed: context.read<LoginCubit>().rememberChanged,
+                      icon: Icon(
+                        state.remember
+                            ? Icons.check_box_rounded
+                            : Icons.check_box_outline_blank_rounded,
+                        color: Colors.black54,
+                      ),
+                      label: Text(
+                        'Remember me',
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.of(context)
+                        .pushReplacementNamed(AppRouter.forgotPassword),
+                    child: const Text('Forgot password?'),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              BlocBuilder<LoginCubit, LoginState>(
+                buildWhen: (previous, current) =>
+                    previous.status != current.status ||
+                    previous.isFormValid != current.isFormValid,
+                builder: (context, state) {
+                  return state.status == LoginStatus.submitting
+                      ? const CircularProgressIndicator()
+                      : ElevatedButton(
+                          onPressed: state.isFormValid
+                              ? () {
+                                  context
+                                      .read<LoginCubit>()
+                                      .logInWithEmailAndPassword();
+                                  context
+                                      .read<WishlistBloc>()
+                                      .add(LoadWishlist());
+                                }
+                              : null,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blueAccent[400],
+                            fixedSize: const Size.fromWidth(double.maxFinite),
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 8),
+                            child: Text('Login'),
+                          ),
+                        );
                 },
               ),
-            ),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Checkbox(
-                      value: _rememberMe,
-                      onChanged: (checkValue) {
-                        setState(() {
-                          _rememberMe = checkValue!;
-                        });
-                      },
-                    ),
-                    Text(
-                      'Remember me',
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                  ],
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context)
-                        .pushReplacementNamed(AppRouter.forgotPassword);
-                  },
-                  child: const Text('Forgot password?'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: loginUser,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent[400],
-                fixedSize: const Size.fromWidth(double.maxFinite),
-                padding: const EdgeInsets.symmetric(vertical: 8),
-              ),
-              child: _isLoading
-                  ? const CircularProgressIndicator(
-                      color: Colors.white,
-                    )
-                  : const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8),
-                      child: Text('Sign in'),
-                    ),
-            ),
-            const SizedBox(height: 5),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Not a member?',
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context)
-                        .pushReplacementNamed(AppRouter.signup);
-                  },
-                  child: const Text('Join now'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 5),
-            Row(
-              children: <Widget>[
-                const Expanded(child: Divider()),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(
-                    'Or sign in with',
+              const SizedBox(height: 5),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Not a member?',
                     style: Theme.of(context).textTheme.headline6,
                   ),
-                ),
-                const Expanded(child: Divider()),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: CustomButton(
-                    press: () {},
-                    primaryColor: const Color.fromARGB(255, 24, 119, 242),
-                    title: 'Facebook',
-                    svg: 'assets/svgs/logo/facebook.svg',
-                    textColor: Colors.white,
+                  TextButton(
+                    onPressed: () => Navigator.of(context)
+                        .pushReplacementNamed(AppRouter.signup),
+                    child: const Text('Join now'),
                   ),
-                ),
-                const SizedBox(width: 30),
-                Expanded(
-                  child: CustomButton(
-                    press: googleLogin,
-                    primaryColor: Colors.white,
-                    title: 'Google',
-                    svg: 'assets/svgs/logo/google.svg',
-                    textColor: Colors.black,
+                ],
+              ),
+              const SizedBox(height: 5),
+              Row(
+                children: <Widget>[
+                  const Expanded(child: Divider()),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(
+                      'Or sign in with',
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                  const Expanded(child: Divider()),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: CustomButton(
+                      press: () {},
+                      primaryColor: const Color.fromARGB(255, 24, 119, 242),
+                      title: 'Facebook',
+                      svg: 'assets/svgs/logo/facebook.svg',
+                      textColor: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(width: 30),
+                  Expanded(
+                    child: CustomButton(
+                      press: context.read<LoginCubit>().logInWithGoogle,
+                      primaryColor: Colors.white,
+                      title: 'Google',
+                      svg: 'assets/svgs/logo/google.svg',
+                      textColor: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

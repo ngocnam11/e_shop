@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "5975695317-fi8io7dgdph9p2cvbgm9ft60dnqeu2ts.apps.googleusercontent.com",
+          "client_id": "5975695317-ruptk6tnvkqifhqjo40j3c1pkn0q4rfb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.e_shop",
-            "certificate_hash": "712c1f3d882edf957e9569019bd6cb36f9506a03"
+            "certificate_hash": "aa4cb15f4bfd46b08cf69c55b6ce6e0311bfebd5"
           }
         },
         {

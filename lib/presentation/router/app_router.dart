@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/models/delivery_address.dart';
@@ -33,6 +34,9 @@ class AppRouter {
   static const String adminNewProduct = '/admin/product/new';
   static const String adminEditProduct = '/admin/product/edit';
   static const String adminOrder = '/admin/order';
+
+  static String get initialRoute =>
+      FirebaseAuth.instance.currentUser == null ? login : home;
 
   static Route onGenerateRoute(RouteSettings settings) {
     debugPrint('Route: ${settings.name}');
