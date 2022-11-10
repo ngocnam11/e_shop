@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/models/category.dart';
-import '../../data/models/product.dart';
-import '../../services/firestore_services.dart';
+import '../../logic/blocs/blocs.dart';
 import '../widgets/product_card.dart';
 
 class CategoryScreen extends StatelessWidget {
@@ -16,55 +16,51 @@ class CategoryScreen extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             onPressed: () {},
-            icon: const Icon(
-              Icons.search,
-            ),
+            icon: const Icon(Icons.search),
           ),
         ],
       ),
       body: SingleChildScrollView(
-        child: StreamBuilder<List<Product>>(
-          stream: FireStoreServices().getProducts(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (snapshot.hasError) {
-              debugPrint(snapshot.error.toString());
+        child: BlocBuilder<ProductBloc, ProductState>(
+          builder: (context, state) {
+            if (state is ProductError) {
+              debugPrint(state.error);
               return const Text('Something went wrong');
             }
-            var productsInCategory = snapshot.data!
-                .where((doc) => doc.category == category.name)
-                .toList();
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Text(
-                    category.name,
-                    style: Theme.of(context).textTheme.headline3,
+            if (state is ProductLoaded) {
+              final productsInCategory = state.products
+                  .where((doc) => doc.category == category.name)
+                  .toList();
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Text(
+                      category.name,
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
                   ),
-                ),
-                GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: productsInCategory.length,
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 200,
-                    mainAxisExtent: 230,
-                    mainAxisSpacing: 30,
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: productsInCategory.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 200,
+                      mainAxisExtent: 230,
+                      mainAxisSpacing: 30,
+                    ),
+                    itemBuilder: (context, index) {
+                      return ProductCard(
+                        product: productsInCategory[index],
+                      );
+                    },
                   ),
-                  itemBuilder: (context, index) {
-                    return ProductCard(
-                      product: productsInCategory[index],
-                    );
-                  },
-                ),
-              ],
-            );
+                ],
+              );
+            }
+            return const Center(child: CircularProgressIndicator());
           },
         ),
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/models/product.dart';
+import '../../logic/blocs/blocs.dart';
 import '../../logic/cubits/cubits.dart';
 import '../../services/firestore_services.dart';
 import '../router/app_router.dart';
@@ -78,7 +79,8 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 4),
             StreamBuilder<List<Product>>(
               stream: FireStoreServices().get5ProductsByRecentSearch(
-                  recentSearch: ['earings', 'Earings']),
+                recentSearch: ['earings', 'Earings'],
+              ),
               builder: (context, AsyncSnapshot<List<Product>> snapshot) {
                 if (snapshot.hasError) {
                   debugPrint(snapshot.error.toString());
@@ -102,21 +104,18 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 4),
-            StreamBuilder<List<Product>>(
-              stream: FireStoreServices().get5Products(),
-              builder: (context, AsyncSnapshot<List<Product>> snapshot) {
-                if (snapshot.hasError) {
-                  debugPrint(snapshot.error.toString());
+            BlocBuilder<ProductBloc, ProductState>(
+              builder: (context, state) {
+                if (state is ProductError) {
+                  debugPrint(state.error);
                   return const Text('Something went wrong');
                 }
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
+                if (state is ProductLoaded) {
+                  return ProductCarousel(
+                    products: state.products.reversed.take(5).toList(),
                   );
                 }
-                return ProductCarousel(
-                  products: snapshot.data!.toList(),
-                );
+                return const Center(child: CircularProgressIndicator());
               },
             ),
             const SizedBox(height: 12),

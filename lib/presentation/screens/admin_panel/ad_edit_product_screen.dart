@@ -80,7 +80,7 @@ class _AdEditProductScreenState extends State<AdEditProductScreen> {
       showSnackBar(context, rep);
     } else {
       showSnackBar(context, 'Update Product successfully');
-      Navigator.of(context).pop(true);
+      Navigator.of(context).pop();
     }
   }
 

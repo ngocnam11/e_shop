@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/models/product.dart';
-import '../../../services/firestore_services.dart';
+import '../../../logic/blocs/blocs.dart';
+import '../../../services/auth_services.dart';
 import '../../router/app_router.dart';
 import 'ad_product_card.dart';
 
@@ -38,16 +39,8 @@ class _AdProductScreenState extends State<AdProductScreen> {
               ),
               child: InkWell(
                 borderRadius: BorderRadius.circular(16),
-                onTap: () {
-                  Navigator.of(context)
-                      .pushNamed(AppRouter.adminNewProduct)
-                      .then((value) {
-                    final bool? refresh = value as bool?;
-                    if (refresh ?? false) {
-                      setState(() {});
-                    }
-                  }).asStream();
-                },
+                onTap: () =>
+                    Navigator.of(context).pushNamed(AppRouter.adminNewProduct),
                 child: Row(
                   children: <Widget>[
                     const SizedBox(width: 10),
@@ -67,33 +60,32 @@ class _AdProductScreenState extends State<AdProductScreen> {
                 ),
               ),
             ),
-            StreamBuilder<List<Product>>(
-              stream: FireStoreServices().getCurrentUserProducts(),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  debugPrint(snapshot.error.toString());
-                  return const Center(
-                    child: Text('Something went wrong'),
-                  );
+            BlocBuilder<ProductBloc, ProductState>(
+              builder: (context, state) {
+                if (state is ProductError) {
+                  debugPrint(state.error);
+                  return const Text('Something went wrong');
                 }
-                if (snapshot.hasData) {
+                if (state is ProductLoaded) {
+                  final currentUserProducts = state.products
+                      .where((product) =>
+                          product.uid == AuthServices().currentUser.uid)
+                      .toList();
                   return Expanded(
                     child: ListView.builder(
-                      itemCount: snapshot.data!.length,
+                      itemCount: currentUserProducts.length,
                       itemBuilder: (context, index) {
                         return SizedBox(
                           height: 180,
                           child: AdProductCard(
-                            product: snapshot.data![index],
+                            product: currentUserProducts[index],
                           ),
                         );
                       },
                     ),
                   );
                 }
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
+                return const Center(child: CircularProgressIndicator());
               },
             ),
           ],

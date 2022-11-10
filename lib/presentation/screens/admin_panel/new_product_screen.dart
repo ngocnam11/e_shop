@@ -68,7 +68,7 @@ class _NewProductScreenState extends State<NewProductScreen> {
       showSnackBar(context, res);
     } else {
       showSnackBar(context, 'Your Product has been uploaded!');
-      Navigator.of(context).pop(true);
+      Navigator.of(context).pop();
     }
   }
 

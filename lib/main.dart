@@ -47,6 +47,9 @@ class MyApp extends StatelessWidget {
           create: (_) => CategoryRepository(),
         ),
         RepositoryProvider(
+          create: (_) => ProductRepository(),
+        ),
+        RepositoryProvider(
           create: (_) => WishlistRepository(),
         ),
       ],
@@ -57,6 +60,11 @@ class MyApp extends StatelessWidget {
             create: (context) => CategoryBloc(
               categoryRepository: context.read<CategoryRepository>(),
             )..add(LoadCategories()),
+          ),
+          BlocProvider(
+            create: (context) => ProductBloc(
+              productRepository: context.read<ProductRepository>(),
+            )..add(LoadProducts()),
           ),
           BlocProvider(
             create: (context) => WishlistBloc(

@@ -37,40 +37,16 @@ class FireStoreServices {
     return product;
   }
 
-  Stream<List<Product>> getCurrentUserProducts() {
-    final snaps = _firestore
-        .collection('products')
-        .where('uid', isEqualTo: currentUserUid)
-        .snapshots();
-    final products = snaps.map((snap) =>
-        snap.docs.map((doc) => Product.fromJson(doc.data())).toList());
-    return products;
-  }
-
-  Stream<List<Product>> getProducts() {
-    final snaps = _firestore.collection('products').snapshots();
-    final products = snaps.map((snap) =>
-        snap.docs.map((doc) => Product.fromJson(doc.data())).toList());
-    return products;
-  }
-
-  Stream<List<Product>> get5Products() {
-    final snaps = _firestore.collection('products').limit(5).snapshots();
-    final products = snaps.map((snap) =>
-        snap.docs.map((doc) => Product.fromJson(doc.data())).toList());
-    return products;
-  }
-
-  Stream<List<Product>> getProductsByRecentSearch(
-      {required List<String> recentSearch}) {
-    final snaps = _firestore
-        .collection('products')
-        .where('name', isGreaterThanOrEqualTo: recentSearch.last)
-        .snapshots();
-    final recommendedProducts = snaps.map((snap) =>
-        snap.docs.map((doc) => Product.fromJson(doc.data())).toList());
-    return recommendedProducts;
-  }
+  // Stream<List<Product>> getProductsByRecentSearch(
+  //     {required List<String> recentSearch}) {
+  //   final snaps = _firestore
+  //       .collection('products')
+  //       .where('name', isGreaterThanOrEqualTo: recentSearch.last)
+  //       .snapshots();
+  //   final recommendedProducts = snaps.map((snap) =>
+  //       snap.docs.map((doc) => Product.fromJson(doc.data())).toList());
+  //   return recommendedProducts;
+  // }
 
   Stream<List<Product>> get5ProductsByRecentSearch(
       {required List<String> recentSearch}) {

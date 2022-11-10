@@ -24,7 +24,7 @@ class _AdProductCardState extends State<AdProductCard> {
       showSnackBar(context, res);
     } else {
       showSnackBar(context, 'Product deleted!');
-      Navigator.of(context).pop(true);
+      Navigator.of(context).pop();
     }
   }
 
@@ -100,56 +100,42 @@ class _AdProductCardState extends State<AdProductCard> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     IconButton(
-                      onPressed: () {
-                        Navigator.of(context)
-                            .pushNamed(
-                          AppRouter.adminEditProduct,
-                          arguments: widget.product.id,
-                        )
-                            .then((value) {
-                          final bool? refresh = value as bool?;
-                          if (refresh ?? false) {
-                            setState(() {});
-                          }
-                        });
-                      },
+                      onPressed: () => Navigator.of(context).pushNamed(
+                        AppRouter.adminEditProduct,
+                        arguments: widget.product.id,
+                      ),
                       icon: const Icon(Icons.edit),
                     ),
                     IconButton(
-                      onPressed: () async {
-                        final bool? refresh = await showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text(
-                              'You are about to delete a product',
-                            ),
-                            titleTextStyle: theme.headline5,
-                            content: const Text(
-                              'This will delete your product \nAre you sure?',
-                            ),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text(
-                                  'Cancel',
-                                  style: TextStyle(color: Colors.black87),
-                                ),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  deleteProduct();
-                                },
-                                child: const Text('Delete'),
-                              ),
-                            ],
+                      onPressed: () => showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text(
+                            'You are about to delete a product',
                           ),
-                        );
-                        if (refresh ?? false) {
-                          setState(() {});
-                        }
-                      },
+                          titleTextStyle: theme.headline5,
+                          content: const Text(
+                            'This will delete your product \nAre you sure?',
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text(
+                                'Cancel',
+                                style: TextStyle(color: Colors.black87),
+                              ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                deleteProduct();
+                              },
+                              child: const Text('Delete'),
+                            ),
+                          ],
+                        ),
+                      ),
                       icon: const Icon(Icons.delete),
                     ),
                   ],
