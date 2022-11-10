@@ -37,19 +37,27 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider<AuthRepository>(
+        RepositoryProvider(
           create: (_) => AuthRepository(),
         ),
-        RepositoryProvider<UserRepository>(
+        RepositoryProvider(
           create: (_) => UserRepository(),
         ),
-        RepositoryProvider<WishlistRepository>(
+        RepositoryProvider(
+          create: (_) => CategoryRepository(),
+        ),
+        RepositoryProvider(
           create: (_) => WishlistRepository(),
         ),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => NavigatonBarCubit()),
+          BlocProvider(
+            create: (context) => CategoryBloc(
+              categoryRepository: context.read<CategoryRepository>(),
+            )..add(LoadCategories()),
+          ),
           BlocProvider(
             create: (context) => WishlistBloc(
               authRepository: context.read<AuthRepository>(),

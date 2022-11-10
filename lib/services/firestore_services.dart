@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
 import '../data/models/cart.dart';
-import '../data/models/category.dart';
 import '../data/models/delivery_address.dart';
 import '../data/models/message.dart';
 import '../data/models/order.dart';
@@ -60,13 +59,6 @@ class FireStoreServices {
     final products = snaps.map((snap) =>
         snap.docs.map((doc) => Product.fromJson(doc.data())).toList());
     return products;
-  }
-
-  Stream<List<Category>> getCategories() {
-    final snaps = _firestore.collection('categories').snapshots();
-    final categories = snaps.map((snap) =>
-        snap.docs.map((doc) => Category.fromJson(doc.data())).toList());
-    return categories;
   }
 
   Stream<List<Product>> getProductsByRecentSearch(

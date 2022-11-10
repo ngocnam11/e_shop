@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/models/category.dart';
-import '../../services/firestore_services.dart';
+import '../../logic/blocs/blocs.dart';
 import '../router/app_router.dart';
 import '../widgets/carousel.dart';
 import '../widgets/list_categoties.dart';
@@ -90,21 +90,16 @@ class SearchScreen extends StatelessWidget {
             const SizedBox(height: 16),
             const Carousel(),
             const SizedBox(height: 16),
-            StreamBuilder<List<Category>>(
-              stream: FireStoreServices().getCategories(),
-              builder: (context, AsyncSnapshot<List<Category>> snapshot) {
-                if (snapshot.hasError) {
-                  debugPrint(snapshot.error.toString());
+            BlocBuilder<CategoryBloc, CategoryState>(
+              builder: (context, state) {
+                if (state is CategoryError) {
+                  debugPrint(state.error);
                   return const Text('Something went wrong');
                 }
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                if (state is CategoryLoaded) {
+                  return ListCategories(categories: state.categories);
                 }
-                return ListCategories(
-                  categories: snapshot.data!.toList(),
-                );
+                return const Center(child: CircularProgressIndicator());
               },
             ),
           ],
