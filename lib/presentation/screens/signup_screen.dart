@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../config/utils.dart';
 import '../../data/repositories/repositories.dart';
 import '../../logic/blocs/blocs.dart';
-import '../../logic/cubits/cubits.dart';
+import '../../logic/cubits/signup/signup_cubit.dart';
 import '../router/app_router.dart';
 import '../widgets/text_field_input.dart';
 
@@ -24,7 +24,6 @@ class SignupScreen extends StatelessWidget {
     );
   }
 
-  final FocusNode _usernameFocusNode = FocusNode();
   final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
 
@@ -68,7 +67,6 @@ class SignupScreen extends StatelessWidget {
                 buildWhen: (previous, current) =>
                     previous.username != current.username,
                 builder: (context, state) => TextFieldInput(
-                  focusNode: _usernameFocusNode,
                   hintText: 'Enter your username',
                   labelText: 'Full Name',
                   textInputType: TextInputType.text,

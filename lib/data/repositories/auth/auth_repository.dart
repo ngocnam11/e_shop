@@ -91,15 +91,16 @@ class AuthRepository extends BaseAuthRepository {
     try {
       final user = _firebaseAuth.currentUser!;
 
-      await user.reauthenticateWithCredential(
-        EmailAuthProvider.credential(
-          email: user.email!,
-          password: currentPassword,
+      await Future.wait([
+        user.reauthenticateWithCredential(
+          EmailAuthProvider.credential(
+            email: user.email!,
+            password: currentPassword,
+          ),
         ),
-      );
-
-      await user.updatePassword(newPassword);
-      await _firebaseAuth.signOut();
+        user.updatePassword(newPassword),
+        logOut(),
+      ]);
     } catch (_) {
       rethrow;
     }

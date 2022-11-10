@@ -55,6 +55,12 @@ class MyApp extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
+          BlocProvider(
+            create: (context) => AppBloc(
+              authRepository: context.read<AuthRepository>(),
+              userRepository: context.read<UserRepository>(),
+            )..add(AppInitialize()),
+          ),
           BlocProvider(create: (_) => NavigatonBarCubit()),
           BlocProvider(
             create: (context) => CategoryBloc(

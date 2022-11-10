@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../config/utils.dart';
 import '../../data/repositories/repositories.dart';
 import '../../logic/blocs/blocs.dart';
-import '../../logic/cubits/cubits.dart';
+import '../../logic/cubits/login/login_cubit.dart';
 import '../router/app_router.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/text_field_input.dart';
@@ -25,7 +25,6 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
 
   @override
@@ -68,7 +67,6 @@ class LoginScreen extends StatelessWidget {
                 buildWhen: (previous, current) =>
                     previous.email != current.email,
                 builder: (context, state) => TextFieldInput(
-                  focusNode: _emailFocusNode,
                   hintText: 'Enter your email',
                   labelText: 'Email',
                   textInputType: TextInputType.emailAddress,
@@ -83,30 +81,31 @@ class LoginScreen extends StatelessWidget {
                     previous.password != current.password ||
                     previous.isObsecure != current.isObsecure,
                 builder: (context, state) => TextFieldInput(
-                    focusNode: _passwordFocusNode,
-                    hintText: 'Enter your password',
-                    labelText: 'Password',
-                    textInputType: TextInputType.visiblePassword,
-                    isPass: state.isObsecure,
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        state.isObsecure
-                            ? Icons.visibility_off
-                            : Icons.visibility,
-                        color: Colors.black54,
-                      ),
-                      onPressed: context.read<LoginCubit>().obsecureChanged,
+                  focusNode: _passwordFocusNode,
+                  hintText: 'Enter your password',
+                  labelText: 'Password',
+                  textInputType: TextInputType.visiblePassword,
+                  isPass: state.isObsecure,
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      state.isObsecure
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                      color: Colors.black54,
                     ),
-                    onChanged: (password) =>
-                        context.read<LoginCubit>().passwordChanged(password),
-                    onFieldSubmitted: state.isFormValid
-                        ? (_) {
-                            context
-                                .read<LoginCubit>()
-                                .logInWithEmailAndPassword();
-                            context.read<WishlistBloc>().add(LoadWishlist());
-                          }
-                        : null),
+                    onPressed: context.read<LoginCubit>().obsecureChanged,
+                  ),
+                  onChanged: (password) =>
+                      context.read<LoginCubit>().passwordChanged(password),
+                  onFieldSubmitted: state.isFormValid
+                      ? (_) {
+                          context
+                              .read<LoginCubit>()
+                              .logInWithEmailAndPassword();
+                          context.read<WishlistBloc>().add(LoadWishlist());
+                        }
+                      : null,
+                ),
               ),
               const SizedBox(height: 8),
               Row(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/models/user.dart';
+import '../../logic/blocs/blocs.dart';
 import '../../logic/cubits/cubits.dart';
 import '../../services/auth_services.dart';
 import '../../services/firestore_services.dart';
@@ -106,17 +107,15 @@ class ProfileScreen extends StatelessWidget {
                         ProfileMenu(
                           icon: Icons.person_outline_rounded,
                           title: 'My Account',
-                          press: () {
-                            Navigator.of(context).pushNamed(AppRouter.account);
-                          },
+                          press: () => Navigator.of(context)
+                              .pushNamed(AppRouter.account),
                         ),
                         const SizedBox(height: 10),
                         ProfileMenu(
                           icon: Icons.local_mall_outlined,
                           title: 'My Orders',
-                          press: () {
-                            Navigator.of(context).pushNamed(AppRouter.myOrders);
-                          },
+                          press: () => Navigator.of(context)
+                              .pushNamed(AppRouter.myOrders),
                         ),
                         const SizedBox(height: 10),
                         if (snapshot.data!.isAdmin)
@@ -125,11 +124,8 @@ class ProfileScreen extends StatelessWidget {
                               ProfileMenu(
                                 icon: Icons.admin_panel_settings_outlined,
                                 title: 'Go to Admin Panel',
-                                press: () {
-                                  Navigator.of(context).pushNamed(
-                                    AppRouter.admin,
-                                  );
-                                },
+                                press: () => Navigator.of(context)
+                                    .pushNamed(AppRouter.admin),
                               ),
                               const SizedBox(height: 10),
                             ],
@@ -137,38 +133,37 @@ class ProfileScreen extends StatelessWidget {
                         ProfileMenu(
                           icon: Icons.logout,
                           title: 'Log Out',
-                          press: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: const Text('Log out'),
-                                titleTextStyle:
-                                    Theme.of(context).textTheme.headline3,
-                                content: const Text('Do you want to log out?'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(),
-                                    child: const Text(
-                                      'Cancel',
-                                      style: TextStyle(color: Colors.black87),
-                                    ),
+                          press: () => showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('Log out'),
+                              titleTextStyle:
+                                  Theme.of(context).textTheme.headline3,
+                              content: const Text('Do you want to log out?'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: const Text(
+                                    'Cancel',
+                                    style: TextStyle(color: Colors.black87),
                                   ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      AuthServices().logout();
-                                      Navigator.of(context)
-                                          .pushNamedAndRemoveUntil(
-                                        AppRouter.login,
-                                        (route) => false,
-                                      );
-                                    },
-                                    child: const Text('Yes'),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    context
+                                        .read<AppBloc>()
+                                        .add(AppLogoutRequested());
+                                    Navigator.of(context)
+                                        .pushNamedAndRemoveUntil(
+                                      AppRouter.login,
+                                      (route) => false,
+                                    );
+                                  },
+                                  child: const Text('Yes'),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ],
                     ),
