@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../logic/cubits/cubits.dart';
 import '../router/app_router.dart';
 import '../widgets/custom_navigationbar.dart';
 import '../widgets/list_conversation.dart';
@@ -11,7 +13,10 @@ class ChatScreen extends StatelessWidget {
   static Route route() {
     return MaterialPageRoute(
       settings: const RouteSettings(name: AppRouter.chat),
-      builder: (_) => const ChatScreen(),
+      builder: (context) {
+        context.read<NavigatonBarCubit>().setTab(NavigationTab.chat);
+        return const ChatScreen();
+      },
     );
   }
 
@@ -42,9 +47,7 @@ class ChatScreen extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: const CustomNavigationBar(
-        currentRoute: AppRouter.chat,
-      ),
+      bottomNavigationBar: const CustomNavigationBar(),
     );
   }
 }

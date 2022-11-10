@@ -6,6 +6,7 @@ import '../../config/utils.dart';
 import '../../data/models/cart.dart';
 import '../../data/models/product.dart';
 import '../../logic/blocs/blocs.dart';
+import '../../logic/cubits/cubits.dart';
 import '../../services/firestore_services.dart';
 import '../router/app_router.dart';
 import '../widgets/custom_navigationbar.dart';
@@ -18,7 +19,10 @@ class WishlistScreen extends StatefulWidget {
   static Route route() {
     return MaterialPageRoute(
       settings: const RouteSettings(name: AppRouter.wishlist),
-      builder: (_) => const WishlistScreen(),
+      builder: (context) {
+        context.read<NavigatonBarCubit>().setTab(NavigationTab.wishlist);
+        return const WishlistScreen();
+      },
     );
   }
 
@@ -292,9 +296,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
           }
         },
       ),
-      bottomNavigationBar: const CustomNavigationBar(
-        currentRoute: AppRouter.wishlist,
-      ),
+      bottomNavigationBar: const CustomNavigationBar(),
     );
   }
 }

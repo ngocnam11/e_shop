@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../config/utils.dart';
 import '../../data/repositories/repositories.dart';
 import '../../logic/blocs/blocs.dart';
-import '../../logic/cubit/login/login_cubit.dart';
+import '../../logic/cubits/cubits.dart';
 import '../router/app_router.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/text_field_input.dart';

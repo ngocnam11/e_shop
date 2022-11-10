@@ -1,24 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
+import '../../logic/cubits/cubits.dart';
 import '../router/app_router.dart';
 
-class CustomNavigationBar extends StatefulWidget {
-  const CustomNavigationBar({super.key, required this.currentRoute});
-
-  final String currentRoute;
-
-  @override
-  State<CustomNavigationBar> createState() => _CustomNavigationBarState();
-}
-
-class _CustomNavigationBarState extends State<CustomNavigationBar> {
-  late String _currentRoute;
-
-  @override
-  void initState() {
-    _currentRoute = widget.currentRoute;
-    super.initState();
-  }
+class CustomNavigationBar extends StatelessWidget {
+  const CustomNavigationBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,72 +23,65 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
         ],
         color: Colors.white,
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <CustomNavigationBarItem>[
-          CustomNavigationBarItem(
-            icon: Icons.home_outlined,
-            selectedIcon: Icons.home_rounded,
-            label: 'Home',
-            onPressed: () {
-              _currentRoute = AppRouter.home;
+      child: BlocConsumer<NavigatonBarCubit, NavigationTab>(
+        listener: (context, state) {
+          switch (state) {
+            case NavigationTab.home:
               Navigator.of(context).pushNamedAndRemoveUntil(
-                _currentRoute,
+                NavigationTab.home.tab,
                 (route) => false,
               );
-            },
-            isCurrentPage: _currentRoute == AppRouter.home,
-          ),
-          CustomNavigationBarItem(
-            icon: Icons.shopping_bag_outlined,
-            selectedIcon: Icons.shopping_bag_rounded,
-            label: 'Cart',
-            onPressed: () {
-              _currentRoute = AppRouter.cart;
-              Navigator.of(context).pushNamed(_currentRoute);
-            },
-            isCurrentPage: _currentRoute == AppRouter.cart,
-          ),
-          CustomNavigationBarItem(
-            icon: Icons.favorite_outline_rounded,
-            selectedIcon: Icons.favorite_rounded,
-            label: 'Wishlist',
-            onPressed: () {
-              _currentRoute = AppRouter.wishlist;
+              break;
+            case NavigationTab.cart:
+              Navigator.of(context).pushNamed(NavigationTab.cart.tab);
+              break;
+            case NavigationTab.wishlist:
               Navigator.of(context).pushNamedAndRemoveUntil(
-                _currentRoute,
+                NavigationTab.wishlist.tab,
                 (route) => false,
               );
-            },
-            isCurrentPage: _currentRoute == AppRouter.wishlist,
-          ),
-          CustomNavigationBarItem(
-            icon: Icons.chat_bubble_outline_rounded,
-            selectedIcon: Icons.chat_bubble_rounded,
-            label: 'Chat',
-            onPressed: () {
-              _currentRoute = AppRouter.chat;
+              break;
+            case NavigationTab.chat:
               Navigator.of(context).pushNamedAndRemoveUntil(
-                _currentRoute,
+                NavigationTab.chat.tab,
                 (route) => false,
               );
-            },
-            isCurrentPage: _currentRoute == AppRouter.chat,
-          ),
-          CustomNavigationBarItem(
-            icon: Icons.person_outline_rounded,
-            selectedIcon: Icons.person_rounded,
-            label: 'Profile',
-            onPressed: () {
-              _currentRoute = AppRouter.profile;
+              break;
+            case NavigationTab.profile:
               Navigator.of(context).pushNamedAndRemoveUntil(
-                _currentRoute,
+                NavigationTab.profile.tab,
                 (route) => false,
               );
-            },
-            isCurrentPage: _currentRoute == AppRouter.profile,
-          ),
-        ],
+              break;
+          }
+        },
+        builder: (context, state) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <CustomNavigationBarItem>[
+              CustomNavigationBarItem(
+                tab: NavigationTab.home,
+                isCurrentPage: state.tab == AppRouter.home,
+              ),
+              CustomNavigationBarItem(
+                tab: NavigationTab.cart,
+                isCurrentPage: state.tab == AppRouter.cart,
+              ),
+              CustomNavigationBarItem(
+                tab: NavigationTab.wishlist,
+                isCurrentPage: state.tab == AppRouter.wishlist,
+              ),
+              CustomNavigationBarItem(
+                tab: NavigationTab.chat,
+                isCurrentPage: state.tab == AppRouter.chat,
+              ),
+              CustomNavigationBarItem(
+                tab: NavigationTab.profile,
+                isCurrentPage: state.tab == AppRouter.profile,
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -109,19 +90,13 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
 class CustomNavigationBarItem extends StatelessWidget {
   const CustomNavigationBarItem({
     super.key,
-    required this.icon,
-    required this.selectedIcon,
-    required this.label,
-    required this.onPressed,
+    required this.tab,
     required this.isCurrentPage,
     this.selectedColor = Colors.blue,
   });
 
-  final VoidCallback onPressed;
+  final NavigationTab tab;
   final bool isCurrentPage;
-  final IconData icon;
-  final IconData selectedIcon;
-  final String label;
   final Color selectedColor;
 
   @override
@@ -141,12 +116,12 @@ class CustomNavigationBarItem extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Icon(
-              selectedIcon,
+              tab.selectedIcon,
               color: selectedColor,
             ),
             const SizedBox(width: 5),
             Text(
-              label,
+              toBeginningOfSentenceCase(tab.name)!,
               style: TextStyle(
                 color: selectedColor,
                 fontWeight: FontWeight.bold,
@@ -157,10 +132,10 @@ class CustomNavigationBarItem extends StatelessWidget {
       );
     }
     return InkWell(
-      onTap: onPressed,
+      onTap: () => context.read<NavigatonBarCubit>().setTab(tab),
       child: Tooltip(
-        message: label,
-        child: Icon(icon),
+        message: toBeginningOfSentenceCase(tab.name),
+        child: Icon(tab.icon),
       ),
     );
   }

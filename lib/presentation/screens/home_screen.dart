@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/models/product.dart';
+import '../../logic/cubits/cubits.dart';
 import '../../services/firestore_services.dart';
 import '../router/app_router.dart';
 import '../widgets/carousel.dart';
@@ -8,22 +10,18 @@ import '../widgets/custom_navigationbar.dart';
 import '../widgets/product_carousel.dart';
 import '../widgets/section_title.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   static Route route() {
     return MaterialPageRoute(
       settings: const RouteSettings(name: AppRouter.home),
-      builder: (_) => const HomeScreen(),
+      builder: (context) {
+        context.read<NavigatonBarCubit>().setTab(NavigationTab.home);
+        return const HomeScreen();
+      },
     );
   }
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  final TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -125,9 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: const CustomNavigationBar(
-        currentRoute: AppRouter.home,
-      ),
+      bottomNavigationBar: const CustomNavigationBar(),
     );
   }
 }

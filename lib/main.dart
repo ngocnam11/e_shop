@@ -9,6 +9,7 @@ import 'config/theme.dart';
 import 'data/repositories/repositories.dart';
 import 'firebase_options.dart';
 import 'logic/blocs/blocs.dart';
+import 'logic/cubits/cubits.dart';
 import 'logic/debug/app_bloc_observer.dart';
 import 'presentation/router/app_router.dart';
 
@@ -25,6 +26,7 @@ Future<void> main() async {
   }
 
   Bloc.observer = AppBlocObserver();
+
   runApp(const MyApp());
 }
 
@@ -47,6 +49,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
+          BlocProvider(create: (_) => NavigatonBarCubit()),
           BlocProvider(
             create: (context) => WishlistBloc(
               authRepository: context.read<AuthRepository>(),

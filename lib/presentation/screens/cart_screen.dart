@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../config/utils.dart';
 import '../../logic/blocs/cart/cart_bloc.dart';
+import '../../logic/cubits/cubits.dart';
 import '../../services/firestore_services.dart';
 import '../router/app_router.dart';
 import '../widgets/empty_product.dart';
@@ -14,7 +15,10 @@ class CartScreen extends StatefulWidget {
   static Route route() {
     return MaterialPageRoute(
       settings: const RouteSettings(name: AppRouter.cart),
-      builder: (_) => const CartScreen(),
+      builder: (context) {
+        context.read<NavigatonBarCubit>().setTab(NavigationTab.cart);
+        return const CartScreen();
+      },
     );
   }
 
@@ -78,6 +82,13 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
+            AppRouter.home,
+            (route) => false,
+          ),
+          icon: const Icon(Icons.arrow_back),
+        ),
         title: const Text('Cart'),
         actions: <Widget>[
           TextButton(

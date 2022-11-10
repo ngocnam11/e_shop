@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/models/user.dart';
+import '../../logic/cubits/cubits.dart';
 import '../../services/auth_services.dart';
 import '../../services/firestore_services.dart';
 import '../router/app_router.dart';
@@ -14,7 +16,10 @@ class ProfileScreen extends StatelessWidget {
   static Route route() {
     return MaterialPageRoute(
       settings: const RouteSettings(name: AppRouter.profile),
-      builder: (_) => const ProfileScreen(),
+      builder: (context) {
+        context.read<NavigatonBarCubit>().setTab(NavigationTab.profile);
+        return const ProfileScreen();
+      },
     );
   }
 
@@ -175,9 +180,7 @@ class ProfileScreen extends StatelessWidget {
           return const SizedBox();
         },
       ),
-      bottomNavigationBar: const CustomNavigationBar(
-        currentRoute: AppRouter.profile,
-      ),
+      bottomNavigationBar: const CustomNavigationBar(),
     );
   }
 }
