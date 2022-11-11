@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
 
 import '../data/models/cart.dart';
@@ -9,15 +10,13 @@ import '../data/models/message.dart';
 import '../data/models/order.dart';
 import '../data/models/product.dart';
 import '../data/models/user.dart';
-import 'auth_services.dart';
 import 'storage_service.dart';
 
 class FireStoreServices {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final StorageService _storage = StorageService();
   var uuid = const Uuid();
-
-  String currentUserUid = AuthServices().currentUser.uid;
 
   Future<UserModel> getUserByUid({required String uid}) async {
     final snap = await _firestore.collection('users').doc(uid).get();
@@ -63,7 +62,7 @@ class FireStoreServices {
   Stream<List<Order>> getCurrentUserOrders() {
     final snaps = _firestore
         .collection('orders')
-        .where('customerId', isEqualTo: currentUserUid)
+        .where('customerId', isEqualTo: _auth.currentUser!.uid)
         .snapshots();
     final orders = snaps.map(
         (snap) => snap.docs.map((doc) => Order.fromJson(doc.data())).toList());
@@ -73,7 +72,7 @@ class FireStoreServices {
   Stream<List<Order>> getOrdersOfSellerId() {
     final snaps = _firestore
         .collection('orders')
-        .where('sellerId', isEqualTo: currentUserUid)
+        .where('sellerId', isEqualTo: _auth.currentUser!.uid)
         .snapshots();
     final orders = snaps.map(
         (snap) => snap.docs.map((doc) => Order.fromJson(doc.data())).toList());
@@ -129,7 +128,7 @@ class FireStoreServices {
   }) async {
     String res = 'Some error occurred';
     try {
-      final uid = AuthServices().currentUser.uid;
+      final uid = _auth.currentUser!.uid;
       CartItem newProduct = CartItem(
         id: 'ci$productId',
         productId: productId,
@@ -258,8 +257,10 @@ class FireStoreServices {
   }) async {
     String resDel = 'Some error occurred';
     try {
-      final snap =
-          await _firestore.collection('carts').doc(currentUserUid).get();
+      final snap = await _firestore
+          .collection('carts')
+          .doc(_auth.currentUser!.uid)
+          .get();
       final cartData = Cart.fromJson(snap.data()!);
       final products = cartData.products;
       for (var i = 0; i < products.length; i++) {
@@ -283,8 +284,8 @@ class FireStoreServices {
           products.insert(i, tmp);
           print(products);
 
-          _firestore.collection('carts').doc(currentUserUid).set(
-                Cart(uid: currentUserUid, products: products).toJson(),
+          _firestore.collection('carts').doc(_auth.currentUser!.uid).set(
+                Cart(uid: _auth.currentUser!.uid, products: products).toJson(),
                 SetOptions(merge: true),
               );
         }
@@ -432,7 +433,7 @@ class FireStoreServices {
         photoUrl =
             await _storage.uploadImageToStorage('profilePics', file, false, '');
       }
-      UserModel userData = await getUserByUid(uid: currentUserUid);
+      UserModel userData = await getUserByUid(uid: _auth.currentUser!.uid);
 
       userData = userData.copyWith(
         username: username,
@@ -442,7 +443,7 @@ class FireStoreServices {
 
       _firestore
           .collection('users')
-          .doc(currentUserUid)
+          .doc(_auth.currentUser!.uid)
           .update(userData.toJson());
       resUpdate = 'success';
     } catch (e) {
@@ -506,14 +507,15 @@ class FireStoreServices {
   Future<String> deleteDeliveryAddress({required String id}) async {
     String deleteDA = 'Some error occurred';
     try {
-      UserModel user = await getUserByUid(uid: currentUserUid);
+      UserModel user = await getUserByUid(uid: _auth.currentUser!.uid);
       final addresses = user.addresses;
       for (var i = 0; i < addresses.length; i++) {
         if (addresses[i].id == id) {
           addresses.removeAt(i);
-          await _firestore.collection('users').doc(currentUserUid).update(
-                user.copyWith(addresses: addresses).toJson(),
-              );
+          await _firestore
+              .collection('users')
+              .doc(_auth.currentUser!.uid)
+              .update(user.copyWith(addresses: addresses).toJson());
         }
       }
       deleteDA = 'success';
@@ -527,7 +529,7 @@ class FireStoreServices {
   Stream<List<UserModel>> get getDiscussionUser {
     return _firestore
         .collection('users')
-        .where('uid', isNotEqualTo: AuthServices().currentUser.uid)
+        .where('uid', isNotEqualTo: _auth.currentUser!.uid)
         .snapshots()
         .map((event) =>
             event.docs.map((e) => UserModel.fromJson(e.data())).toList());
@@ -537,9 +539,9 @@ class FireStoreServices {
     return _firestore
         .collection('messages')
         .where('senderUID',
-            isEqualTo: myMessage ? AuthServices().currentUser.uid : reciverUID)
+            isEqualTo: myMessage ? _auth.currentUser!.uid : reciverUID)
         .where('reciverUID',
-            isEqualTo: myMessage ? reciverUID : AuthServices().currentUser.uid)
+            isEqualTo: myMessage ? reciverUID : _auth.currentUser!.uid)
         .snapshots()
         .map((event) =>
             event.docs.map((e) => Message.fromJson(e.data(), e.id)).toList());

@@ -24,15 +24,13 @@ class ListCategories extends StatelessWidget {
           ),
           child: InkWell(
             borderRadius: BorderRadius.circular(16),
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => CategoryScreen(
-                    category: categories[index],
-                  ),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => CategoryScreen(
+                  category: categories[index],
                 ),
-              );
-            },
+              ),
+            ),
             child: Row(
               children: <Widget>[
                 Padding(

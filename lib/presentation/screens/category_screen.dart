@@ -29,7 +29,7 @@ class CategoryScreen extends StatelessWidget {
             }
             if (state is ProductLoaded) {
               final productsInCategory = state.products
-                  .where((doc) => doc.category == category.name)
+                  .where((product) => product.category == category.name)
                   .toList();
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../config/enums.dart';
 import '../../../data/models/user.dart';
 import '../../../data/repositories/repositories.dart';
 
@@ -18,46 +19,37 @@ class LoginCubit extends Cubit<LoginState> {
         super(LoginState.initial());
 
   void emailChanged(String email) {
-    emit(state.copyWith(email: email, status: LoginStatus.initial));
+    emit(state.copyWith(email: email, status: Status.initial));
   }
 
   void passwordChanged(String password) {
-    emit(state.copyWith(password: password, status: LoginStatus.initial));
+    emit(state.copyWith(password: password, status: Status.initial));
   }
 
   void obsecureChanged() {
-    emit(state.copyWith(
-      isObsecure: !state.isObsecure,
-      status: LoginStatus.initial,
-    ));
+    emit(state.copyWith(isObsecure: !state.isObsecure, status: Status.initial));
   }
 
   void rememberChanged() {
-    emit(state.copyWith(
-      remember: !state.remember,
-      status: LoginStatus.initial,
-    ));
+    emit(state.copyWith(remember: !state.remember, status: Status.initial));
   }
 
   Future<void> logInWithEmailAndPassword() async {
-    if (!state.isFormValid || state.status == LoginStatus.submitting) return;
-    emit(state.copyWith(status: LoginStatus.submitting));
+    if (!state.isFormValid || state.status == Status.submitting) return;
+    emit(state.copyWith(status: Status.submitting));
     try {
       await _authRepository.logInWithEmailAndPassword(
         email: state.email,
         password: state.password,
       );
-      emit(state.copyWith(status: LoginStatus.success));
+      emit(state.copyWith(status: Status.success));
     } catch (e) {
-      emit(state.copyWith(
-        status: LoginStatus.error,
-        errorMessage: e.toString(),
-      ));
+      emit(state.copyWith(status: Status.error, errorMessage: e.toString()));
     }
   }
 
   Future<void> logInWithGoogle() async {
-    emit(state.copyWith(status: LoginStatus.submitting));
+    emit(state.copyWith(status: Status.submitting));
     try {
       final authUser = await _authRepository.logInWithGoogle();
 
@@ -72,12 +64,9 @@ class LoginCubit extends Cubit<LoginState> {
         await _userRepository.createUser(user);
       }
 
-      emit(state.copyWith(status: LoginStatus.success));
+      emit(state.copyWith(status: Status.success));
     } catch (e) {
-      emit(state.copyWith(
-        status: LoginStatus.error,
-        errorMessage: e.toString(),
-      ));
+      emit(state.copyWith(status: Status.error, errorMessage: e.toString()));
     }
   }
 }

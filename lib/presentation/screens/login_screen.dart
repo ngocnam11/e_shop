@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../config/enums.dart';
 import '../../config/utils.dart';
 import '../../data/repositories/repositories.dart';
 import '../../logic/blocs/blocs.dart';
@@ -32,13 +33,13 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       body: BlocListener<LoginCubit, LoginState>(
         listener: (context, state) {
-          if (state.status == LoginStatus.error) {
+          if (state.status == Status.error) {
             showSnackBar(
               context,
               state.errorMessage ?? 'Login Failure',
             );
           }
-          if (state.status == LoginStatus.success) {
+          if (state.status == Status.success) {
             Navigator.of(context).pushNamedAndRemoveUntil(
               AppRouter.home,
               (route) => false,
@@ -141,7 +142,7 @@ class LoginScreen extends StatelessWidget {
                     previous.status != current.status ||
                     previous.isFormValid != current.isFormValid,
                 builder: (context, state) {
-                  return state.status == LoginStatus.submitting
+                  return state.status == Status.submitting
                       ? const CircularProgressIndicator()
                       : ElevatedButton(
                           onPressed: state.isFormValid

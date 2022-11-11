@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../config/enums.dart';
 import '../../config/utils.dart';
 import '../../data/repositories/repositories.dart';
 import '../../logic/cubits/change_password/change_password_cubit.dart';
@@ -30,13 +31,13 @@ class ChangePasswordScreen extends StatelessWidget {
       appBar: AppBar(),
       body: BlocListener<ChangePasswordCubit, ChangePasswordState>(
         listener: (context, state) {
-          if (state.status == ChangePasswordStatus.error) {
+          if (state.status == Status.error) {
             showSnackBar(
               context,
               state.errorMessage ?? 'Change Password Failure',
             );
           }
-          if (state.status == ChangePasswordStatus.success) {
+          if (state.status == Status.success) {
             showDialog(
               context: context,
               barrierDismissible: false,
@@ -137,7 +138,7 @@ class ChangePasswordScreen extends StatelessWidget {
                   previous.status != current.status ||
                   previous.isFormValid != current.isFormValid,
               builder: (context, state) {
-                return state.status == ChangePasswordStatus.submitting
+                return state.status == Status.submitting
                     ? const Center(child: CircularProgressIndicator())
                     : ElevatedButton(
                         style: ElevatedButton.styleFrom(

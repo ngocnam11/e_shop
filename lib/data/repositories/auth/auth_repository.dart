@@ -48,7 +48,7 @@ class AuthRepository extends BaseAuthRepository {
   }
 
   @override
-  Stream<User?> get user => _firebaseAuth.userChanges();
+  Stream<User?> get user => _firebaseAuth.authStateChanges();
 
   @override
   Future<User> logInWithGoogle() async {
@@ -75,7 +75,7 @@ class AuthRepository extends BaseAuthRepository {
   }
 
   @override
-  Future<void> sendForgotPasswordEmail({required String email}) async {
+  Future<void> sendForgotPasswordEmail(String email) async {
     try {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
     } catch (_) {

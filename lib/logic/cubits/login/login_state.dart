@@ -1,13 +1,11 @@
 part of 'login_cubit.dart';
 
-enum LoginStatus { initial, submitting, success, error }
-
 class LoginState extends Equatable {
   final String email;
   final String password;
   final bool isObsecure;
   final bool remember;
-  final LoginStatus status;
+  final Status status;
   final String? errorMessage;
 
   bool get isFormValid => email.isNotEmpty && password.isNotEmpty;
@@ -26,7 +24,7 @@ class LoginState extends Equatable {
         password: '',
         isObsecure: true,
         remember: false,
-        status: LoginStatus.initial,
+        status: Status.initial,
         errorMessage: '',
       );
 
@@ -35,7 +33,7 @@ class LoginState extends Equatable {
     String? password,
     bool? isObsecure,
     bool? remember,
-    LoginStatus? status,
+    Status? status,
     String? errorMessage,
   }) {
     return LoginState(

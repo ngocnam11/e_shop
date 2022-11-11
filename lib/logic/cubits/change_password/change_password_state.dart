@@ -1,13 +1,11 @@
 part of 'change_password_cubit.dart';
 
-enum ChangePasswordStatus { initial, submitting, success, error }
-
 class ChangePasswordState extends Equatable {
   final String currentPassword;
   final String newPassword;
   final bool hideCurrentPassword;
   final bool hideNewPassword;
-  final ChangePasswordStatus status;
+  final Status status;
   final String? errorMessage;
 
   bool get isFormValid =>
@@ -31,7 +29,7 @@ class ChangePasswordState extends Equatable {
         newPassword: '',
         hideCurrentPassword: true,
         hideNewPassword: true,
-        status: ChangePasswordStatus.initial,
+        status: Status.initial,
       );
 
   ChangePasswordState copyWith({
@@ -39,7 +37,7 @@ class ChangePasswordState extends Equatable {
     String? newPassword,
     bool? hideCurrentPassword,
     bool? hideNewPassword,
-    ChangePasswordStatus? status,
+    Status? status,
     String? errorMessage,
   }) {
     return ChangePasswordState(

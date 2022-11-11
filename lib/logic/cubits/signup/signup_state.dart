@@ -1,13 +1,11 @@
 part of 'signup_cubit.dart';
 
-enum SignUpStatus { initial, submitting, success, error }
-
 class SignUpState extends Equatable {
   final String email;
   final String password;
   final bool isObsecure;
   final String username;
-  final SignUpStatus status;
+  final Status status;
   final String? errorMessage;
 
   bool get isFormValid =>
@@ -27,7 +25,7 @@ class SignUpState extends Equatable {
         password: '',
         isObsecure: true,
         username: '',
-        status: SignUpStatus.initial,
+        status: Status.initial,
         errorMessage: '',
       );
 
@@ -36,7 +34,7 @@ class SignUpState extends Equatable {
     String? password,
     bool? isObsecure,
     String? username,
-    SignUpStatus? status,
+    Status? status,
     String? errorMessage,
   }) {
     return SignUpState(

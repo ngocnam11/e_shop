@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../config/enums.dart';
 import '../../config/utils.dart';
 import '../../data/repositories/repositories.dart';
 import '../../logic/blocs/blocs.dart';
@@ -32,13 +33,13 @@ class SignupScreen extends StatelessWidget {
     return Scaffold(
       body: BlocListener<SignUpCubit, SignUpState>(
         listener: (context, state) {
-          if (state.status == SignUpStatus.error) {
+          if (state.status == Status.error) {
             showSnackBar(
               context,
               state.errorMessage ?? 'SignUp Failure',
             );
           }
-          if (state.status == SignUpStatus.success) {
+          if (state.status == Status.success) {
             Navigator.of(context).pushNamedAndRemoveUntil(
               AppRouter.home,
               (route) => false,
@@ -125,7 +126,7 @@ class SignupScreen extends StatelessWidget {
                     previous.status != current.status ||
                     previous.isFormValid != current.isFormValid,
                 builder: (context, state) {
-                  return state.status == SignUpStatus.submitting
+                  return state.status == Status.submitting
                       ? const CircularProgressIndicator()
                       : ElevatedButton(
                           onPressed: state.isFormValid

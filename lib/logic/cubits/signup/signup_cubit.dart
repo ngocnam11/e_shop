@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../config/enums.dart';
 import '../../../data/models/user.dart';
 import '../../../data/repositories/repositories.dart';
 
@@ -18,27 +19,24 @@ class SignUpCubit extends Cubit<SignUpState> {
         super(SignUpState.initial());
 
   void emailChanged(String email) {
-    emit(state.copyWith(email: email, status: SignUpStatus.initial));
+    emit(state.copyWith(email: email, status: Status.initial));
   }
 
   void passwordChanged(String password) {
-    emit(state.copyWith(password: password, status: SignUpStatus.initial));
+    emit(state.copyWith(password: password, status: Status.initial));
   }
 
   void usernameChanged(String username) {
-    emit(state.copyWith(username: username, status: SignUpStatus.initial));
+    emit(state.copyWith(username: username, status: Status.initial));
   }
 
   void obsecureChanged() {
-    emit(state.copyWith(
-      isObsecure: !state.isObsecure,
-      status: SignUpStatus.initial,
-    ));
+    emit(state.copyWith(isObsecure: !state.isObsecure, status: Status.initial));
   }
 
   Future<void> signUpUser() async {
-    if (!state.isFormValid || state.status == SignUpStatus.submitting) return;
-    emit(state.copyWith(status: SignUpStatus.submitting));
+    if (!state.isFormValid || state.status == Status.submitting) return;
+    emit(state.copyWith(status: Status.submitting));
     try {
       final authUser = await _authRepository.signUp(
         email: state.email,
@@ -52,12 +50,9 @@ class SignUpCubit extends Cubit<SignUpState> {
       );
 
       await _userRepository.createUser(user);
-      emit(state.copyWith(status: SignUpStatus.success));
+      emit(state.copyWith(status: Status.success));
     } catch (e) {
-      emit(state.copyWith(
-        status: SignUpStatus.error,
-        errorMessage: e.toString(),
-      ));
+      emit(state.copyWith(status: Status.error, errorMessage: e.toString()));
     }
   }
 }

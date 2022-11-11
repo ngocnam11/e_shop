@@ -11,7 +11,7 @@ abstract class BaseAuthRepository {
     required String password,
   });
   Future<void> logInWithGoogle();
-  Future<void> sendForgotPasswordEmail({required String email});
+  Future<void> sendForgotPasswordEmail(String email);
   Future<void> changePassword({
     required String currentPassword,
     required String newPassword,
