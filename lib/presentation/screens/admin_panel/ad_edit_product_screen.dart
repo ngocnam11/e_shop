@@ -255,9 +255,7 @@ class _AdEditProductScreenState extends State<AdEditProductScreen> {
               ],
             );
           }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         },
       ),
     );

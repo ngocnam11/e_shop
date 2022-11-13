@@ -87,9 +87,7 @@ class HomeScreen extends StatelessWidget {
                   return const Text('Something went wrong');
                 }
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return const Center(child: CircularProgressIndicator());
                 }
                 return ProductCarousel(
                   products: snapshot.data!.toList(),

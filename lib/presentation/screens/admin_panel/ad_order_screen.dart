@@ -27,9 +27,7 @@ class AdOrderScreen extends StatelessWidget {
         stream: FireStoreServices().getOrdersOfSellerId(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
             debugPrint(snapshot.error.toString());

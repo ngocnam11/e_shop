@@ -41,9 +41,7 @@ class ProductCard extends StatelessWidget {
                 child: BlocBuilder<WishlistBloc, WishlistState>(
                   builder: (context, state) {
                     if (state is WishlistLoading) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
+                      return const Center(child: CircularProgressIndicator());
                     }
                     if (state is WishlistLoaded) {
                       return Container(

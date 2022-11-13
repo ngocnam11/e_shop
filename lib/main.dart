@@ -80,10 +80,10 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (_) => CartBloc()..add(LoadCart())),
         ],
         child: MaterialApp(
-          scrollBehavior: MyCustomScrollBehavior(),
+          scrollBehavior: CustomScrollBehavior(),
           debugShowCheckedModeBanner: false,
           title: 'Flutter eShop',
-          theme: theme(),
+          theme: AppTheme.lightTheme,
           initialRoute: AppRouter.initialRoute,
           onGenerateRoute: AppRouter.onGenerateRoute,
         ),
@@ -92,7 +92,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyCustomScrollBehavior extends MaterialScrollBehavior {
+class CustomScrollBehavior extends ScrollBehavior {
   @override
   Set<PointerDeviceKind> get dragDevices => {
         PointerDeviceKind.touch,

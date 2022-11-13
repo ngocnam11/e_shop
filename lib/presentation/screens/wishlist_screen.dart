@@ -65,9 +65,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
       body: BlocBuilder<WishlistBloc, WishlistState>(
         builder: (context, wishlistState) {
           if (wishlistState is WishlistLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           }
           if (wishlistState is WishlistLoaded) {
             if (wishlistState.wishlist.products.isEmpty) {
@@ -271,7 +269,8 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                           );
                                         } else {
                                           return const Text(
-                                              'Something went wrong');
+                                            'Something went wrong',
+                                          );
                                         }
                                       },
                                     ),
@@ -291,9 +290,8 @@ class _WishlistScreenState extends State<WishlistScreen> {
               },
               separatorBuilder: (_, __) => const SizedBox(height: 12),
             );
-          } else {
-            return const Text('Something went wrong');
           }
+          return const Text('Something went wrong');
         },
       ),
       bottomNavigationBar: const CustomNavigationBar(),

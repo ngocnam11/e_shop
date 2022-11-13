@@ -146,9 +146,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         .getUserByUid(uid: widget.product.uid),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
+                        return const Center(child: CircularProgressIndicator());
                       }
                       if (snapshot.hasError) {
                         debugPrint(snapshot.error.toString());
@@ -318,9 +316,7 @@ class _ProductScreenState extends State<ProductScreen> {
               future: FireStoreServices().getUserByUid(uid: widget.product.uid),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return const Center(child: CircularProgressIndicator());
                 }
                 if (snapshot.hasError) {
                   debugPrint(snapshot.error.toString());
@@ -346,9 +342,7 @@ class _ProductScreenState extends State<ProductScreen> {
               child: BlocBuilder<CartBloc, CartState>(
                 builder: (context, state) {
                   if (state is CartLoading) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    return const Center(child: CircularProgressIndicator());
                   }
                   if (state is CartLoaded) {
                     return CustomButton(

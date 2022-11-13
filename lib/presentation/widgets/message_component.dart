@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import '../../data/models/message.dart';
 
 class MessageComponent extends StatelessWidget {
-  const MessageComponent({super.key, this.message});
+  const MessageComponent({super.key, required this.message});
 
-  final Message? message;
+  final Message message;
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    var date = message!.createAt!.toDate().toLocal();
+    final date = message.createAt!.toDate().toLocal();
     return Row(
       mainAxisAlignment:
-          message!.isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+          message.isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: <Widget>[
         Stack(
           children: <Widget>[
@@ -25,26 +25,22 @@ class MessageComponent extends StatelessWidget {
                 maxWidth: width * 0.7,
               ),
               decoration: BoxDecoration(
-                color: message!.isMe ? Colors.blue : Colors.grey[300],
+                color: message.isMe ? Colors.blue : Colors.grey[300],
                 borderRadius: BorderRadius.only(
                   topLeft: const Radius.circular(10),
                   topRight: const Radius.circular(10),
-                  bottomLeft: message!.isMe
+                  bottomLeft: message.isMe
                       ? const Radius.circular(10)
                       : const Radius.circular(0),
-                  bottomRight: message!.isMe
+                  bottomRight: message.isMe
                       ? const Radius.circular(0)
                       : const Radius.circular(10),
                 ),
               ),
               child: Text(
-                message!.content!,
-                style: message!.isMe
-                    ? Theme.of(context)
-                        .textTheme
-                        .headline6!
-                        .copyWith(color: Colors.white)
-                    : Theme.of(context).textTheme.headline6!,
+                message.content!,
+                style: Theme.of(context).textTheme.headline6!.copyWith(
+                    color: message.isMe ? Colors.white : Colors.black87),
               ),
             ),
             Positioned(
@@ -57,7 +53,7 @@ class MessageComponent extends StatelessWidget {
                 ),
                 child: Text(
                   '${date.hour}h${date.minute}',
-                  style: message!.isMe
+                  style: message.isMe
                       ? const TextStyle(
                           fontSize: 10,
                           color: Colors.white,

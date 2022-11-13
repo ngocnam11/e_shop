@@ -100,9 +100,7 @@ class _CartScreenState extends State<CartScreen> {
       body: BlocBuilder<CartBloc, CartState>(
         builder: (context, state) {
           if (state is CartLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           }
           if (state is CartLoaded) {
             final products = state.cart.productQuantity(state.cart.products);
@@ -165,9 +163,7 @@ class _CartScreenState extends State<CartScreen> {
       bottomNavigationBar: BlocBuilder<CartBloc, CartState>(
         builder: (context, state) {
           if (state is CartLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           }
           if (state is CartLoaded) {
             final products = state.cart.products;

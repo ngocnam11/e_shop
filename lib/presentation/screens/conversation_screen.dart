@@ -18,7 +18,6 @@ class ConversationScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(user.username),
-        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -33,42 +32,34 @@ class ConversationScreen extends StatelessWidget {
                       stream: FireStoreServices().getMessage(user.uid, false),
                       builder: (context, snapshot2) {
                         if (snapshot2.hasData) {
-                          var messages = [
+                          final List<Message> messages = [
                             ...snapshot1.data!,
-                            ...snapshot2.data!
-                          ];
-                          messages.sort(
-                              (i, j) => i.createAt!.compareTo(j.createAt!));
-                          messages = messages.reversed.toList();
+                            ...snapshot2.data!,
+                          ]
+                            ..sort((i, j) => i.createAt!.compareTo(j.createAt!))
+                            ..reversed;
                           return messages.isEmpty
-                              ? const Center(
-                                  child: Text('No message'),
-                                )
+                              ? const Center(child: Text('No message'))
                               : ListView.builder(
                                   reverse: true,
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 12),
                                   itemCount: messages.length,
-                                  itemBuilder: ((context, index) {
-                                    final msg = messages[index];
+                                  itemBuilder: (context, index) {
                                     return Container(
                                       margin: const EdgeInsets.only(bottom: 5),
                                       child: MessageComponent(
-                                        message: msg,
+                                        message: messages[index],
                                       ),
                                     );
-                                  }),
+                                  },
                                 );
-                        } else {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
                         }
+                        return const Center(child: CircularProgressIndicator());
                       },
                     );
-                  } else {
-                    return const Center(child: CircularProgressIndicator());
                   }
+                  return const Center(child: CircularProgressIndicator());
                 },
               ),
             ),
@@ -93,10 +84,10 @@ class ConversationScreen extends StatelessWidget {
                       reciverUID: user.uid,
                       senderUID: AuthServices().currentUser.uid,
                     );
-                    msgController.clear();
                     await FireStoreServices().sendMessage(msg);
+                    msgController.clear();
                   },
-                  icon: const Icon(Icons.send),
+                  icon: const Icon(Icons.send_rounded),
                 ),
               ],
             ),

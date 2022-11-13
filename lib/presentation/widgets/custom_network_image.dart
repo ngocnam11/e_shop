@@ -18,21 +18,15 @@ class CustomNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.network(
-      src,
-      loadingBuilder: (context, child, loadingProgress) {
-        if (loadingProgress == null) return child;
-        return Image.asset(
-          'assets/images/placeholder.jpg',
-          width: width ?? double.maxFinite,
-          height: height ?? double.maxFinite,
-          fit: fit,
-        );
-      },
+    return FadeInImage.assetNetwork(
+      image: src,
+      placeholder: 'assets/images/placeholder.jpg',
       width: width ?? double.maxFinite,
       height: height ?? double.maxFinite,
       fit: fit,
-      errorBuilder: (context, error, stackTrace) {
+      placeholderFit: fit,
+      fadeOutDuration: const Duration(milliseconds: 500),
+      imageErrorBuilder: (context, error, stackTrace) {
         debugPrint(error.toString());
         return Image.asset(
           isCurrentUserAvatar
