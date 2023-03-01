@@ -24,7 +24,7 @@ class NewCardScreen extends StatelessWidget {
           children: <Widget>[
             Text(
               'Card Form',
-              style: Theme.of(context).textTheme.headline2,
+              style: Theme.of(context).textTheme.displayMedium,
             ),
             const SizedBox(height: 20),
             ElevatedButton(

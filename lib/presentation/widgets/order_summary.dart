@@ -21,14 +21,14 @@ class OrderSummary extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     'Sub-total',
-                    style: Theme.of(context).textTheme.headline5!.copyWith(
+                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                           color: Colors.black54,
                           fontWeight: FontWeight.normal,
                         ),
                   ),
                   Text(
                     '\$${state.cart.subtotalString}',
-                    style: Theme.of(context).textTheme.headline5,
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ],
               ),
@@ -37,14 +37,14 @@ class OrderSummary extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     'VAT (%)',
-                    style: Theme.of(context).textTheme.headline5!.copyWith(
+                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                           color: Colors.black54,
                           fontWeight: FontWeight.normal,
                         ),
                   ),
                   Text(
                     '\$0',
-                    style: Theme.of(context).textTheme.headline5,
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ],
               ),
@@ -53,14 +53,14 @@ class OrderSummary extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     'Shipping Charge',
-                    style: Theme.of(context).textTheme.headline5!.copyWith(
+                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                           color: Colors.black54,
                           fontWeight: FontWeight.normal,
                         ),
                   ),
                   Text(
                     '\$${state.cart.deliveryFeeString}',
-                    style: Theme.of(context).textTheme.headline5,
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ],
               ),
@@ -70,11 +70,11 @@ class OrderSummary extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     'Total',
-                    style: Theme.of(context).textTheme.headline5,
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   Text(
                     '\$${state.cart.totalString}',
-                    style: Theme.of(context).textTheme.headline5,
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ],
               ),

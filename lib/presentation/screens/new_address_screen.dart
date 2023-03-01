@@ -61,7 +61,7 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
           children: <Widget>[
             Text(
               'Address',
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             TextFieldInput(
               controller: addressController,
@@ -71,7 +71,7 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
             const SizedBox(height: 16),
             Text(
               'City',
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             TextFieldInput(
               controller: cityController,
@@ -81,7 +81,7 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
             const SizedBox(height: 16),
             Text(
               'Country',
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             TextFieldInput(
               controller: countryController,
@@ -97,7 +97,7 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                 ),
                 Text(
                   'Save my shipping infomation',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ],
             )

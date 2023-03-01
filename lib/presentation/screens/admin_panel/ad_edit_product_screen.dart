@@ -135,7 +135,7 @@ class _AdEditProductScreenState extends State<AdEditProductScreen> {
                     const SizedBox(height: 20),
                     Text(
                       'Product Information',
-                      style: theme.headline4,
+                      style: theme.headlineMedium,
                     ),
                     const SizedBox(height: 20),
                     TextFieldInput(

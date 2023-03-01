@@ -53,7 +53,7 @@ class _AdProductScreenState extends State<AdProductScreen> {
                       'Add a New Product',
                       style: Theme.of(context)
                           .textTheme
-                          .headline4!
+                          .headlineMedium!
                           .copyWith(color: Colors.white),
                     ),
                   ],

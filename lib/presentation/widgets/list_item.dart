@@ -55,7 +55,7 @@ class ListItem extends StatelessWidget {
                           Expanded(
                             child: Text(
                               snapshot.data!.name,
-                              style: Theme.of(context).textTheme.headline4,
+                              style: Theme.of(context).textTheme.headlineMedium,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -72,14 +72,14 @@ class ListItem extends StatelessWidget {
                       ),
                       Text(
                         '${product.color}, ${product.size}',
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
                             '\$${product.price}',
-                            style: Theme.of(context).textTheme.headline5,
+                            style: Theme.of(context).textTheme.headlineSmall,
                           ),
                           child,
                         ],

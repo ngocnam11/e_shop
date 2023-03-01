@@ -37,7 +37,7 @@ class OrderDetailsScreen extends StatelessWidget {
               'Thanks for shopping!',
               style: Theme.of(context)
                   .textTheme
-                  .headline2!
+                  .displayMedium!
                   .copyWith(color: Colors.blue),
             ),
           ),
@@ -49,7 +49,7 @@ class OrderDetailsScreen extends StatelessWidget {
               '\nour small business!'
               '\nWe hope you love your order!',
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
           ),
           const SizedBox(height: 12),
@@ -75,7 +75,7 @@ class OrderDetailsScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     'Order confirmed',
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ],
               ),
@@ -93,7 +93,7 @@ class OrderDetailsScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     'Order shipment',
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ],
               ),
@@ -111,7 +111,7 @@ class OrderDetailsScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     'Package arrived',
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ],
               ),
@@ -122,7 +122,7 @@ class OrderDetailsScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Text(
               '#ORD2022Y9M17ES',
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
           ),
           const SizedBox(height: 12),
@@ -146,7 +146,7 @@ class OrderDetailsScreen extends StatelessWidget {
                         height: 24,
                         child: Text(
                           'Quantity: ${products.values.elementAt(index).toString()}',
-                          style: Theme.of(context).textTheme.headline5,
+                          style: Theme.of(context).textTheme.headlineSmall,
                         ),
                       ),
                     );

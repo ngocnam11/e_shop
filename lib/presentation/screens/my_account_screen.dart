@@ -195,7 +195,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     child: Text(
                       snapshot.data!.email,
-                      style: Theme.of(context).textTheme.headline4,
+                      style: Theme.of(context).textTheme.headlineMedium,
                     ),
                   ),
                   Column(
@@ -203,7 +203,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                     children: <Widget>[
                       Text(
                         'User Name',
-                        style: Theme.of(context).textTheme.headline5,
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       const SizedBox(height: 4),
                       TextFieldInput(
@@ -214,7 +214,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                       const SizedBox(height: 20),
                       Text(
                         'Phone Number',
-                        style: Theme.of(context).textTheme.headline5,
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       const SizedBox(height: 4),
                       TextFieldInput(

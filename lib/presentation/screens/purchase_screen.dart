@@ -34,7 +34,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
               svgIconPath: 'assets/svgs/logo/money.svg',
               title: Text(
                 'Cash Money',
-                style: Theme.of(context).textTheme.headline4,
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
               trailing: Radio<String>(
                 value: 'Cash Money',

@@ -132,7 +132,7 @@ class _CartScreenState extends State<CartScreen> {
                       ),
                       Text(
                         products.values.elementAt(index).toString(),
-                        style: Theme.of(context).textTheme.headline6,
+                        style: Theme.of(context).textTheme.titleLarge,
                       ),
                       IconButton(
                         onPressed: () {
@@ -202,11 +202,11 @@ class _CartScreenState extends State<CartScreen> {
                         children: <Widget>[
                           Text(
                             'Total',
-                            style: Theme.of(context).textTheme.headline4,
+                            style: Theme.of(context).textTheme.headlineMedium,
                           ),
                           Text(
                             '\$${state.cart.totalString}',
-                            style: Theme.of(context).textTheme.headline4,
+                            style: Theme.of(context).textTheme.headlineMedium,
                           ),
                         ],
                       ),

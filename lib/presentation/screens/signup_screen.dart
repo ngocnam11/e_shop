@@ -61,7 +61,7 @@ class SignupScreen extends StatelessWidget {
               ),
               Text(
                 'Please put your infomation below to create a new account for using app.',
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 30),
               BlocBuilder<SignUpCubit, SignUpState>(
@@ -155,7 +155,7 @@ class SignupScreen extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     'Already have an account?',
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
                   TextButton(
                     onPressed: () => Navigator.of(context)

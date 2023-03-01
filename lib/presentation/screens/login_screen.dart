@@ -61,7 +61,7 @@ class LoginScreen extends StatelessWidget {
               ),
               Text(
                 'Please login to start using app.',
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 20),
               BlocBuilder<LoginCubit, LoginState>(
@@ -125,7 +125,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                       label: Text(
                         'Remember me',
-                        style: Theme.of(context).textTheme.headline6,
+                        style: Theme.of(context).textTheme.titleLarge,
                       ),
                     ),
                   ),
@@ -173,7 +173,7 @@ class LoginScreen extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     'Not a member?',
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
                   TextButton(
                     onPressed: () => Navigator.of(context)
@@ -190,7 +190,7 @@ class LoginScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Text(
                       'Or sign in with',
-                      style: Theme.of(context).textTheme.headline6,
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ),
                   const Expanded(child: Divider()),

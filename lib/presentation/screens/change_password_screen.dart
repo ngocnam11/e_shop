@@ -43,7 +43,7 @@ class ChangePasswordScreen extends StatelessWidget {
               barrierDismissible: false,
               builder: (context) => AlertDialog(
                 title: const Text('Successful update password'),
-                titleTextStyle: Theme.of(context).textTheme.headline5,
+                titleTextStyle: Theme.of(context).textTheme.headlineSmall,
                 content:
                     const Text('Your password has been Changed. Log in again!'),
               ),
@@ -61,20 +61,20 @@ class ChangePasswordScreen extends StatelessWidget {
           children: <Widget>[
             Text(
               'Create new password',
-              style: Theme.of(context).textTheme.headline1,
+              style: Theme.of(context).textTheme.displayLarge,
             ),
             const SizedBox(height: 12),
             Text(
               'Your new password must be different from previous used passwords.',
               style: Theme.of(context)
                   .textTheme
-                  .headline6!
+                  .titleLarge!
                   .copyWith(color: Colors.black54),
             ),
             const SizedBox(height: 20),
             Text(
               'Current Password',
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             BlocBuilder<ChangePasswordCubit, ChangePasswordState>(
               buildWhen: (previous, current) =>
@@ -103,7 +103,7 @@ class ChangePasswordScreen extends StatelessWidget {
             const SizedBox(height: 20),
             Text(
               'New Password',
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             BlocBuilder<ChangePasswordCubit, ChangePasswordState>(
               buildWhen: (previous, current) =>

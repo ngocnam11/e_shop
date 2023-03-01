@@ -78,12 +78,12 @@ class ProfileScreen extends StatelessWidget {
                               children: <Widget>[
                                 Text(
                                   snapshot.data!.username,
-                                  style: Theme.of(context).textTheme.headline3,
+                                  style: Theme.of(context).textTheme.displaySmall,
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
                                   snapshot.data!.email,
-                                  style: Theme.of(context).textTheme.headline6,
+                                  style: Theme.of(context).textTheme.titleLarge,
                                 ),
                               ],
                             ),
@@ -136,7 +136,7 @@ class ProfileScreen extends StatelessWidget {
                             builder: (context) => AlertDialog(
                               title: const Text('Log out'),
                               titleTextStyle:
-                                  Theme.of(context).textTheme.headline3,
+                                  Theme.of(context).textTheme.displaySmall,
                               content: const Text('Do you want to log out?'),
                               actions: <Widget>[
                                 TextButton(

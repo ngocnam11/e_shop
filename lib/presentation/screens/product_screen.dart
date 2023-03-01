@@ -138,7 +138,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 children: <Widget>[
                   Text(
                     widget.product.name,
-                    style: theme.headline3,
+                    style: theme.displaySmall,
                   ),
                   const SizedBox(height: 12),
                   FutureBuilder<UserModel>(
@@ -154,7 +154,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       }
                       return Text(
                         snapshot.data!.username,
-                        style: theme.headline4,
+                        style: theme.headlineMedium,
                       );
                     },
                   ),
@@ -168,14 +168,14 @@ class _ProductScreenState extends State<ProductScreen> {
                       const Icon(Icons.star, color: Colors.yellow),
                       Text(
                         '10',
-                        style: theme.headline4,
+                        style: theme.headlineMedium,
                       ),
                     ],
                   ),
                   const SizedBox(height: 12),
                   Text(
                     '\$${widget.product.price}',
-                    style: theme.headline3,
+                    style: theme.displaySmall,
                   ),
                   const SizedBox(height: 12),
                   if (widget.product.colors.isNotEmpty ||
@@ -231,7 +231,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                             widget.product.sizes.isEmpty)
                                           Text(
                                             'Color',
-                                            style: theme.headline4!.copyWith(
+                                            style: theme.headlineMedium!.copyWith(
                                               color: Colors.black54,
                                               fontWeight: FontWeight.normal,
                                             ),
@@ -240,7 +240,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                             widget.product.colors.isEmpty)
                                           Text(
                                             'Size',
-                                            style: theme.headline4!.copyWith(
+                                            style: theme.headlineMedium!.copyWith(
                                               color: Colors.black54,
                                               fontWeight: FontWeight.normal,
                                             ),
@@ -249,7 +249,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                             widget.product.sizes.isNotEmpty)
                                           Text(
                                             'Color, Size',
-                                            style: theme.headline4!.copyWith(
+                                            style: theme.headlineMedium!.copyWith(
                                               color: Colors.black54,
                                               fontWeight: FontWeight.normal,
                                             ),
@@ -262,19 +262,19 @@ class _ProductScreenState extends State<ProductScreen> {
                                             widget.product.sizes.isEmpty)
                                           Text(
                                             _color,
-                                            style: theme.headline4,
+                                            style: theme.headlineMedium,
                                           ),
                                         if (widget.product.sizes.isNotEmpty &&
                                             widget.product.colors.isEmpty)
                                           Text(
                                             _size,
-                                            style: theme.headline4,
+                                            style: theme.headlineMedium,
                                           ),
                                         if (widget.product.colors.isNotEmpty &&
                                             widget.product.sizes.isNotEmpty)
                                           Text(
                                             '$_color / $_size',
-                                            style: theme.headline4,
+                                            style: theme.headlineMedium,
                                           ),
                                       ],
                                     ),
@@ -294,12 +294,12 @@ class _ProductScreenState extends State<ProductScreen> {
                   const SizedBox(height: 12),
                   Text(
                     'Description',
-                    style: theme.headline3,
+                    style: theme.displaySmall,
                   ),
                   const SizedBox(height: 12),
                   Text(
                     widget.product.description,
-                    style: theme.headline6,
+                    style: theme.titleLarge,
                   ),
                 ],
               ),

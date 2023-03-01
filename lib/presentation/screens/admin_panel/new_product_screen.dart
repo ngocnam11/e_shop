@@ -108,7 +108,7 @@ class _NewProductScreenState extends State<NewProductScreen> {
                       const SizedBox(width: 10),
                       Text(
                         'Add an Image',
-                        style: theme.headline4!.copyWith(color: Colors.white),
+                        style: theme.headlineMedium!.copyWith(color: Colors.white),
                       )
                     ],
                   ),
@@ -133,7 +133,7 @@ class _NewProductScreenState extends State<NewProductScreen> {
               const SizedBox(height: 20),
               Text(
                 'Product Information',
-                style: theme.headline4,
+                style: theme.headlineMedium,
               ),
               const SizedBox(height: 20),
               TextFieldInput(

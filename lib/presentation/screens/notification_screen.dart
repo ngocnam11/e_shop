@@ -57,12 +57,12 @@ class NotificationScreen extends StatelessWidget {
                           children: <Widget>[
                             Text(
                               'Happy Birthday to You!',
-                              style: Theme.of(context).textTheme.headline4,
+                              style: Theme.of(context).textTheme.headlineMedium,
                               overflow: TextOverflow.ellipsis,
                             ),
                             Text(
                               'Gift a 20% to you!',
-                              style: Theme.of(context).textTheme.headline5,
+                              style: Theme.of(context).textTheme.headlineSmall,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ],
@@ -79,7 +79,7 @@ class NotificationScreen extends StatelessWidget {
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
                               '11:11 PM',
-                              style: Theme.of(context).textTheme.headline6,
+                              style: Theme.of(context).textTheme.titleLarge,
                             ),
                           ),
                         ],

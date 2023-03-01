@@ -39,7 +39,7 @@ class MessageComponent extends StatelessWidget {
               ),
               child: Text(
                 message.content!,
-                style: Theme.of(context).textTheme.headline6!.copyWith(
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     color: message.isMe ? Colors.white : Colors.black87),
               ),
             ),

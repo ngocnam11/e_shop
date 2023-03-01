@@ -81,13 +81,13 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
                             children: <Text>[
                               Text(
                                 snapshot.data!.addresses[index].address,
-                                style: Theme.of(context).textTheme.headline4,
+                                style: Theme.of(context).textTheme.headlineMedium,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
                               ),
                               Text(
                                 '${snapshot.data!.addresses[index].city}, ${snapshot.data!.addresses[index].country}',
-                                style: Theme.of(context).textTheme.headline5,
+                                style: Theme.of(context).textTheme.headlineSmall,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ],
@@ -125,7 +125,7 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
                                 },
                                 child: Text(
                                   'Edit',
-                                  style: Theme.of(context).textTheme.bodyText1,
+                                  style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ),
                             ),

@@ -94,7 +94,7 @@ class ListConversation extends StatelessWidget {
                                                           .username,
                                                       style: Theme.of(context)
                                                           .textTheme
-                                                          .headline4,
+                                                          .headlineMedium,
                                                     ),
                                                     Text(
                                                       messages.isEmpty
@@ -103,7 +103,7 @@ class ListConversation extends StatelessWidget {
                                                               .content!,
                                                       style: Theme.of(context)
                                                           .textTheme
-                                                          .headline6,
+                                                          .titleLarge,
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                     ),
@@ -119,7 +119,7 @@ class ListConversation extends StatelessWidget {
                                                             .toDate()),
                                                 style: Theme.of(context)
                                                     .textTheme
-                                                    .headline6,
+                                                    .titleLarge,
                                               ),
                                             ],
                                           ),

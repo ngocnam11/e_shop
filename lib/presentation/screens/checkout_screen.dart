@@ -125,7 +125,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 'Delivery Address',
                                 style: Theme.of(context)
                                     .textTheme
-                                    .headline4!
+                                    .headlineMedium!
                                     .copyWith(color: Colors.blue[300]),
                               ),
                             ],
@@ -152,7 +152,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   return Text(
                                     '${snapshot.data!.username} | (${snapshot.data!.phoneNum})',
                                     style:
-                                        Theme.of(context).textTheme.headline4,
+                                        Theme.of(context).textTheme.headlineMedium,
                                   );
                                 },
                               ),
@@ -162,7 +162,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             padding: const EdgeInsets.only(left: 24),
                             child: Text(
                               deliveryAddress,
-                              style: Theme.of(context).textTheme.headline4,
+                              style: Theme.of(context).textTheme.headlineMedium,
                             ),
                           ),
                         ],
@@ -211,7 +211,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     const EdgeInsets.symmetric(horizontal: 12),
                                 child: Text(
                                   snapshot.data!.username,
-                                  style: Theme.of(context).textTheme.headline4,
+                                  style: Theme.of(context).textTheme.headlineMedium,
                                 ),
                               );
                             },
@@ -224,7 +224,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               height: 24,
                               child: Text(
                                 'Quantity: ${products.length}',
-                                style: Theme.of(context).textTheme.headline5,
+                                style: Theme.of(context).textTheme.headlineSmall,
                               ),
                             ),
                           ),
@@ -254,11 +254,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       const Icon(Icons.local_shipping_outlined),
                       Text(
                         'Delivery Method',
-                        style: Theme.of(context).textTheme.headline3,
+                        style: Theme.of(context).textTheme.displaySmall,
                       ),
                       Text(
                         'EShopExpress',
-                        style: Theme.of(context).textTheme.headline4,
+                        style: Theme.of(context).textTheme.headlineMedium,
                       ),
                       const Icon(Icons.navigate_next),
                     ],
@@ -284,11 +284,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       const Icon(Icons.monetization_on_outlined),
                       Text(
                         'Payment Method',
-                        style: Theme.of(context).textTheme.headline3,
+                        style: Theme.of(context).textTheme.displaySmall,
                       ),
                       Text(
                         'Cash Money',
-                        style: Theme.of(context).textTheme.headline4,
+                        style: Theme.of(context).textTheme.headlineMedium,
                       ),
                       const Icon(Icons.navigate_next),
                     ],
@@ -327,7 +327,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             'Order Now',
             style: Theme.of(context)
                 .textTheme
-                .headline3!
+                .displaySmall!
                 .copyWith(color: Colors.white),
           ),
         ),

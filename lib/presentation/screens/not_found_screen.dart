@@ -47,7 +47,7 @@ class NotFoundScreen extends StatelessWidget {
             ),
             Text(
               'We\'re sorry, the page you requested could not be found. Please go back to the homepage!',
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ],
         ),

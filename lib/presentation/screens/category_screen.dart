@@ -38,7 +38,7 @@ class CategoryScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(16),
                     child: Text(
                       category.name,
-                      style: Theme.of(context).textTheme.headline3,
+                      style: Theme.of(context).textTheme.displaySmall,
                     ),
                   ),
                   GridView.builder(

@@ -94,17 +94,17 @@ class ProductCard extends StatelessWidget {
           ),
           Text(
             product.name,
-            style: Theme.of(context).textTheme.headline4,
+            style: Theme.of(context).textTheme.headlineMedium,
             overflow: TextOverflow.ellipsis,
           ),
           Text(
             product.description,
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.titleLarge,
             overflow: TextOverflow.ellipsis,
           ),
           Text(
             '\$${product.price}',
-            style: Theme.of(context).textTheme.headline5,
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
         ],
       ),

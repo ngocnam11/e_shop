@@ -48,7 +48,7 @@ class ListCategories extends StatelessWidget {
                 Expanded(
                   child: Text(
                     categories[index].name,
-                    style: Theme.of(context).textTheme.headline3,
+                    style: Theme.of(context).textTheme.displaySmall,
                   ),
                 ),
                 const Icon(

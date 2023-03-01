@@ -78,7 +78,7 @@ class SearchScreen extends StatelessWidget {
                     child: Center(
                       child: Text(
                         category[index],
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
                   );

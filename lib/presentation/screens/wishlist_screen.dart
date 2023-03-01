@@ -128,7 +128,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                         snapshot.data!.name,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .headline4,
+                                            .headlineMedium,
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -136,7 +136,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                         '\$${wishlistState.wishlist.products[index].price}',
                                         style: Theme.of(context)
                                             .textTheme
-                                            .headline5,
+                                            .headlineSmall,
                                       ),
                                     ],
                                   ),

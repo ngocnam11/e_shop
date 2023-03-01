@@ -41,12 +41,12 @@ class _AdProductCardState extends State<AdProductCard> {
           children: <Widget>[
             Text(
               widget.product.name,
-              style: theme.headline4,
+              style: theme.headlineMedium,
             ),
             const SizedBox(height: 10),
             Text(
               widget.product.description,
-              style: theme.bodyText1,
+              style: theme.bodyLarge,
             ),
             const SizedBox(height: 10),
             Row(
@@ -67,13 +67,13 @@ class _AdProductCardState extends State<AdProductCard> {
                             width: 60,
                             child: Text(
                               'Price:',
-                              style: theme.headline5,
+                              style: theme.headlineSmall,
                             ),
                           ),
                           const SizedBox(width: 10),
                           Text(
                             '\$${widget.product.price}',
-                            style: theme.headline5,
+                            style: theme.headlineSmall,
                           ),
                         ],
                       ),
@@ -83,13 +83,13 @@ class _AdProductCardState extends State<AdProductCard> {
                             width: 60,
                             child: Text(
                               'Quantity:',
-                              style: theme.headline5,
+                              style: theme.headlineSmall,
                             ),
                           ),
                           const SizedBox(width: 10),
                           Text(
                             widget.product.quantity.toString(),
-                            style: theme.headline5,
+                            style: theme.headlineSmall,
                           ),
                         ],
                       ),
@@ -113,7 +113,7 @@ class _AdProductCardState extends State<AdProductCard> {
                           title: const Text(
                             'You are about to delete a product',
                           ),
-                          titleTextStyle: theme.headline5,
+                          titleTextStyle: theme.headlineSmall,
                           content: const Text(
                             'This will delete your product \nAre you sure?',
                           ),

@@ -86,7 +86,7 @@ class _SelectOptionsScreenState extends State<SelectOptionsScreen> {
                         product.name,
                         style: Theme.of(context)
                             .textTheme
-                            .headline4!
+                            .headlineMedium!
                             .copyWith(fontWeight: FontWeight.normal),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -94,18 +94,18 @@ class _SelectOptionsScreenState extends State<SelectOptionsScreen> {
                       RichText(
                         text: TextSpan(
                           text: 'Provider: ',
-                          style: Theme.of(context).textTheme.headline6,
+                          style: Theme.of(context).textTheme.titleLarge,
                           children: <TextSpan>[
                             TextSpan(
                               text: sellerName,
-                              style: Theme.of(context).textTheme.headline5,
+                              style: Theme.of(context).textTheme.headlineSmall,
                             ),
                           ],
                         ),
                       ),
                       Text(
                         '\$${product.price}',
-                        style: Theme.of(context).textTheme.headline5,
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
                     ],
                   ),
@@ -121,11 +121,11 @@ class _SelectOptionsScreenState extends State<SelectOptionsScreen> {
                 RichText(
                   text: TextSpan(
                     text: 'Color: ',
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.titleLarge,
                     children: <TextSpan>[
                       TextSpan(
                         text: _selectedColor,
-                        style: Theme.of(context).textTheme.headline5,
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
                     ],
                   ),
@@ -140,11 +140,11 @@ class _SelectOptionsScreenState extends State<SelectOptionsScreen> {
                 RichText(
                   text: TextSpan(
                     text: 'Size: ',
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.titleLarge,
                     children: <TextSpan>[
                       TextSpan(
                         text: _selectedSize,
-                        style: Theme.of(context).textTheme.headline5,
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
                     ],
                   ),
@@ -160,11 +160,11 @@ class _SelectOptionsScreenState extends State<SelectOptionsScreen> {
                 RichText(
                   text: TextSpan(
                     text: 'Color: ',
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.titleLarge,
                     children: <TextSpan>[
                       TextSpan(
                         text: _selectedColor,
-                        style: Theme.of(context).textTheme.headline5,
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
                     ],
                   ),
@@ -175,11 +175,11 @@ class _SelectOptionsScreenState extends State<SelectOptionsScreen> {
                 RichText(
                   text: TextSpan(
                     text: 'Size: ',
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.titleLarge,
                     children: <TextSpan>[
                       TextSpan(
                         text: _selectedSize,
-                        style: Theme.of(context).textTheme.headline5,
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
                     ],
                   ),
@@ -251,7 +251,7 @@ class _SelectOptionsScreenState extends State<SelectOptionsScreen> {
             child: Center(
               child: Text(
                 colorList[index],
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
           ),
@@ -292,7 +292,7 @@ class _SelectOptionsScreenState extends State<SelectOptionsScreen> {
             child: Center(
               child: Text(
                 sizeList[index],
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
           ),

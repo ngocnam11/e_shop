@@ -17,7 +17,7 @@ class EmptyProduct extends StatelessWidget {
           ),
           Text(
             'Add some stuff 🙂',
-            style: Theme.of(context).textTheme.headline1,
+            style: Theme.of(context).textTheme.displayLarge,
           ),
         ],
       ),

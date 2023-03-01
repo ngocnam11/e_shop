@@ -90,7 +90,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
           children: <Widget>[
             Text(
               'Address',
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             TextFieldInput(
               controller: _addressController,
@@ -100,7 +100,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
             const SizedBox(height: 16),
             Text(
               'City',
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             TextFieldInput(
               controller: _cityController,
@@ -110,7 +110,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
             const SizedBox(height: 16),
             Text(
               'Country',
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             TextFieldInput(
               controller: _countryController,

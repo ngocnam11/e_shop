@@ -86,12 +86,12 @@ class _OrderCardState extends State<OrderCard> {
               children: <Widget>[
                 Text(
                   '#${widget.order.id}',
-                  style: Theme.of(context).textTheme.headline4,
+                  style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 Text(
                   DateFormat('dd-MM-yy')
                       .format(widget.order.createdAt.toDate()),
-                  style: Theme.of(context).textTheme.headline5,
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
               ],
             ),
@@ -120,12 +120,12 @@ class _OrderCardState extends State<OrderCard> {
                         children: <Widget>[
                           Text(
                             widget.order.products[index].name,
-                            style: Theme.of(context).textTheme.headline4,
+                            style: Theme.of(context).textTheme.headlineMedium,
                           ),
                           const SizedBox(height: 10),
                           Text(
                             widget.order.products[index].description,
-                            style: Theme.of(context).textTheme.headline5,
+                            style: Theme.of(context).textTheme.headlineSmall,
                             overflow: TextOverflow.clip,
                             maxLines: 2,
                           ),
@@ -145,11 +145,11 @@ class _OrderCardState extends State<OrderCard> {
                   children: <Widget>[
                     Text(
                       'Delivery Fee',
-                      style: Theme.of(context).textTheme.headline5,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     Text(
                       '\$${widget.order.deliveryFee}',
-                      style: Theme.of(context).textTheme.headline4,
+                      style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     const SizedBox(height: 10),
                     ElevatedButton(
@@ -170,11 +170,11 @@ class _OrderCardState extends State<OrderCard> {
                   children: <Widget>[
                     Text(
                       'Total',
-                      style: Theme.of(context).textTheme.headline5,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     Text(
                       '\$${widget.order.total}',
-                      style: Theme.of(context).textTheme.headline4,
+                      style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     const SizedBox(height: 10),
                     ElevatedButton(

@@ -74,11 +74,11 @@ class MyOrdersScreen extends StatelessWidget {
                               children: <Widget>[
                                 Text(
                                   '#${snapshot.data![index].id}',
-                                  style: Theme.of(context).textTheme.headline4,
+                                  style: Theme.of(context).textTheme.headlineMedium,
                                 ),
                                 Text(
                                   snapshot.data![index].orderStatus,
-                                  style: Theme.of(context).textTheme.headline4,
+                                  style: Theme.of(context).textTheme.headlineMedium,
                                 ),
                               ],
                             ),
@@ -88,12 +88,12 @@ class MyOrdersScreen extends StatelessWidget {
                               children: <Widget>[
                                 Text(
                                   'EShopExpress',
-                                  style: Theme.of(context).textTheme.headline5,
+                                  style: Theme.of(context).textTheme.headlineSmall,
                                 ),
                                 Text(
                                   DateFormat('dd-MM-yy').format(
                                       snapshot.data![index].createdAt.toDate()),
-                                  style: Theme.of(context).textTheme.headline5,
+                                  style: Theme.of(context).textTheme.headlineSmall,
                                 ),
                               ],
                             ),
@@ -104,7 +104,7 @@ class MyOrdersScreen extends StatelessWidget {
                                 snapshot.data![index].products[0].name,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context).textTheme.headline4,
+                                style: Theme.of(context).textTheme.headlineMedium,
                               ),
                             ),
                             const SizedBox(height: 12),
@@ -113,7 +113,7 @@ class MyOrdersScreen extends StatelessWidget {
                               children: <Widget>[
                                 Text(
                                   '\$${snapshot.data![index].total}',
-                                  style: Theme.of(context).textTheme.headline3,
+                                  style: Theme.of(context).textTheme.displaySmall,
                                 ),
                                 OutlinedButton(
                                   onPressed: () {
@@ -123,7 +123,7 @@ class MyOrdersScreen extends StatelessWidget {
                                   child: Text(
                                     'Track',
                                     style:
-                                        Theme.of(context).textTheme.headline5,
+                                        Theme.of(context).textTheme.headlineSmall,
                                   ),
                                 ),
                               ],
