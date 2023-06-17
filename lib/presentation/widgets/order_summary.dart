@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../logic/blocs/cart/cart_bloc.dart';
+import '../../logic/blocs/checkout/checkout_bloc.dart';
 
 class OrderSummary extends StatelessWidget {
   const OrderSummary({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CartBloc, CartState>(
+    return BlocBuilder<CheckoutBloc, CheckoutState>(
       builder: (context, state) {
-        if (state is CartLoading) {
+        if (state is CheckoutLoading) {
           return const Center(child: CircularProgressIndicator());
         }
-        if (state is CartLoaded) {
+        if (state is CheckoutLoaded) {
           return Column(
             children: <Widget>[
               Row(
@@ -27,7 +27,7 @@ class OrderSummary extends StatelessWidget {
                         ),
                   ),
                   Text(
-                    '\$${state.cart.subtotalString}',
+                    '\$${state.checkout.subtotalString}',
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ],
@@ -59,7 +59,7 @@ class OrderSummary extends StatelessWidget {
                         ),
                   ),
                   Text(
-                    '\$${state.cart.deliveryFeeString}',
+                    '\$${state.checkout.deliveryFeeString}',
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ],
@@ -73,7 +73,7 @@ class OrderSummary extends StatelessWidget {
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   Text(
-                    '\$${state.cart.totalString}',
+                    '\$${state.checkout.totalString}',
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ],

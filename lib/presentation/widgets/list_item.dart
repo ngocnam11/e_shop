@@ -6,9 +6,8 @@ import '../../services/firestore_services.dart';
 import 'custom_network_image.dart';
 
 class ListItem extends StatelessWidget {
-  const ListItem({super.key, required this.child, required this.product});
+  const ListItem({super.key, required this.product});
 
-  final Widget child;
   final CartItem product;
 
   @override
@@ -60,10 +59,6 @@ class ListItem extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          // Checkbox(
-                          //   value: false,
-                          //   onChanged: (value) {},
-                          // ),
                           const SizedBox(
                             height: 32,
                             width: 32,
@@ -81,7 +76,14 @@ class ListItem extends StatelessWidget {
                             '\$${product.price}',
                             style: Theme.of(context).textTheme.headlineSmall,
                           ),
-                          child,
+                          SizedBox(
+                            width: 80,
+                            height: 24,
+                            child: Text(
+                              'Quantity: ${product.quantity.toString()}',
+                              style: Theme.of(context).textTheme.headlineSmall,
+                            ),
+                          ),
                         ],
                       ),
                     ],
