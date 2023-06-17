@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../../models/cart.dart';
 import '../../models/user.dart';
 import 'base_user_repository.dart';
 
@@ -18,6 +19,10 @@ class UserRepository extends BaseUserRepository {
           .collection('users')
           .doc(user.uid)
           .set(user.toJson());
+      await _firebaseFirestore
+          .collection('carts')
+          .doc(user.uid)
+          .set(Cart(uid: user.uid, products: const []).toJson());
     } catch (_) {
       rethrow;
     }

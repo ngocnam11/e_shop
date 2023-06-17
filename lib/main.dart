@@ -52,6 +52,12 @@ class MyApp extends StatelessWidget {
         RepositoryProvider(
           create: (_) => WishlistRepository(),
         ),
+        RepositoryProvider(
+          create: (_) => CartRepository(),
+        ),
+        RepositoryProvider(
+          create: (_) => OrderRepository(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -77,7 +83,19 @@ class MyApp extends StatelessWidget {
               authRepository: context.read<AuthRepository>(),
             )..add(LoadWishlist()),
           ),
-          BlocProvider(create: (_) => CartBloc()..add(LoadCart())),
+          BlocProvider(
+            create: (context) => CartBloc(
+              authRepository: context.read<AuthRepository>(),
+            )..add(LoadCart()),
+          ),
+          BlocProvider(
+            create: (context) => CheckoutBloc()..add(LoadCheckout()),
+          ),
+          BlocProvider(
+            create: (context) => OrderBloc(
+              authRepository: context.read<AuthRepository>(),
+            )..add(LoadOrder()),
+          ),
         ],
         child: MaterialApp(
           scrollBehavior: CustomScrollBehavior(),
