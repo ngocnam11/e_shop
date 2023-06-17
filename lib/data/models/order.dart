@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 
 import 'product.dart';
 
-class Order extends Equatable {
+class OrderModel extends Equatable {
   final String id;
   final String customerId;
   final String sellerId;
@@ -16,7 +16,7 @@ class Order extends Equatable {
   final String orderStatus;
   final Timestamp createdAt;
 
-  const Order({
+  const OrderModel({
     required this.id,
     required this.customerId,
     required this.sellerId,
@@ -30,12 +30,12 @@ class Order extends Equatable {
     required this.createdAt,
   });
 
-  factory Order.fromJson(Map<String, dynamic> snap) {
+  factory OrderModel.fromJson(Map<String, dynamic> snap) {
     List<Product> products = [];
     snap["products"].forEach((product) {
       products.add(Product.fromJson(product));
     });
-    return Order(
+    return OrderModel(
       id: snap['id'],
       customerId: snap['customerId'],
       sellerId: snap['sellerId'],

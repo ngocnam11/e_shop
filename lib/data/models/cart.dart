@@ -3,33 +3,29 @@ import 'package:equatable/equatable.dart';
 class Cart extends Equatable {
   final String uid;
   final List<CartItem> products;
-  // final Map<String, CartItem> products;
 
   const Cart({
     required this.uid,
     this.products = const <CartItem>[],
-    // this.products = const <String, CartItem>{},
   });
 
-  double get subtotal =>
-      products.fold(0, (total, current) => total + current.price);
+  double get subtotal => products.fold(
+      0, (total, current) => total + current.price * current.quantity);
 
   String get subtotalString => subtotal.toStringAsFixed(2);
 
   String get deliveryFeeString => deliveryFee(subtotal).toStringAsFixed(2);
-
-  String get freeDeliveryString => freeDelivery(subtotal);
 
   String get totalString => total(subtotal, deliveryFee).toStringAsFixed(2);
 
   Map productQuantity(products) {
     var quantity = {};
 
-    products.forEach((product) {
+    products.forEach((CartItem product) {
       if (!quantity.containsKey(product)) {
         quantity[product] = 1;
       } else {
-        quantity[product] += 1;
+        quantity[product] = product.quantity;
       }
     });
 
@@ -38,15 +34,6 @@ class Cart extends Equatable {
 
   double total(subtotal, deliveryFee) {
     return subtotal + deliveryFee(subtotal);
-  }
-
-  String freeDelivery(subtotal) {
-    if (subtotal >= 30) {
-      return 'You have Free Delivery';
-    } else {
-      double missing = 30.0 - subtotal;
-      return 'Add \$${missing.toStringAsFixed(2)} to FREE Delivery';
-    }
   }
 
   double deliveryFee(subtotal) {
@@ -59,13 +46,12 @@ class Cart extends Equatable {
 
   factory Cart.fromJson(Map<String, dynamic> snap) {
     List<CartItem> products = [];
-    snap["products"].forEach((product) {
-      products.add(CartItem.fromSnap(product));
+    snap['products'].forEach((product) {
+      products.add(CartItem.fromJson(product));
     });
     return Cart(
       uid: snap['uid'],
       products: products,
-      // products: Map.from(snap["products"]).map((k, v) => MapEntry<String, CartItem>(k, CartItem.fromSnap(v))),
     );
   }
 
@@ -73,7 +59,6 @@ class Cart extends Equatable {
     return {
       'uid': uid,
       'products': List.from(products.map((product) => product.toJson())),
-      // 'products': Map.from(products).map((k, product) => MapEntry<String, dynamic>(k, product.toJson())),
     };
   }
 
@@ -100,27 +85,44 @@ class CartItem extends Equatable {
     required this.sellerId,
   });
 
-  static CartItem fromSnap(Map<String, dynamic> snap) {
+  CartItem copyWith({
+    String? id,
+    String? color,
+    String? size,
+    int? quantity,
+  }) {
     return CartItem(
-      id: snap["id"],
-      productId: snap["productId"],
-      color: snap["color"],
-      size: snap["size"],
-      price: snap["price"] + .0,
-      quantity: snap["quantity"],
-      sellerId: snap["sellerId"],
+      id: id ?? this.id,
+      productId: productId,
+      color: color ?? this.color,
+      size: size ?? this.size,
+      quantity: quantity ?? this.quantity,
+      price: price,
+      sellerId: sellerId,
+    );
+  }
+
+  factory CartItem.fromJson(Map<String, dynamic> json) {
+    return CartItem(
+      id: json['id'],
+      productId: json['productId'],
+      color: json['color'],
+      size: json['size'],
+      price: json['price'] + .0,
+      quantity: json['quantity'],
+      sellerId: json['sellerId'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      "id": id,
-      "productId": productId,
-      "color": color,
-      "size": size,
-      "price": price,
-      "quantity": quantity,
-      "sellerId": sellerId,
+      'id': id,
+      'productId': productId,
+      'color': color,
+      'size': size,
+      'price': price,
+      'quantity': quantity,
+      'sellerId': sellerId,
     };
   }
 
