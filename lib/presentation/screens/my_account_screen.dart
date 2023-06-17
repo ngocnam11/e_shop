@@ -93,20 +93,20 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
             },
             itemBuilder: (context) {
               return [
-                PopupMenuItem<MyAccountMenu>(
+                const PopupMenuItem<MyAccountMenu>(
                   value: MyAccountMenu.address,
                   child: Row(
-                    children: const <Widget>[
+                    children: <Widget>[
                       Icon(Icons.location_on_outlined),
                       SizedBox(width: 4),
                       Text('My Address'),
                     ],
                   ),
                 ),
-                PopupMenuItem<MyAccountMenu>(
+                const PopupMenuItem<MyAccountMenu>(
                   value: MyAccountMenu.changePassword,
                   child: Row(
-                    children: const <Widget>[
+                    children: <Widget>[
                       Icon(Icons.lock_outline_rounded),
                       SizedBox(width: 4),
                       Text('Change Password'),
@@ -114,10 +114,10 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                   ),
                 ),
                 const PopupMenuDivider(),
-                PopupMenuItem<MyAccountMenu>(
+                const PopupMenuItem<MyAccountMenu>(
                   value: MyAccountMenu.deleteAccount,
                   child: Row(
-                    children: const <Widget>[
+                    children: <Widget>[
                       Icon(
                         Icons.delete_forever_outlined,
                         color: Colors.red,

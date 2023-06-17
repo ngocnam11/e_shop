@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/models/delivery_address.dart';
+import '../../data/models/order.dart';
 import '../../data/models/product.dart';
 import '../screens/screens.dart';
 
@@ -89,7 +90,7 @@ class AppRouter {
       case myOrders:
         return MyOrdersScreen.route();
       case orderDetails:
-        return OrderDetailsScreen.route();
+        return OrderDetailsScreen.route(order: settings.arguments as OrderModel);
       case purchase:
         return PurchaseScreen.route();
       case newCard:

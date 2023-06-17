@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../logic/blocs/cart/cart_bloc.dart';
+import '../../data/models/cart.dart';
+import '../../data/models/order.dart';
 import '../router/app_router.dart';
 import '../widgets/list_item.dart';
 
-class OrderDetailsScreen extends StatelessWidget {
-  const OrderDetailsScreen({super.key});
+class OrderDetailsScreen extends StatefulWidget {
+  const OrderDetailsScreen({super.key, required this.order});
 
-  static Route route() {
+  static Route route({required OrderModel order}) {
     return MaterialPageRoute(
       settings: const RouteSettings(name: AppRouter.orderDetails),
-      builder: (_) => const OrderDetailsScreen(),
+      builder: (_) => OrderDetailsScreen(
+        order: order,
+      ),
     );
   }
 
+  final OrderModel? order;
+
+  @override
+  State<OrderDetailsScreen> createState() => _OrderDetailsScreenState();
+}
+
+class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,42 +130,27 @@ class OrderDetailsScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Text(
-              '#ORD2022Y9M17ES',
+              widget.order!.id,
               style: Theme.of(context).textTheme.headlineMedium,
             ),
           ),
           const SizedBox(height: 12),
-          BlocBuilder<CartBloc, CartState>(
-            builder: (context, state) {
-              if (state is CartLoading) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              if (state is CartLoaded) {
-                final products =
-                    state.cart.productQuantity(state.cart.products);
-                return ListView.separated(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  itemCount: products.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return ListItem(
-                      product: products.keys.elementAt(index),
-                      child: SizedBox(
-                        width: 80,
-                        height: 24,
-                        child: Text(
-                          'Quantity: ${products.values.elementAt(index).toString()}',
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
-                      ),
-                    );
-                  },
-                  separatorBuilder: (_, __) => const SizedBox(height: 12),
-                );
-              } else {
-                return const Text('Something went wrong');
-              }
+          ListView.separated(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            itemCount: widget.order!.products.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return ListItem(
+                product: CartItem(
+                  id: 'ci${widget.order!.products[index].id}',
+                  productId: widget.order!.products[index].id,
+                  price: widget.order!.products[index].price,
+                  quantity: widget.order!.products[index].quantity,
+                  sellerId: widget.order!.products[index].uid,
+                ),
+              );
             },
+            separatorBuilder: (_, __) => const SizedBox(height: 12),
           ),
         ],
       ),

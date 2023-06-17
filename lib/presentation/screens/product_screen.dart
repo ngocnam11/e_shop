@@ -29,25 +29,6 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-  void addProductToCart() async {
-    String res = await FireStoreServices().addProductToCart(
-      productId: widget.product.id,
-      color: _color,
-      size: _size,
-      quantity: 1,
-      price: widget.product.price + .0,
-      sellerId: widget.product.uid,
-    );
-
-    if (!mounted) return;
-
-    if (res != 'success') {
-      showSnackBar(context, res);
-    } else {
-      showSnackBar(context, 'Added to your Cart');
-    }
-  }
-
   Future<void> getInitValue() async {
     final user =
         await FireStoreServices().getUserByUid(uid: widget.product.uid);
@@ -348,7 +329,6 @@ class _ProductScreenState extends State<ProductScreen> {
                     return CustomButton(
                       svg: 'assets/svgs/shopping_bag.svg',
                       press: () {
-                        addProductToCart();
                         context.read<CartBloc>().add(
                               AddProduct(
                                 CartItem(
@@ -366,6 +346,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                 ),
                               ),
                             );
+                            showSnackBar(context, 'Added to your cart');
                       },
                       textColor: Colors.white,
                       primaryColor: Colors.deepOrange[400]!,

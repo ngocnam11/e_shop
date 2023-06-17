@@ -23,7 +23,7 @@ class AdOrderScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Orders'),
       ),
-      body: StreamBuilder<List<Order>>(
+      body: StreamBuilder<List<OrderModel>>(
         stream: FireStoreServices().getOrdersOfSellerId(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -50,7 +50,7 @@ class AdOrderScreen extends StatelessWidget {
 
 class OrderCard extends StatefulWidget {
   const OrderCard({super.key, required this.order});
-  final Order order;
+  final OrderModel order;
 
   @override
   State<OrderCard> createState() => _OrderCardState();

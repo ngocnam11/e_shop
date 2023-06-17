@@ -1,14 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../config/utils.dart';
-import '../../data/models/cart.dart';
+import '../../data/models/order.dart';
 import '../../data/models/product.dart';
 import '../../data/models/user.dart';
-import '../../logic/blocs/cart/cart_bloc.dart';
+import '../../logic/blocs/blocs.dart';
 import '../../services/auth_services.dart';
 import '../../services/firestore_services.dart';
 import '../router/app_router.dart';
+import '../widgets/checkout_option.dart';
 import '../widgets/list_item.dart';
 import '../widgets/order_summary.dart';
 
@@ -29,52 +30,9 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
-  @override
-  void initState() {
-    super.initState();
-    getInitCart();
-  }
-
-  Future<void> getInitCart() async {
-    final cart = await FireStoreServices()
-        .getCartByUid(uid: AuthServices().currentUser.uid);
-    _cartItem = cart.products.first;
-  }
-
-  Future<Product> getInitProduct() async {
-    final product =
-        await FireStoreServices().getProductById(id: _cartItem.productId);
+  Future<Product> getInitProduct(String id) async {
+    final product = await FireStoreServices().getProductById(id: id);
     return product;
-  }
-
-  late CartItem _cartItem;
-
-  void addOrder() async {
-    final product = await getInitProduct();
-    String res = await FireStoreServices().addOrder(
-      customerId: AuthServices().currentUser.uid,
-      sellerId: product.uid,
-      products: [
-        product.copyWith(
-          quantity: _cartItem.quantity,
-          colors: [_cartItem.color!],
-          sizes: [_cartItem.size!],
-        )
-      ],
-      deliveryAddress: deliveryAddress,
-      subtotal: _cartItem.price,
-      deliveryFee: _cartItem.price > 30 ? 0.0 : 10.0,
-      total: _cartItem.price,
-      orderStatus: 'Pending',
-    );
-
-    if (!mounted) return;
-
-    if (res != 'success') {
-      showSnackBar(context, res);
-    } else {
-      Navigator.of(context).pushNamed(AppRouter.orderConfirm);
-    }
   }
 
   String deliveryAddress = 'Choose delivery address';
@@ -151,8 +109,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   }
                                   return Text(
                                     '${snapshot.data!.username} | (${snapshot.data!.phoneNum})',
-                                    style:
-                                        Theme.of(context).textTheme.headlineMedium,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium,
                                   );
                                 },
                               ),
@@ -174,14 +133,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            BlocBuilder<CartBloc, CartState>(
+            BlocBuilder<CheckoutBloc, CheckoutState>(
               builder: (context, state) {
-                if (state is CartLoading) {
+                if (state is CheckoutLoading) {
                   return const Center(child: CircularProgressIndicator());
                 }
-                if (state is CartLoaded) {
+                if (state is CheckoutLoaded) {
                   final products =
-                      state.cart.productQuantity(state.cart.products);
+                      state.checkout.productQuantity(state.checkout.products);
                   return ListView.separated(
                     physics: const NeverScrollableScrollPhysics(),
                     padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -211,7 +170,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     const EdgeInsets.symmetric(horizontal: 12),
                                 child: Text(
                                   snapshot.data!.username,
-                                  style: Theme.of(context).textTheme.headlineMedium,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium,
                                 ),
                               );
                             },
@@ -219,14 +180,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           const Divider(),
                           ListItem(
                             product: products.keys.elementAt(index),
-                            child: SizedBox(
-                              width: 80,
-                              height: 24,
-                              child: Text(
-                                'Quantity: ${products.length}',
-                                style: Theme.of(context).textTheme.headlineSmall,
-                              ),
-                            ),
                           ),
                         ],
                       );
@@ -238,63 +191,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 }
               },
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
-              child: InkWell(
-                onTap: () {},
-                child: Container(
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      const Icon(Icons.local_shipping_outlined),
-                      Text(
-                        'Delivery Method',
-                        style: Theme.of(context).textTheme.displaySmall,
-                      ),
-                      Text(
-                        'EShopExpress',
-                        style: Theme.of(context).textTheme.headlineMedium,
-                      ),
-                      const Icon(Icons.navigate_next),
-                    ],
-                  ),
-                ),
-              ),
+            CheckoutOption(
+              option: 'Delivery Method',
+              title: 'EshopExpress',
+              icon: const Icon(Icons.local_shipping_outlined),
+              onTap: () {},
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
-              child: InkWell(
-                onTap: () {
-                  Navigator.of(context).pushNamed(AppRouter.purchase);
-                },
-                child: Container(
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      const Icon(Icons.monetization_on_outlined),
-                      Text(
-                        'Payment Method',
-                        style: Theme.of(context).textTheme.displaySmall,
-                      ),
-                      Text(
-                        'Cash Money',
-                        style: Theme.of(context).textTheme.headlineMedium,
-                      ),
-                      const Icon(Icons.navigate_next),
-                    ],
-                  ),
-                ),
-              ),
+            CheckoutOption(
+              option: 'Payment Method',
+              title: 'Cash Money',
+              icon: const Icon(Icons.monetization_on_outlined),
+              onTap: () {
+                Navigator.of(context).pushNamed(AppRouter.purchase);
+              },
             ),
             const Padding(
               padding: EdgeInsets.all(12),
@@ -315,21 +224,61 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             ),
           ],
         ),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blueAccent.shade100,
-            padding: const EdgeInsets.symmetric(vertical: 12),
-          ),
-          onPressed: () {
-            addOrder();
+        child: BlocBuilder<CheckoutBloc, CheckoutState>(
+          builder: (context, state) {
+            if (state is CheckoutLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (state is CheckoutLoaded) {
+              final products =
+                  state.checkout.productQuantity(state.checkout.products);
+              return ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blueAccent.shade100,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+                onPressed: () async {
+                  final product = products.keys.first;
+                  final subtotal = product.price * product.quantity;
+                  final productInfo = await getInitProduct(product.productId);
+                  if (!mounted) return;
+                  context.read<OrderBloc>().add(
+                        AddOrder(
+                          OrderModel(
+                            id: '',
+                            customerId: AuthServices().currentUser.uid,
+                            sellerId: product.sellerId,
+                            products: [
+                              productInfo.copyWith(
+                                quantity: product.quantity,
+                                colors: [product.color!],
+                                sizes: [product.size!],
+                              )
+                            ],
+                            paymentMethod: 'Cash Money',
+                            deliveryAddress: deliveryAddress,
+                            deliveryFee: subtotal > 30 ? 0.0 : 10.0,
+                            subtotal: subtotal,
+                            total: subtotal > 30 ? subtotal : subtotal + 10,
+                            orderStatus: 'Pending',
+                            createdAt: Timestamp.now(),
+                          ),
+                        ),
+                      );
+                  context.read<CartBloc>().add(DeleteProduct(product));
+                  Navigator.of(context).pushNamed(AppRouter.orderConfirm);
+                },
+                child: Text(
+                  'Order Now',
+                  style: Theme.of(context)
+                      .textTheme
+                      .displaySmall!
+                      .copyWith(color: Colors.white),
+                ),
+              );
+            }
+            return const SizedBox();
           },
-          child: Text(
-            'Order Now',
-            style: Theme.of(context)
-                .textTheme
-                .displaySmall!
-                .copyWith(color: Colors.white),
-          ),
         ),
       ),
     );

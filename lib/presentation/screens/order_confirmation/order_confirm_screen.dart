@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/models/user.dart';
 import '../../../services/auth_services.dart';
@@ -7,7 +8,7 @@ import '../../../services/firestore_services.dart';
 import '../../router/app_router.dart';
 import '../../widgets/order_summary.dart';
 
-class OrderConfirmScreen extends StatelessWidget {
+class OrderConfirmScreen extends StatefulWidget {
   const OrderConfirmScreen({super.key});
 
   static Route route() {
@@ -15,6 +16,36 @@ class OrderConfirmScreen extends StatelessWidget {
       settings: const RouteSettings(name: AppRouter.orderConfirm),
       builder: (_) => const OrderConfirmScreen(),
     );
+  }
+
+  @override
+  State<OrderConfirmScreen> createState() => _OrderConfirmScreenState();
+}
+
+class _OrderConfirmScreenState extends State<OrderConfirmScreen> {
+  static const String orderIdKey = 'orderId';
+  String orderId = '';
+  @override
+  void initState() {
+    getOrderId();
+    super.initState();
+  }
+
+  void getOrderId() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey(orderIdKey)) {
+      final id = prefs.getString(orderIdKey);
+      if (id != null) {
+        orderId = id;
+      } else {
+        orderId = '';
+      }
+    }
+  }
+
+  void removeOrderId() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove(orderIdKey);
   }
 
   @override
@@ -60,21 +91,7 @@ class OrderConfirmScreen extends StatelessWidget {
                     ),
                     const Divider(),
                     const OrderSummary(),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamed(AppRouter.orderDetails);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        fixedSize: const Size.fromWidth(double.maxFinite),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        backgroundColor: Colors.indigo,
-                      ),
-                      child: const Text('Track Your Order'),
-                    ),
-                    const Text('Order #ORD2022Y9M20ES19'),
+                    Text('Order $orderId'),
                   ],
                 );
               } else {
@@ -93,6 +110,7 @@ class OrderConfirmScreen extends StatelessWidget {
               AppRouter.home,
               (route) => false,
             );
+            removeOrderId();
           },
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 16),

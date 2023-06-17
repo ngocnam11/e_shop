@@ -55,8 +55,8 @@ class HomeScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).pushNamed(AppRouter.search);
                 },
-                icon: Row(
-                  children: const [
+                icon: const Row(
+                  children: [
                     SizedBox(
                       width: 12,
                     ),

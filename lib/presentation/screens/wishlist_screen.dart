@@ -31,31 +31,6 @@ class WishlistScreen extends StatefulWidget {
 }
 
 class _WishlistScreenState extends State<WishlistScreen> {
-  void addProductToCart({
-    required String productId,
-    required String color,
-    required String size,
-    required double price,
-    required String sellerId,
-  }) async {
-    String res = await FireStoreServices().addProductToCart(
-      productId: productId,
-      color: color,
-      size: size,
-      quantity: 1,
-      price: price,
-      sellerId: sellerId,
-    );
-
-    if (!mounted) return;
-
-    if (res != 'success') {
-      showSnackBar(context, res);
-    } else {
-      showSnackBar(context, 'Added to your Cart');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,6 +50,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               itemCount: wishlistState.wishlist.products.length,
               itemBuilder: (context, index) {
+                final wishlistItem = wishlistState.wishlist.products[index];
                 return Ink(
                   height: 126,
                   decoration: BoxDecoration(
@@ -86,7 +62,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                     onTap: () {
                       Navigator.of(context).pushNamed(
                         AppRouter.product,
-                        arguments: wishlistState.wishlist.products[index],
+                        arguments: wishlistItem,
                       );
                     },
                     child: Padding(
@@ -97,7 +73,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                       ),
                       child: FutureBuilder<Product>(
                         future: FireStoreServices().getProductById(
-                          id: wishlistState.wishlist.products[index].id,
+                          id: wishlistItem.id,
                         ),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
@@ -133,7 +109,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                       Text(
-                                        '\$${wishlistState.wishlist.products[index].price}',
+                                        '\$${wishlistItem.price}',
                                         style: Theme.of(context)
                                             .textTheme
                                             .headlineSmall,
@@ -151,8 +127,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                         onPressed: () {
                                           context.read<WishlistBloc>().add(
                                               RemoveProductFromWishlist(
-                                                  wishlistState.wishlist
-                                                      .products[index]));
+                                                  wishlistItem));
                                           showSnackBar(
                                             context,
                                             'Removed from your Wishlist',
@@ -183,80 +158,34 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                                     const EdgeInsets.all(4),
                                               ),
                                               onPressed: () {
-                                                addProductToCart(
-                                                  productId: wishlistState
-                                                      .wishlist
-                                                      .products[index]
-                                                      .id,
-                                                  color: wishlistState
-                                                          .wishlist
-                                                          .products[index]
-                                                          .colors
-                                                          .isEmpty
-                                                      ? 'n'
-                                                      : wishlistState
-                                                          .wishlist
-                                                          .products[index]
-                                                          .colors[0],
-                                                  size: wishlistState
-                                                          .wishlist
-                                                          .products[index]
-                                                          .sizes
-                                                          .isEmpty
-                                                      ? 'n'
-                                                      : wishlistState
-                                                          .wishlist
-                                                          .products[index]
-                                                          .sizes[0],
-                                                  price: wishlistState.wishlist
-                                                      .products[index].price,
-                                                  sellerId: wishlistState
-                                                      .wishlist
-                                                      .products[index]
-                                                      .uid,
-                                                );
                                                 context
                                                     .read<CartBloc>()
                                                     .add(AddProduct(
                                                       CartItem(
-                                                        id: 'ci${wishlistState.wishlist.products[index].id}',
-                                                        productId: wishlistState
-                                                            .wishlist
-                                                            .products[index]
-                                                            .id,
-                                                        color: wishlistState
-                                                                .wishlist
-                                                                .products[index]
-                                                                .colors
-                                                                .isEmpty
+                                                        id: 'ci${wishlistItem.id}',
+                                                        productId:
+                                                            wishlistItem.id,
+                                                        color: wishlistItem
+                                                                .colors.isEmpty
                                                             ? 'n'
-                                                            : wishlistState
-                                                                .wishlist
-                                                                .products[index]
+                                                            : wishlistItem
                                                                 .colors[0],
-                                                        size: wishlistState
-                                                                .wishlist
-                                                                .products[index]
-                                                                .sizes
-                                                                .isEmpty
+                                                        size: wishlistItem
+                                                                .sizes.isEmpty
                                                             ? 'n'
-                                                            : wishlistState
-                                                                .wishlist
-                                                                .products[index]
+                                                            : wishlistItem
                                                                 .sizes[0],
-                                                        price: wishlistState
-                                                            .wishlist
-                                                            .products[index]
-                                                            .price,
+                                                        price:
+                                                            wishlistItem.price,
                                                         quantity: 1,
-                                                        sellerId: wishlistState
-                                                            .wishlist
-                                                            .products[index]
-                                                            .uid,
+                                                        sellerId:
+                                                            wishlistItem.uid,
                                                       ),
                                                     ));
-                                                showSnackBar(context,
-                                                    'Added to your Cart');
+                                                showSnackBar(
+                                                  context,
+                                                  'Added to your Cart',
+                                                );
                                               },
                                               child: SvgPicture.asset(
                                                 'assets/svgs/add-to-basket.svg',
