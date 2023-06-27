@@ -14,7 +14,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       : _productRepository = productRepository,
         super(ProductLoading()) {
     on<LoadProducts>((event, emit) {
-      _productRepository.getCurrentUserProducts().listen(
+      _productRepository.getAllProducts().listen(
             (products) => add(UpdateProducts(products)),
           );
     });

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../logic/blocs/blocs.dart';
+import '../../../services/auth_services.dart';
 import '../../router/app_router.dart';
 import 'ad_product_card.dart';
 
@@ -66,7 +67,10 @@ class _AdProductScreenState extends State<AdProductScreen> {
                   return const Text('Something went wrong');
                 }
                 if (state is ProductLoaded) {
-                  final currentUserProducts = state.products;
+                  final currentUserProducts = state.products
+                      .where((product) =>
+                          product.uid == AuthServices().currentUser.uid)
+                      .toList();
                   return Expanded(
                     child: ListView.builder(
                       itemCount: currentUserProducts.length,
