@@ -6,9 +6,11 @@ import 'package:uuid/uuid.dart';
 
 import '../data/models/delivery_address.dart';
 import '../data/models/message.dart';
+import '../data/models/notification.dart';
 import '../data/models/order.dart';
 import '../data/models/product.dart';
 import '../data/models/user.dart';
+import '../data/models/user_token.dart';
 import 'storage_service.dart';
 
 class FireStoreServices {
@@ -27,6 +29,26 @@ class FireStoreServices {
     final snap = await _firestore.collection('products').doc(id).get();
     Product product = Product.fromJson(snap.data()!);
     return product;
+  }
+
+  Future<UserToken?> getTokens({required String id}) async {
+    final snap = await _firestore.collection('userTokens').doc(id).get();
+    if (snap.exists) {
+      UserToken userToken = UserToken.fromJson(snap.data()!);
+      return userToken;
+    }
+    return UserToken(uid: id, tokens: const []);
+  }
+
+  Stream<List<NotificationModel>> getCurrentUserNotifications() {
+    final snaps = _firestore
+        .collection('notifications')
+        .where('receiverId', isEqualTo: _auth.currentUser!.uid)
+        .snapshots();
+    final notifications = snaps.map((snap) => snap.docs
+        .map((doc) => NotificationModel.fromJson(doc.data()))
+        .toList());
+    return notifications;
   }
 
   // Stream<List<Product>> getProductsByRecentSearch(
@@ -101,7 +123,7 @@ class FireStoreServices {
         sizes: sizes,
       );
 
-      _firestore.collection('products').doc(id).set(product.toJson());
+      await _firestore.collection('products').doc(id).set(product.toJson());
       res = 'success';
     } catch (e) {
       res = e.toString();
@@ -129,7 +151,7 @@ class FireStoreServices {
         isDefault: user.addresses.isEmpty ? true : false,
       );
 
-      _firestore.collection('users').doc(uid).update(
+      await _firestore.collection('users').doc(uid).update(
         {
           'deliveryAddress': FieldValue.arrayUnion(
             [deliveryAddress.toJson()],
@@ -144,13 +166,69 @@ class FireStoreServices {
     return addSA;
   }
 
+  Future<String> addFCMToken({required String token}) async {
+    String addToken = 'Some error occurred';
+    try {
+      String uid = _auth.currentUser!.uid;
+
+      UserToken? userToken = await getTokens(id: uid);
+
+      UserToken newToken = UserToken(uid: uid, tokens: [token]);
+
+      if (userToken!.tokens.isEmpty) {
+        await _firestore
+            .collection('userTokens')
+            .doc(uid)
+            .set(newToken.toJson());
+      } else {
+        await _firestore.collection('userTokens').doc(uid).update(
+          {
+            'tokens': FieldValue.arrayUnion([token]),
+          },
+        );
+      }
+
+      addToken = 'success';
+    } catch (e) {
+      addToken = e.toString();
+    }
+
+    return addToken;
+  }
+
+  Future<String> addNotification({
+    required NotificationModel notification,
+  }) async {
+    String addNoti = 'Some error occurred';
+    try {
+      String id = uuid.v4();
+
+      NotificationModel noti = NotificationModel(
+        id: id,
+        senderId: notification.senderId,
+        title: notification.title,
+        body: notification.body,
+        receiverId: notification.receiverId,
+        imageUrl: notification.imageUrl,
+        createdAt: Timestamp.now(),
+      );
+
+      await _firestore.collection('notifications').doc(id).set(noti.toJson());
+      addNoti = 'success';
+    } catch (e) {
+      addNoti = e.toString();
+    }
+
+    return addNoti;
+  }
+
   Future<String> updateOrderStatus({
     required String id,
     required String orderStatus,
   }) async {
     String updateOrder = 'Some error occurred';
     try {
-      _firestore.collection('orders').doc(id).update({
+      await _firestore.collection('orders').doc(id).update({
         'orderStatus': orderStatus,
       });
       updateOrder = 'success';
@@ -217,7 +295,7 @@ class FireStoreServices {
         photoUrl: photoUrl,
       );
 
-      _firestore
+      await _firestore
           .collection('users')
           .doc(_auth.currentUser!.uid)
           .update(userData.toJson());

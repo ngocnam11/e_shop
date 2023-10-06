@@ -6,30 +6,32 @@ class Message {
   String? uid;
   String? content;
   String? senderUID;
-  String? reciverUID;
+  String? receiverUID;
   Timestamp? createAt;
 
   Message({
     this.uid,
     this.content,
     this.senderUID,
-    this.reciverUID,
+    this.receiverUID,
     this.createAt,
   });
 
-  Message.fromJson(Map<String, dynamic> json, String id) {
-    uid = id;
-    content = json['content'];
-    senderUID = json['senderUID'];
-    reciverUID = json['reciverUID'];
-    createAt = json['createAt'];
+  factory Message.fromJson(Map<String, dynamic> json, String id) {
+    return Message(
+      uid: id,
+      content: json['content'],
+      senderUID: json['senderUID'],
+      receiverUID: json['receiverUID'],
+      createAt: json['createAt'],
+    );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'content': content,
       'senderUID': senderUID,
-      'reciverUID': reciverUID,
+      'receiverUID': receiverUID,
       'createAt': createAt,
     };
   }

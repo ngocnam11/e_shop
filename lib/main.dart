@@ -12,6 +12,9 @@ import 'logic/blocs/blocs.dart';
 import 'logic/cubits/cubits.dart';
 import 'logic/debug/app_bloc_observer.dart';
 import 'presentation/router/app_router.dart';
+import 'services/notification_services.dart';
+
+final navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +27,8 @@ Future<void> main() async {
       defaultTargetPlatform == TargetPlatform.iOS) {
     await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
+
+  await NotificationServices().initNotification();
 
   Bloc.observer = AppBlocObserver();
 
@@ -102,6 +107,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Flutter eShop',
           theme: AppTheme.lightTheme,
+          navigatorKey: navigatorKey,
           initialRoute: AppRouter.initialRoute,
           onGenerateRoute: AppRouter.onGenerateRoute,
         ),

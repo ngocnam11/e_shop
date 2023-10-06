@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../../../config/utils.dart';
 import '../../../data/models/order.dart';
 import '../../../services/firestore_services.dart';
+import '../../../services/notification_services.dart';
 import '../../router/app_router.dart';
 import '../../widgets/custom_network_image.dart';
 
@@ -69,6 +70,28 @@ class _OrderCardState extends State<OrderCard> {
       showSnackBar(context, res);
     } else {
       showSnackBar(context, 'Order  is $orderStatus');
+    }
+  }
+
+  void sendPushMessage({
+    required String title,
+    required String body,
+    required String senderId,
+    required String receiverId,
+  }) async {
+    String res = await NotificationServices().sendPushMessage(
+      title: title,
+      body: body,
+      senderId: senderId,
+      receiverId: receiverId,
+    );
+
+    if (!mounted) return;
+
+    if (res != 'success') {
+      showSnackBar(context, res);
+    } else {
+      showSnackBar(context, 'Message: title: $title, body: $body');
     }
   }
 
@@ -153,8 +176,15 @@ class _OrderCardState extends State<OrderCard> {
                     ),
                     const SizedBox(height: 10),
                     ElevatedButton(
-                      onPressed: () =>
-                          updateOrderStatus(orderStatus: 'Accepted'),
+                      onPressed: () {
+                        updateOrderStatus(orderStatus: 'Accepted');
+                        sendPushMessage(
+                          title: 'Order Accepted',
+                          body: 'Your order #${widget.order.id} was accepted',
+                          senderId: widget.order.sellerId,
+                          receiverId: widget.order.customerId,
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
                         padding: const EdgeInsets.symmetric(
@@ -178,8 +208,15 @@ class _OrderCardState extends State<OrderCard> {
                     ),
                     const SizedBox(height: 10),
                     ElevatedButton(
-                      onPressed: () =>
-                          updateOrderStatus(orderStatus: 'Cancelled'),
+                      onPressed: () {
+                        updateOrderStatus(orderStatus: 'Cancelled');
+                        sendPushMessage(
+                          title: 'Order cancelled',
+                          body: 'Your order #${widget.order.id} was cancelled',
+                          senderId: widget.order.sellerId,
+                          receiverId: widget.order.customerId,
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
                         padding: const EdgeInsets.symmetric(

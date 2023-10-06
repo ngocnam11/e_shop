@@ -81,7 +81,7 @@ class ConversationScreen extends StatelessWidget {
                     var msg = Message(
                       content: msgController.text,
                       createAt: Timestamp.now(),
-                      reciverUID: user.uid,
+                      receiverUID: user.uid,
                       senderUID: AuthServices().currentUser.uid,
                     );
                     await FireStoreServices().sendMessage(msg);
