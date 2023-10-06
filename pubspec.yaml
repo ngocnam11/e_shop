@@ -21,10 +21,13 @@ dependencies:
   firebase_core: ^2.13.0
   cloud_firestore: ^4.7.1
   firebase_storage: ^11.2.1
+  firebase_messaging: ^14.6.8
   google_sign_in: ^6.1.2
   uuid: ^3.0.6
   firebase_core_platform_interface: 4.8.0
   shared_preferences: ^2.1.0
+  http: ^1.1.0
+  flutter_local_notifications: ^15.1.1
 
   cupertino_icons: ^1.0.2
   flutter_launcher_icons: ^0.10.0
