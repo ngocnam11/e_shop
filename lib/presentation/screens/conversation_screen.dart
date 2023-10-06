@@ -26,40 +26,30 @@ class ConversationScreen extends StatelessWidget {
             Expanded(
               child: StreamBuilder<List<Message>>(
                 stream: FireStoreServices().getMessage(user.uid),
-                builder: (context, snapshot1) {
-                  if (snapshot1.hasData) {
-                    return StreamBuilder<List<Message>>(
-                      stream: FireStoreServices().getMessage(user.uid, false),
-                      builder: (context, snapshot2) {
-                        if (snapshot2.hasData) {
-                          final List<Message> messages = [
-                            ...snapshot1.data!,
-                            ...snapshot2.data!,
-                          ]
-                            ..sort((i, j) => i.createAt!.compareTo(j.createAt!))
-                            ..reversed;
-                          return messages.isEmpty
-                              ? const Center(child: Text('No message'))
-                              : ListView.builder(
-                                  reverse: true,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 12),
-                                  itemCount: messages.length,
-                                  itemBuilder: (context, index) {
-                                    return Container(
-                                      margin: const EdgeInsets.only(bottom: 5),
-                                      child: MessageComponent(
-                                        message: messages[index],
-                                      ),
-                                    );
-                                  },
-                                );
-                        }
-                        return const Center(child: CircularProgressIndicator());
-                      },
-                    );
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
                   }
-                  return const Center(child: CircularProgressIndicator());
+                  if (snapshot.hasError) {
+                    debugPrint(snapshot.error.toString());
+                    return const Text('Something went wrong');
+                  }
+                  final messages = snapshot.data!;
+                  return messages.isEmpty
+                      ? const Center(child: Text('No message'))
+                      : ListView.builder(
+                          reverse: true,
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          itemCount: messages.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: const EdgeInsets.only(bottom: 5),
+                              child: MessageComponent(
+                                message: messages[index],
+                              ),
+                            );
+                          },
+                        );
                 },
               ),
             ),
@@ -77,8 +67,8 @@ class ConversationScreen extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: () async {
-                    var msg = Message(
+                  onPressed: msgController.text.isEmpty ? null : () async {
+                    final msg = Message(
                       content: msgController.text,
                       createAt: Timestamp.now(),
                       receiverUID: user.uid,

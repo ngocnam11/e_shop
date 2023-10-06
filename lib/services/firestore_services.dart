@@ -389,16 +389,26 @@ class FireStoreServices {
             event.docs.map((e) => UserModel.fromJson(e.data())).toList());
   }
 
-  Stream<List<Message>> getMessage(String reciverUID, [bool myMessage = true]) {
-    return _firestore
+  Stream<List<Message>> getMessage(String receiverUid) {
+    final filter = Filter.or(
+      Filter.and(
+        Filter('senderUID', isEqualTo: _auth.currentUser!.uid),
+        Filter('receiverUID', isEqualTo: receiverUid),
+      ),
+      Filter.and(
+        Filter('senderUID', isEqualTo: receiverUid),
+        Filter('receiverUID', isEqualTo: _auth.currentUser!.uid),
+      ),
+    );
+    final querySnapshot = _firestore
         .collection('messages')
-        .where('senderUID',
-            isEqualTo: myMessage ? _auth.currentUser!.uid : reciverUID)
-        .where('reciverUID',
-            isEqualTo: myMessage ? reciverUID : _auth.currentUser!.uid)
-        .snapshots()
-        .map((event) =>
-            event.docs.map((e) => Message.fromJson(e.data(), e.id)).toList());
+        .where(filter)
+        .orderBy('createAt', descending: true)
+        .snapshots();
+
+    return querySnapshot.map((snapshot) => snapshot.docs
+        .map((doc) => Message.fromJson(doc.data(), doc.id))
+        .toList());
   }
 
   Future<bool> sendMessage(Message msg) async {
